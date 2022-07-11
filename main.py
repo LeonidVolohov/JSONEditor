@@ -30,7 +30,6 @@ def main():
 
 	print(jsonDataPrerryOutput)
 
-
 	application = QApplication(sys.argv)
 	mainWindow = MainWindow(jsonText = jsonDataPrerryOutput, showMaximized = True)
 	mainWindow.show()
