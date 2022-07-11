@@ -1,4 +1,5 @@
 import json
+from collections import OrderedDict
 
 from PyQt5.QtWidgets import *
 
@@ -10,7 +11,9 @@ class JsonParsing():
 		with open(filePath, mode='r') as openedFile:
 			jsonData = json.load(openedFile)
 
-		return jsonData
+		# return jsonData
+		return OrderedDict(sorted(jsonData.items()))
+
 
 	def saveChanges(self):
 		pass
