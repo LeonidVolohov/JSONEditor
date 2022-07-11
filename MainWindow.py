@@ -32,31 +32,20 @@ class MainWindow(QMainWindow):
             self.show()
 
     # Main window components
-    def UiComponents(self, jsonText): #if QLabel - jsonText: str, if QTreeWidget - jsonText: dict
-        self.scrollArea = QScrollArea()
+    def UiComponents(self, jsonText): #jsonText: dict
         self.widget = QWidget()
         self.vbox = QVBoxLayout()
 
-        model = QFileSystemModel()
-        model.setRootPath(QDir.currentPath())
         self.treeWidget = QTreeWidget()
-        #self.treeWidget.setModel(model)
+        self.treeWidget.setColumnCount(2)
+        self.treeWidget.setHeaderLabels(["Propery", "Value"])
 
         self.vbox.addWidget(self.treeWidget)
         self.widget.setLayout(self.vbox)
-        self.scrollArea.setWidget(self.widget)
-        self.setCentralWidget(self.scrollArea)
 
+        self.setCentralWidget(self.treeWidget)
         JsonParsing().treeFromDictionary(data = jsonText, parent = self.treeWidget) # load jsonData to TreeWidget
 
-        # TODO: scrollArea is small when app is loading. The idea is to open it on full screen 
-        # self.scrollArea.resize(self.scrollArea.sizeHint())
-
-        # For QLabel
-        # self.vbox.addWidget(QLabel(jsonText))
-        # self.widget.setLayout(self.vbox)
-        # self.scrollArea.setWidget(self.widget)
-        # self.setCentralWidget(self.scrollArea)
 
     def center(self):
         frameGeometry = self.frameGeometry()
@@ -68,7 +57,7 @@ class MainWindow(QMainWindow):
 
 def main():
     application = QApplication(sys.argv)
-    mainWindow = MainWindow("test text",    showMaximized = False)
+    mainWindow = MainWindow("test text", showMaximized = False)
     sys.exit(application.exec_())
 
 if __name__ == '__main__':
