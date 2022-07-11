@@ -31,10 +31,11 @@ def main():
 	print(jsonDataPrerryOutput)
 
 	application = QApplication(sys.argv)
-	mainWindow = MainWindow(jsonText = jsonDataPrerryOutput, showMaximized = True)
+	mainWindow = MainWindow(jsonText = jsonData, showMaximized = False)
 	mainWindow.show()
 	application.exec()
 	sys.exit(application.exec_())
+
 
 if __name__ == '__main__':
 	main()
