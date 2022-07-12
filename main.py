@@ -22,13 +22,11 @@ from PyQt5.QtGui import *
 
 def main():
 	jsonFileName = "config_apak.json"
-	filePath = Utils().getAbsFilePath("config_apak.json")
+	filePath = Utils().getAbsFilePath(jsonFileName)
 
 	jsonData = JsonParsing().getJsonFromFile(filePath) # dict
 	jsonDataKeys = jsonData.keys()
 	jsonDataPrerryOutput = json.dumps(jsonData, indent=2, sort_keys=True) # str
-
-	print(jsonDataPrerryOutput)
 
 	application = QApplication(sys.argv)
 	mainWindow = MainWindow(jsonText = jsonData, showMaximized = False)

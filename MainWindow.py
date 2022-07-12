@@ -5,9 +5,9 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5 import uic
 
-from JsonParsing import *
-
 import sys
+
+from JsonParsing import *
 
 
 mainWindowFileName = "mainwindow.ui"
@@ -39,6 +39,8 @@ class MainWindow(QMainWindow):
         self.treeWidget = QTreeWidget()
         self.treeWidget.setColumnCount(2)
         self.treeWidget.setHeaderLabels(["Propery", "Value"])
+        self.treeWidget.itemDoubleClicked.connect(JsonParsing().editItem)
+
 
         self.vbox.addWidget(self.treeWidget)
         self.widget.setLayout(self.vbox)
@@ -46,6 +48,8 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.treeWidget)
         JsonParsing().treeFromDictionary(data = jsonText, parent = self.treeWidget) # load jsonData to TreeWidget
 
+        # self.treeWidget.expandAll()
+        self.treeWidget.expandToDepth(0)
 
     def center(self):
         frameGeometry = self.frameGeometry()
