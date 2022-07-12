@@ -50,7 +50,7 @@ class MainWindow(QMainWindow):
         JsonParsing().fillWidget(widget = self.treeWidget, data = jsonText)
 
         # self.treeWidget.expandAll()
-        self.treeWidget.expandToDepth(1)
+        self.treeWidget.expandToDepth(0)
 
 
     def editItem(self, item, column):

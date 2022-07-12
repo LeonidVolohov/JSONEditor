@@ -63,7 +63,7 @@ class JsonParsing():
 				outputString = " : ".join(tempList)
 				return outputString
 			else:
-				return list(data.keys())
+				return "; ".join(list(data.keys()))
 		if isinstance(data, list):
 			pass
 		if isinstance(data, tuple):
