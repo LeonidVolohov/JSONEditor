@@ -39,17 +39,20 @@ class MainWindow(QMainWindow):
         self.treeWidget = QTreeWidget()
         self.treeWidget.setColumnCount(2)
         self.treeWidget.setHeaderLabels(["Propery", "Value"])
-        self.treeWidget.itemDoubleClicked.connect(JsonParsing().editItem)
-
+        # self.treeWidget.itemDoubleClicked.connect(JsonParsing().editItem)
 
         self.vbox.addWidget(self.treeWidget)
         self.widget.setLayout(self.vbox)
 
         self.setCentralWidget(self.treeWidget)
-        JsonParsing().treeFromDictionary(data = jsonText, parent = self.treeWidget) # load jsonData to TreeWidget
+        # JsonParsing().treeFromDictionary(data = jsonText, parent = self.treeWidget) # load jsonData to TreeWidget
+        # self.treeWidget.clear()
+        # JsonParsing().treeFromDictionary1(data = jsonText, parent = self.treeWidget.invisibleRootItem()) # load jsonData to TreeWidget
+        JsonParsing().fillWidget(widget = self.treeWidget, data = jsonText)
+
 
         # self.treeWidget.expandAll()
-        self.treeWidget.expandToDepth(0)
+        self.treeWidget.expandToDepth(1)
 
     def center(self):
         frameGeometry = self.frameGeometry()

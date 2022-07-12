@@ -130,3 +130,6 @@ dmypy.json
 
 # Json 
 /config_apak.json
+
+# Temp file
+/temp.txt
