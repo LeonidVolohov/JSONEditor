@@ -39,7 +39,8 @@ class MainWindow(QMainWindow):
         self.treeWidget = QTreeWidget()
         self.treeWidget.setColumnCount(2)
         self.treeWidget.setHeaderLabels(["Propery", "Value"])
-        # self.treeWidget.itemDoubleClicked.connect(JsonParsing().editItem)
+        
+        self.treeWidget.itemDoubleClicked.connect(self.editItem)
 
         self.vbox.addWidget(self.treeWidget)
         self.widget.setLayout(self.vbox)
@@ -50,6 +51,16 @@ class MainWindow(QMainWindow):
 
         # self.treeWidget.expandAll()
         self.treeWidget.expandToDepth(1)
+
+
+    def editItem(self, item, column):
+        try:
+            if column == 1:
+                item.setFlags(item.flags() | Qt.ItemIsEditable)
+            else:
+                pass
+        except Exception as exception:
+            print(exception)
 
     def center(self):
         frameGeometry = self.frameGeometry()

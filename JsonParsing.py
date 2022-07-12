@@ -19,15 +19,6 @@ class JsonParsing():
 	def saveChanges(self):
 		pass
 
-	def editItem(self, item, column):
-		try:
-			if column == 1:
-				item.setFlags(item.flags() | Qt.ItemIsEditable)
-			else:
-				pass
-		except Exception as exception:
-			print(exception)
-
 	def fillWidget(self, widget, data):
 		widget.clear()
 		self.treeFromDictionary(widget.invisibleRootItem(), data)
@@ -36,9 +27,6 @@ class JsonParsing():
 		def newItem(position, parent, text):
 			child = QTreeWidgetItem()
 			child.setText(position, str(text))
-			
-			if text not in ("[dict]", "[list]", "[tuple]"):
-				child.setFlags(child.flags() | Qt.ItemIsEditable)
 			parent.addChild(child)
 
 			return child
@@ -55,6 +43,7 @@ class JsonParsing():
 		else:
 			parent.setText(1, str(data)) # display value without creating a subtree
 			# newItem(1, parent, data) # display value with creating a subtree
+			# parent.setFlags(parent.flags() | Qt.ItemIsEditable) # Make lowest elements editable
 
 	def treeToDictionary(self):
 		pass
