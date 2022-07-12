@@ -19,7 +19,6 @@ class JsonParsing():
 	def saveChanges(self):
 		pass
 
-	# TODO: Currenctly not working
 	def editItem(self, item, column):
 		try:
 			if column == 1:
@@ -29,59 +28,15 @@ class JsonParsing():
 		except Exception as exception:
 			print(exception)
 
-	def treeFromDictionary1(self, data = None, parent = None):
-		# Working but wrong tree node
-		for key, value in data.items():
-			item = QTreeWidgetItem(parent)
-			item.setText(0, key)
-			if isinstance(value, dict):
-				self.treeFromDictionary1(data = value, parent = item)
-			elif isinstance(value, list):
-				for idx, i in enumerate(value):
-					if idx != 0:
-						item = QTreeWidgetItem(parent)
-						item.setText(0, key)
-					self.treeFromDictionary1(i, parent = item)
-			else:
-				item.setText(1, str(value))
-
-		# Not workig 
-		# if type(data) is dict:
-		# 	for key, value in sorted(data.items()):
-		# 		print("is dict")
-		# 		child = QTreeWidgetItem()
-		# 		child.setText(0, key)
-		# 		parent.addChild(child)
-		# 		self.treeFromDictionary(child, value)
-		# elif type(data) is list:
-		# 	for value in data:
-		# 		child = QTreeWidgetItem()
-		# 		parent.addChild(child)
-		# 		if type(value) is dict:
-		# 			child.setText(0, 'dict')
-		# 			self.treeFromDictionary(child, value)
-		# 		elif type(value) is list:
-		# 			child.setText(0, 'list')
-		# 			self.treeFromDictionary(child, value)
-		# 		else:
-		# 			child.setText(0, value)
-		# 		child.setExpanded(True)
-		# else:
-		# 	child = QTreeWidgetItem()
-		# 	child.setText(0, data)
-		# 	parent.addChild(child)
-
 	def fillWidget(self, widget, data):
 		widget.clear()
 		self.treeFromDictionary(widget.invisibleRootItem(), data)
 
 	def treeFromDictionary(self, parent, data):
 		def newItem(position, parent, text):
-			# child = QTreeWidgetItem([str(text)])
 			child = QTreeWidgetItem()
 			child.setText(position, str(text))
 			
-			#if not isinstance(text, (dict, list, tuple)):
 			if text not in ("[dict]", "[list]", "[tuple]"):
 				child.setFlags(child.flags() | Qt.ItemIsEditable)
 			parent.addChild(child)
@@ -95,25 +50,11 @@ class JsonParsing():
 				subParent = newItem(0, newParent, key)
 				self.treeFromDictionary(subParent, value)
 		elif isinstance(data, (tuple, list)):
-			# newParent = newItem(0, parent, data) # - old version
 			for value in data:
-				# self.treeFromDictionary(newParent, value) # - old version
 				self.treeFromDictionary(parent, value)
 		else:
 			parent.setText(1, str(data)) # display value without creating a subtree
 			# newItem(1, parent, data) # display value with creating a subtree
-
-		# if isinstance(data, dict):
-		# 	newParent = newItem(parent, data.keys())
-		# 	for key, value in data.items():
-		# 		subParent = newItem(newParent, key)
-		# 		self.treeFromDictionary(subParent, value)
-		# elif isinstance(data, (tuple, list)):
-		# 	newParent = newItem(parent, data)
-		# 	for value in data:
-		# 		self.treeFromDictionary(newParent, value)
-		# else:
-		# 	newItem(parent, data)
 
 	def treeToDictionary(self):
 		pass
@@ -138,8 +79,6 @@ class JsonParsing():
 			pass
 		if isinstance(data, tuple):
 			pass
-
-		return data.keys()
 
 
 def main():

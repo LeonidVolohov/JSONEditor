@@ -45,11 +45,8 @@ class MainWindow(QMainWindow):
         self.widget.setLayout(self.vbox)
 
         self.setCentralWidget(self.treeWidget)
-        # JsonParsing().treeFromDictionary(data = jsonText, parent = self.treeWidget) # load jsonData to TreeWidget
-        # self.treeWidget.clear()
-        # JsonParsing().treeFromDictionary1(data = jsonText, parent = self.treeWidget.invisibleRootItem()) # load jsonData to TreeWidget
-        JsonParsing().fillWidget(widget = self.treeWidget, data = jsonText)
 
+        JsonParsing().fillWidget(widget = self.treeWidget, data = jsonText)
 
         # self.treeWidget.expandAll()
         self.treeWidget.expandToDepth(1)
