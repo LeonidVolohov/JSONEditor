@@ -36,38 +36,21 @@ class MainWindow(QMainWindow):
     def UiComponents(self, jsonText): #jsonText: dict
         self.widget = QWidget()
         self.vbox = QVBoxLayout()
-
         self.treeView = QTreeView()
-        # self.treeView.setColumnCount(2)
-        # self.treeView.setHeaderLabels(["Propery", "Value"])
-        
-        # self.treeView.itemDoubleClicked.connect(self.editItem)
 
         model = QJsonModel()
-        self.treeView.setModel(model)
         model.clear()
         model.load(jsonText)
+
+        self.treeView.setModel(model)
+
+        # self.treeView.expandAll()
+        # self.treeView.expandToDepth(0)
 
         self.vbox.addWidget(self.treeView)
         self.widget.setLayout(self.vbox)
 
         self.setCentralWidget(self.treeView)
-
-        # JsonParsing().fillWidget(widget = self.treeView, data = jsonText)
-
-        # self.treeView.expandAll()
-        # self.treeView.expandToDepth(0)
-
-        # print(JsonParsing().get_dict(self.treeView))
-
-    def editItem(self, item, column):
-        try:
-            if column == 1:
-                item.setFlags(item.flags() | Qt.ItemIsEditable)
-            else:
-                pass
-        except Exception as exception:
-            print(exception)
 
     def center(self):
         frameGeometry = self.frameGeometry()
@@ -79,11 +62,9 @@ class MainWindow(QMainWindow):
 
 def main():
     application = QApplication(sys.argv)
-    mainWindow = MainWindow("test text", showMaximized = False)
-    application.exec()
-    # sys.exit(application.exec_())
-    # sys.exit()
-
+    mainWindow = MainWindow({"1": "1", "3": "3", "2": "2"}, showMaximized = False)
+    sys.exit(application.exec_())
+    
 
 if __name__ == '__main__':
     main()
