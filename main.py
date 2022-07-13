@@ -21,7 +21,7 @@ from PyQt5.QtGui import *
 
 
 def main():
-	jsonFileName = "config_apak.json"
+	jsonFileName = "jsons/config_apak.json"
 	filePath = Utils().getAbsFilePath(jsonFileName)
 
 	jsonData = JsonParsing().getJsonFromFile(filePath) # dict

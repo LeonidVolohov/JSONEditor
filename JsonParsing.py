@@ -49,21 +49,20 @@ class JsonParsing():
 		pass
 
 	def getNameFromDict(self, data):
-		outputString = ""
+		outputString = "Object"
 		tempList = []
 
 		if isinstance(data, dict):
-			tempList.append(data.get('id', None))
 			tempList.append(data.get('name', None))
+			tempList.append(data.get('group', None))
+			tempList.append(data.get('description', None))
 
 			# remove all None elements in list -> map all elements to str -> convert back to list for join
 			tempList = list(map(str, list(filter(None, tempList))))
 
 			if len(tempList) > 0:
 				outputString = " : ".join(tempList)
-				return outputString
-			else:
-				return "; ".join(list(data.keys()))
+			return outputString
 		if isinstance(data, list):
 			pass
 		if isinstance(data, tuple):
