@@ -48,6 +48,67 @@ class JsonParsing():
 	def treeToDictionary(self):
 		pass
 
+	def get_dict(self, tree):
+		result = None
+
+		def unpack(to_unpack, key, source=None):
+			for child_index in range(to_unpack.childCount()):
+				child = to_unpack.child(child_index)
+				child_text = child.text(0)
+				try:
+					child_text = float(child_text)
+				except ValueError:
+					try:
+						child_text = int(child_text)
+					except ValueError:
+						pass
+
+				if source is None:
+					core = result
+				else:
+					core = source
+
+				if key == "[dict]":
+					core.update({child_text: None})
+					if child.childCount() > 0:
+						unpack(child, child_text, core)
+				elif key == "[list]" or key == "[tuple]":
+					if child_text == "[dict]":
+						core.append({})
+					elif child_text == "[list]" or child_text == "[tuple]":
+						core.append([])
+					else:
+						core.append(child_text)
+
+					if child.childCount() > 0:
+						unpack(child, child_text, core[child_index])
+				else:
+					if child_text == "[dict]":
+						core.update({key: {}})
+					elif child_text == "[list]" or child_text == "[tuple]":
+						core.update({key: []})
+					else:
+						core.update({key: child_text})
+
+					if child.childCount() > 0:
+						unpack(child, child_text, core[key])
+
+		# print(tree.topLevelItemCount())
+		# print(tree.childCount())
+		for index in range(tree.topLevelItemCount()):
+			parent = tree.topLevelItem(index)
+			element_text = parent.text(0)
+			if element_text == "[dict]":
+				result = {}
+				unpack(parent, element_text)
+			elif element_text == "[list]" or element_text == "[tuple]":
+				result = []
+				unpack(parent, element_text)
+			else:
+				result = element_text
+
+		return result
+
 	def getNameFromDict(self, data):
 		outputString = "Object"
 		tempList = []

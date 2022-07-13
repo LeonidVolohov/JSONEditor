@@ -8,6 +8,7 @@ from PyQt5 import uic
 import sys
 
 from JsonParsing import *
+from QJsonModel import *
 
 
 mainWindowFileName = "mainwindow.ui"
@@ -36,22 +37,28 @@ class MainWindow(QMainWindow):
         self.widget = QWidget()
         self.vbox = QVBoxLayout()
 
-        self.treeWidget = QTreeWidget()
-        self.treeWidget.setColumnCount(2)
-        self.treeWidget.setHeaderLabels(["Propery", "Value"])
+        self.treeView = QTreeView()
+        # self.treeView.setColumnCount(2)
+        # self.treeView.setHeaderLabels(["Propery", "Value"])
         
-        self.treeWidget.itemDoubleClicked.connect(self.editItem)
+        # self.treeView.itemDoubleClicked.connect(self.editItem)
 
-        self.vbox.addWidget(self.treeWidget)
+        model = QJsonModel()
+        self.treeView.setModel(model)
+        model.clear()
+        model.load(jsonText)
+
+        self.vbox.addWidget(self.treeView)
         self.widget.setLayout(self.vbox)
 
-        self.setCentralWidget(self.treeWidget)
+        self.setCentralWidget(self.treeView)
 
-        JsonParsing().fillWidget(widget = self.treeWidget, data = jsonText)
+        # JsonParsing().fillWidget(widget = self.treeView, data = jsonText)
 
-        # self.treeWidget.expandAll()
-        self.treeWidget.expandToDepth(0)
+        # self.treeView.expandAll()
+        # self.treeView.expandToDepth(0)
 
+        # print(JsonParsing().get_dict(self.treeView))
 
     def editItem(self, item, column):
         try:
@@ -73,7 +80,10 @@ class MainWindow(QMainWindow):
 def main():
     application = QApplication(sys.argv)
     mainWindow = MainWindow("test text", showMaximized = False)
-    sys.exit(application.exec_())
+    application.exec()
+    # sys.exit(application.exec_())
+    # sys.exit()
+
 
 if __name__ == '__main__':
     main()
