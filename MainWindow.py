@@ -21,7 +21,11 @@ class MainWindow(QMainWindow):
 		uic.loadUi(mainWindowFileName, self)
 
 		self._jsonFileName = jsonFileName
-		self.jsonText = JsonParsing().getJsonFromFile(Utils().getAbsFilePath(jsonFileName)) # dict
+
+		if len(jsonFileName) == 0:
+			self.jsonText = {}
+		else:
+			self.jsonText = JsonParsing().getJsonFromFile(Utils().getAbsFilePath(jsonFileName)) # dict
 
 		self.setWindowTitle(Utils().getAbsFilePath(jsonFileName))
 		#self.setGeometry(0, 0, 640, 480)

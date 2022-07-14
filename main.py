@@ -18,7 +18,7 @@ if __name__ == '__main__':
 	main()
 
 	jsonFileName = "config_apak.json"
-	
+
 	application = QApplication(sys.argv)
 	mainWindow = MainWindow(jsonFileName = jsonFileName, showMaximized = False)
 
