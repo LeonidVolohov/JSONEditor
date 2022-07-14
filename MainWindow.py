@@ -72,6 +72,7 @@ class MainWindow(QMainWindow):
 
 		self.model = QJsonModel()
 		self.treeView.setModel(self.model)
+		self.treeView.setColumnWidth(0, 400)
 
 		self.model.clear()
 		self.model.load(self.jsonText)
