@@ -6,7 +6,6 @@ from PyQt5.QtGui import *
 from PyQt5 import uic
 
 import sys
-import codecs
 
 from JsonParsing import *
 from QJsonModel import *
