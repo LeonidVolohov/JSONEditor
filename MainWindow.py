@@ -32,20 +32,38 @@ class MainWindow(QMainWindow):
         else:
             self.show()
 
+    @property
+    def model(self):
+        return self._model
+
+    @model.setter
+    def model(self, model):
+        self._model = model
+
     # Main window components
     def UiComponents(self, jsonText): #jsonText: dict
+        widget = QWidget(self)
+        layout = QVBoxLayout(widget)
+
         self.treeView = QTreeView()
+        self.pushButton = QPushButton()
 
-        model = QJsonModel()
-        self.treeView.setModel(model)
+        self.pushButton.setText("Print Tree to file /JsonToGUI/new.json")
+        self.pushButton.clicked.connect(self.buttonClicked)
 
-        model.clear()
-        model.load(jsonText)
+        self.model = QJsonModel()
+        self.treeView.setModel(self.model)
+
+        self.model.clear()
+        self.model.load(jsonText)
+
+        layout.addWidget(self.treeView)
+        layout.addWidget(self.pushButton)
 
         # self.treeView.expandAll()
         # self.treeView.expandToDepth(0)
 
-        self.setCentralWidget(self.treeView)
+        self.setCentralWidget(widget)
 
     def center(self):
         frameGeometry = self.frameGeometry()
@@ -54,6 +72,11 @@ class MainWindow(QMainWindow):
         frameGeometry.moveCenter(centerPoint)
         self.move(frameGeometry.topLeft())
 
+    def buttonClicked(self):
+        if self.pushButton.isChecked():
+            pass
+        else:
+            JsonParsing().writeJsonToFile("/home/user/jsontogui/JsonToGUI/new.json", self.model.json())
 
 def main():
     application = QApplication(sys.argv)
