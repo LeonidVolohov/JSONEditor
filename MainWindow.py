@@ -23,7 +23,7 @@ class MainWindow(QMainWindow):
 		self._jsonFileName = jsonFileName
 		self.jsonText = JsonParsing().getJsonFromFile(Utils().getAbsFilePath(jsonFileName)) # dict
 
-		self.setWindowTitle("JsonToGUI")
+		self.setWindowTitle(Utils().getAbsFilePath(jsonFileName))
 		#self.setGeometry(0, 0, 640, 480)
 		self.resize(1024, 720)
 		self.center()
@@ -94,6 +94,7 @@ class MainWindow(QMainWindow):
 		if fileName:
 			self.jsonFileName = fileName
 			self.model.load(JsonParsing().getJsonFromFile(fileName))
+			self.setWindowTitle(fileName)
 
 	def menuBarActionSave(self):
 		JsonParsing().writeJsonToFile(self.jsonFileName, self.model.json())
