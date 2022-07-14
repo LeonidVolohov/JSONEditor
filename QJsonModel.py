@@ -5,6 +5,8 @@ import PyQt5
 
 import json
 
+from JsonParsing import *
+
 
 class QJsonTreeItem(object):
 	def __init__(self, parent=None):
@@ -77,7 +79,7 @@ class QJsonTreeItem(object):
 		elif isinstance(value, list):
 			for index, value in enumerate(value):
 				child = self.load(value, rootItem)
-				child.key = index
+				child.key = JsonParsing().getNameFromDict(value)
 				child.type = type(value)
 				rootItem.appendChild(child)
 
