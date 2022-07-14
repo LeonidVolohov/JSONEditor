@@ -15,12 +15,13 @@ from Utils import *
 mainWindowFileName = "mainwindow.ui"
 
 class MainWindow(QMainWindow):
-	def __init__(self, jsonText, showMaximized = False):
+	def __init__(self, jsonFileName, showMaximized = False):
 		super().__init__()
 
 		uic.loadUi(mainWindowFileName, self)
 
-		self._jsonText = jsonText
+		self._jsonFileName = jsonFileName
+		self.jsonText = JsonParsing().getJsonFromFile(Utils().getAbsFilePath(jsonFileName)) # dict
 
 		self.setWindowTitle("JsonToGUI")
 		#self.setGeometry(0, 0, 640, 480)
@@ -49,6 +50,14 @@ class MainWindow(QMainWindow):
 	@jsonText.setter
 	def jsonText(self, jsonText):
 		self._jsonText = jsonText
+
+	@property
+	def jsonFileName(self):
+		return self._jsonFileName
+
+	@jsonFileName.setter
+	def jsonFileName(self, jsonFileName):
+		self._jsonFileName = jsonFileName
 	
 	# Main window components
 	def UiComponents(self): #jsonText: dict
@@ -83,13 +92,14 @@ class MainWindow(QMainWindow):
 		options |= QFileDialog.DontUseNativeDialog
 		fileName, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","Json Files (*.json)", options=options)
 		if fileName:
+			self.jsonFileName = fileName
 			self.model.load(JsonParsing().getJsonFromFile(fileName))
 
 	def menuBarActionSave(self):
-		JsonParsing().writeJsonToFile("/home/user/jsontogui/JsonToGUI/config_apak.json", self.model.json())
+		JsonParsing().writeJsonToFile(self.jsonFileName, self.model.json())
 
 	def menuBarActionRefresh(self):
-		self.model.load(JsonParsing().getJsonFromFile(Utils().getAbsFilePath("config_apak.json")))
+		self.model.load(JsonParsing().getJsonFromFile(Utils().getAbsFilePath(self.jsonFileName)))
 
 	def menuBarActionClose(self):
 		sys.exit()

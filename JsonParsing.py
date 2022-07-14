@@ -1,6 +1,3 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt
-
 from collections import OrderedDict
 import json
 
@@ -10,7 +7,7 @@ class JsonParsing():
 		self.jsonDictinary = jsonDictinary
 
 	def getJsonFromFile(self, filePath):
-		with open(filePath, 'r', "utf-8") as openedFile:
+		with open(filePath, mode='r', encoding="utf-8") as openedFile:
 			jsonData = json.load(openedFile)
 
 		# In Json there is a property for sorting keys (sort_Keys=True (False by default)), so there is no need in this
@@ -18,7 +15,7 @@ class JsonParsing():
 		return jsonData
 
 	def writeJsonToFile(self, fileLocation, jsonFile):
-		with open(fileLocation, "w", "utf-8") as openedFile:
+		with open(fileLocation, mode="w", encoding="utf-8") as openedFile:
 			openedFile.write(json.dumps(jsonFile, indent=2, ensure_ascii=False, sort_keys=True))
 	
 	def getNameFromDict(self, data):

@@ -18,12 +18,8 @@ if __name__ == '__main__':
 	main()
 
 	jsonFileName = "config_apak.json"
-	filePath = Utils().getAbsFilePath(jsonFileName)
-
-	jsonData = JsonParsing().getJsonFromFile(filePath) # dict
-	jsonDataPrerryOutput = json.dumps(jsonData, indent=2, sort_keys=True) # str
-
+	
 	application = QApplication(sys.argv)
-	mainWindow = MainWindow(jsonText = jsonData, showMaximized = False)
+	mainWindow = MainWindow(jsonFileName = jsonFileName, showMaximized = False)
 
 	sys.exit(application.exec_())
