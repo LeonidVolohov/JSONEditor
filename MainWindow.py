@@ -6,6 +6,7 @@ from PyQt5.QtGui import *
 from PyQt5 import uic
 
 import sys
+import codecs
 
 from JsonParsing import *
 from QJsonModel import *
@@ -34,21 +35,16 @@ class MainWindow(QMainWindow):
 
     # Main window components
     def UiComponents(self, jsonText): #jsonText: dict
-        self.widget = QWidget()
-        self.vbox = QVBoxLayout()
         self.treeView = QTreeView()
 
         model = QJsonModel()
+        self.treeView.setModel(model)
+
         model.clear()
         model.load(jsonText)
 
-        self.treeView.setModel(model)
-
         # self.treeView.expandAll()
         # self.treeView.expandToDepth(0)
-
-        self.vbox.addWidget(self.treeView)
-        self.widget.setLayout(self.vbox)
 
         self.setCentralWidget(self.treeView)
 
