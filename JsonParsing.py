@@ -18,18 +18,20 @@ class JsonParsing():
 	
 	def getNameFromDict(self, data):
 		outputString = "Object"
-		tempList = []
 
 		if isinstance(data, dict):
-			tempList.append(data.get('name', None))
-			tempList.append(data.get('group', None))
-			tempList.append(data.get('description', None))
+			# Add property name at the beginning
+			tempDict = OrderedDict()
+			tempDict["__Name__"] = data.get('name', None)
+			tempDict["__Group__"] = data.get('group', None)
+			tempDict["__Description__"] = data.get('description', None)
+			filteredDict = {key: value for key, value in tempDict.items() if value is not None}
 
-			# remove all None elements in list -> map all elements to str -> convert back to list for join
-			tempList = list(map(str, list(filter(None, tempList))))
+			tempDict.clear()
+			tempDict.update(filteredDict)
 
-			if len(tempList) > 0:
-				outputString = " : ".join(tempList)
+			if len(tempDict) > 0:
+				outputString = ";  ".join(["%s  :  %s" % (key, value) for (key, value) in tempDict.items()])
 			return outputString
 		if isinstance(data, list):
 			pass
