@@ -11,7 +11,7 @@ class JsonParsing():
 		self.jsonDictinary = jsonDictinary
 
 	def getJsonFromFile(self, filePath):
-		with open(filePath, mode='r') as openedFile:
+		with codecs.open(filePath, 'r', "utf-16") as openedFile:
 			jsonData = json.load(openedFile)
 
 		# In Json there is a property for sorting keys (sort_Keys=True (False by default)), so there is no need in this

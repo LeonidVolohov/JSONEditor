@@ -17,7 +17,8 @@ def main():
 if __name__ == '__main__':
 	main()
 
-	jsonFileName = "jsons/config_apak.json"
+	# jsonFileName = "jsons/config_apak.json"
+	jsonFileName = "new.json"
 	filePath = Utils().getAbsFilePath(jsonFileName)
 
 	jsonData = JsonParsing().getJsonFromFile(filePath) # dict
