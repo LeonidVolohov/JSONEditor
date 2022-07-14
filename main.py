@@ -12,6 +12,11 @@ from PyQt5.QtGui import *
 
 
 def main():
+	pass
+
+if __name__ == '__main__':
+	main()
+
 	jsonFileName = "jsons/config_apak.json"
 	filePath = Utils().getAbsFilePath(jsonFileName)
 
@@ -20,8 +25,5 @@ def main():
 
 	application = QApplication(sys.argv)
 	mainWindow = MainWindow(jsonText = jsonData, showMaximized = False)
+
 	sys.exit(application.exec_())
-
-
-if __name__ == '__main__':
-	main()
