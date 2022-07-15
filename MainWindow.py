@@ -88,14 +88,18 @@ class MainWindow(QMainWindow):
 		self.setMenuBar(self.menuBar)
 
 		self.actionOpen.triggered.connect(self.menuBarActionOpen)
+		self.actionOpen.setShortcut(QKeySequence("Ctrl+O"))
 		self.actionSave.triggered.connect(self.menuBarActionSave)
+		self.actionSave.setShortcut(QKeySequence("Ctrl+S"))
 		self.actionRefresh.triggered.connect(self.menuBarActionRefresh)
+		self.actionRefresh.setShortcut(QKeySequence(Qt.Key_F5))
 		self.actionClose.triggered.connect(self.menuBarActionClose)
+		self.actionClose.setShortcut("Ctrl+Q")
 
 	def menuBarActionOpen(self):
 		options = QFileDialog.Options()
 		options |= QFileDialog.DontUseNativeDialog
-		fileName, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","Json Files (*.json)", options=options)
+		fileName, _ = QFileDialog.getOpenFileName(self,"Choose Json File", "","Json Files (*.json)", options=options)
 		if fileName:
 			self.jsonFileName = fileName
 			self.model.load(JsonParsing().getJsonFromFile(fileName))
