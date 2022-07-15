@@ -6,9 +6,10 @@ from PyQt5.QtGui import *
 from PyQt5 import uic
 
 import sys
+from functools import partial
 
 from JsonParsing import *
-from QJsonModel import *
+from QJsonTreeModel import *
 from Utils import *
 
 
@@ -70,9 +71,11 @@ class MainWindow(QMainWindow):
 
 		self.treeView = QTreeView()
 
-		self.model = QJsonModel()
+		self.model = QJsonTreeModel()
 		self.treeView.setModel(self.model)
 		self.treeView.setColumnWidth(0, 400)
+		self.treeView.setContextMenuPolicy(Qt.CustomContextMenu)
+		self.treeView.customContextMenuRequested.connect(self.openRightClickMenu)
 
 		self.model.clear()
 		self.model.load(self.jsonText)
@@ -106,13 +109,67 @@ class MainWindow(QMainWindow):
 			self.setWindowTitle(fileName)
 
 	def menuBarActionSave(self):
-		JsonParsing().writeJsonToFile(self.jsonFileName, self.model.json())
+		JsonParsing().writeJsonToFile(self.jsonFileName, self.model.getJsonFromTree())
 
 	def menuBarActionRefresh(self):
 		self.model.load(JsonParsing().getJsonFromFile(Utils().getAbsFilePath(self.jsonFileName)))
 
 	def menuBarActionClose(self):
 		sys.exit()
+
+	def openRightClickMenu(self, position):
+		indexes = self.sender().selectedIndexes()
+		mdlIdx = self.treeView.indexAt(position)
+		parent = self.model.parent(mdlIdx)	
+		if not mdlIdx.isValid():
+			return
+		# item = self.model.itemFromIndex(mdlIdx)
+		item = self.model.data(mdlIdx, Qt.EditRole)
+		if len(indexes) > 0:
+			level = 0
+			index = indexes[0]
+			while index.parent().isValid():
+				index = index.parent()
+				level += 1
+		else:
+			level = 0
+		right_click_menu = QMenu()
+		act_add = right_click_menu.addAction(self.tr("Add Child Item"))
+		# act_add.triggered.connect(partial(self.treeAddItem, level, mdlIdx))
+		act_add.triggered.connect(partial(self.treeAddItem))
+
+		# if item.parent() != None:
+		if self.model.parent(mdlIdx) != None:
+			insert_up = right_click_menu.addAction(self.tr("Insert Item Above"))
+			insert_up.triggered.connect(partial(self.treeItemInsertUp, level, mdlIdx))
+			insert_down = right_click_menu.addAction(self.tr("Insert Item Below"))
+			insert_down.triggered.connect(partial(self.treeItemInsertDown, level, mdlIdx))
+			act_del = right_click_menu.addAction(self.tr("Delete Item"))
+			act_del.triggered.connect(partial(self.treeItemDelete, item))
+		right_click_menu.exec_(self.sender().viewport().mapToGlobal(position))
+
+	# def treeAddItem(self, level, mdlIdx, parent):
+	def treeAddItem(self):
+		# temp_key = QStandardItem("{}".format("1".encode("utf-8")))
+		# temp_value1 = QStandardItem("{}".format("1".encode("utf-8")))
+		# # self.model.itemFromIndex(mdlIdx).appendRow([temp_key, temp_value1, temp_value2])
+		# self.model.insertRows([temp_key, temp_value1], 1, parent)
+		# self.treeView.expandAll()
+		index = self.treeView.selectionModel().selectedIndexes()[0]
+		self.treeView.setCurrentIndex(index)
+		self.model.insertRows(self.model.rowCount(index), 1, index)
+		self.model.setData(self.model.index(self.model.rowCount(index) -1, 0, index), "New item", Qt.EditRole)
+		# self.model.dataChanged().emit(index, index)
+		# self.treeView.expandAll()
+
+	def treeItemInsertUp(self):
+		pass
+
+	def treeItemInsertDown(self):
+		pass
+
+	def treeItemDelete(self):
+		pass
 
 	def center(self):
 		frameGeometry = self.frameGeometry()

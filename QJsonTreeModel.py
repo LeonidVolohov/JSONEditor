@@ -9,13 +9,14 @@ from JsonParsing import *
 
 
 class QJsonTreeItem(object):
-	def __init__(self, parent=None):
+	def __init__(self, data, parent=None):
 		self._parent = parent
 
 		self._key = ""
 		self._value = ""
 		self._type = None
 		self._children = list()
+		self.itemData = data
 
 	def appendChild(self, item):
 		self._children.append(item)
@@ -60,8 +61,8 @@ class QJsonTreeItem(object):
 		self._type = typ
 
 	@classmethod
-	def load(self, value, parent=None, sort=True):
-		rootItem = QJsonTreeItem(parent)
+	def loadJsonToTree(self, value, parent=None, sort=True):
+		rootItem = QJsonTreeItem(parent=parent, data=value)
 		rootItem.key = "root"
 
 		if isinstance(value, dict):
@@ -71,14 +72,14 @@ class QJsonTreeItem(object):
 			)
 
 			for key, value in items:
-				child = self.load(value, rootItem)
+				child = self.loadJsonToTree(value, rootItem)
 				child.key = key
 				child.type = type(value)
 				rootItem.appendChild(child)
 
 		elif isinstance(value, list):
 			for index, value in enumerate(value):
-				child = self.load(value, rootItem)
+				child = self.loadJsonToTree(value, rootItem)
 				child.key = JsonParsing().getNameFromDict(value)
 				child.type = type(value)
 				rootItem.appendChild(child)
@@ -89,12 +90,36 @@ class QJsonTreeItem(object):
 
 		return rootItem
 
+	def insertChildren(self, position, count, columns):
+		if position < 0 or position > len(self._children):
+			return False
 
-class QJsonModel(QAbstractItemModel):
+		for row in range(count):
+			data = [None for v in range(columns)]
+			item = QJsonTreeItem(data, self)
+			self._children.insert(position, item)
+
+		return True
+
+	def insertColumns(self, position, columns):
+		if position < 0 or position > len(self.itemData):
+			return False
+
+		for column in range(columns):
+			self.itemData.insert(position, None)
+
+		for child in self.childItems:
+			child.insertColumns(position, columns)
+
+		return True
+
+
+class QJsonTreeModel(QAbstractItemModel):
 	def __init__(self, parent=None):
-		super(QJsonModel, self).__init__(parent)
+		super(QJsonTreeModel, self).__init__(parent)
 
-		self._rootItem = QJsonTreeItem()
+		# self._rootItem = QJsonTreeItem()
+		self._rootItem = QJsonTreeItem(["Key", "Value"])
 		self._headers = ("Key", "Value")
 
 	def clear(self):
@@ -113,24 +138,12 @@ class QJsonModel(QAbstractItemModel):
 
 		self.beginResetModel()
 
-		self._rootItem = QJsonTreeItem.load(document)
+		self._rootItem = QJsonTreeItem.loadJsonToTree(document)
 		self._rootItem.type = type(document)
 
 		self.endResetModel()
 
 		return True
-
-	def json(self, root=None):
-		"""Serialise model as JSON-compliant dictionary
-		Arguments:
-			root (QJsonTreeItem, optional): Serialise from here
-				defaults to the the top-level item
-		Returns:
-			model as dict
-		"""
-
-		root = root or self._rootItem
-		return self.genJson(root)
 
 	def data(self, index, role):
 		if not index.isValid():
@@ -149,16 +162,19 @@ class QJsonModel(QAbstractItemModel):
 			if index.column() == 1:
 				return item.value
 
+	def getItem(self, index):
+		if not index.isValid():
+			item = index.internalPointer()
+			if item:
+				return item
+
+		return self._rootItem
+
 	def setData(self, index, value, role):
 		if role == Qt.EditRole:
 			if index.column() == 1:
 				item = index.internalPointer()
 				item.value = str(value)
-
-				# if __binding__ in ("PySide", "PyQt4"):
-				# 	self.dataChanged.emit(index, index)
-				# else:
-				# 	self.dataChanged.emit(index, index, [Qt.EditRole])
 				self.dataChanged.emit(index, index, [Qt.EditRole])
 
 				return True
@@ -214,36 +230,55 @@ class QJsonModel(QAbstractItemModel):
 		return 2
 
 	def flags(self, index):
-		flags = super(QJsonModel, self).flags(index)
+		flags = super(QJsonTreeModel, self).flags(index)
 
 		if index.column() == 1:
 			return Qt.ItemIsEditable | flags
 		else:
 			return flags
 
-	def genJson(self, item):
-		nchild = item.childCount()
+	def getJsonFromTree(self, root=None):
+		root = root or self._rootItem
+		return self.generateJsonFromTree(root)
+
+	def generateJsonFromTree(self, item):
+		numberOfChild = item.childCount()
 
 		if item.type is dict:
 			document = {}
-			for i in range(nchild):
-				ch = item.child(i)
-				document[ch.key] = self.genJson(ch)
+			for i in range(numberOfChild):
+				child = item.child(i)
+				document[child.key] = self.generateJsonFromTree(child)
 			return document
 
 		elif item.type == list:
 			document = []
-			for i in range(nchild):
-				ch = item.child(i)
-				document.append(self.genJson(ch))
+			for i in range(numberOfChild):
+				child = item.child(i)
+				document.append(self.generateJsonFromTree(child))
 			return document
 
 		else:
 			return item.value
 
+	def insertColumns(self, position, columns, parent, *args, **keargs):
+		self.beginInsertColumns(parent, position, position + columns - 1)
+		success = self.rootItem.insertColumns(position, columns)
+		self.endInsertColumns()
+
+		return success
+
+	def insertRows(self, position, rows, parent, *args, **kwargs):
+		parentItem = self.getItem(parent)
+		self.beginInsertRows(parent, position, position + rows - 1)
+		success = parentItem.insertChildren(position, rows, self.columnCount()) # self._rootItem.columnCount())
+		self.endInsertRows()
+
+		return success
+
 
 def main():
-	model = QJsonModel()
+	model = QJsonTreeModel()
 
 	with open("/home/user/jsontogui/pyqttest/config_apak.json") as f:
 		document = json.load(f)
