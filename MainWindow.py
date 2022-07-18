@@ -148,19 +148,18 @@ class MainWindow(QMainWindow):
 			act_del.triggered.connect(partial(self.treeItemDelete, item))
 		right_click_menu.exec_(self.sender().viewport().mapToGlobal(position))
 
-	# def treeAddItem(self, level, mdlIdx, parent):
 	def treeAddItem(self):
-		# temp_key = QStandardItem("{}".format("1".encode("utf-8")))
-		# temp_value1 = QStandardItem("{}".format("1".encode("utf-8")))
-		# # self.model.itemFromIndex(mdlIdx).appendRow([temp_key, temp_value1, temp_value2])
-		# self.model.insertRows([temp_key, temp_value1], 1, parent)
-		# self.treeView.expandAll()
-		index = self.treeView.selectionModel().selectedIndexes()[0]
-		self.treeView.setCurrentIndex(index)
-		self.model.insertRows(self.model.rowCount(index), 1, index)
-		self.model.setData(self.model.index(self.model.rowCount(index) -1, 0, index), "New item", Qt.EditRole)
-		# self.model.dataChanged().emit(index, index)
-		# self.treeView.expandAll()
+		index = self.treeView.selectionModel().currentIndex()
+		model = self.treeView.model()
+		parent = index.parent()
+
+		if not model.insertRow(index.row() + 1, parent):
+			return
+
+		for column in range(model.columnCount(parent)):
+			child = model.index(index.row() + 1, column, parent)
+			model.setData(child, "[No data]", Qt.EditRole)
+			model.flags(index)
 
 	def treeItemInsertUp(self):
 		pass

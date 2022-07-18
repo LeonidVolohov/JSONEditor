@@ -30,6 +30,9 @@ class QJsonTreeItem(object):
 	def childCount(self):
 		return len(self._children)
 
+	def columnCount(self):
+		return len(self.itemData)
+
 	def row(self):
 		return (
 			self._parent._children.index(self)
@@ -59,6 +62,19 @@ class QJsonTreeItem(object):
 	@type.setter
 	def type(self, typ):
 		self._type = typ
+
+	def data(self, column):
+		if column is 0:
+			return self.key
+		elif column is 1:
+			return self.value
+
+	def setData(self, column, value):
+		if column is 0:
+			self.key = value
+		if column is 1:
+			self.value = value
+
 
 	@classmethod
 	def loadJsonToTree(self, value, parent=None, sort=True):
@@ -149,18 +165,19 @@ class QJsonTreeModel(QAbstractItemModel):
 		if not index.isValid():
 			return None
 
+		if role != Qt.DisplayRole and role != Qt.EditRole:
+			return None
+
 		item = index.internalPointer()
 
-		if role == Qt.DisplayRole:
+		if role == Qt.DisplayRole or role == Qt.EditRole:
 			if index.column() == 0:
-				return item.key
+				return item.data(index.column())
 
 			if index.column() == 1:
 				return item.value
+		return None
 
-		elif role == Qt.EditRole:
-			if index.column() == 1:
-				return item.value
 
 	def getItem(self, index):
 		if not index.isValid():
@@ -172,12 +189,10 @@ class QJsonTreeModel(QAbstractItemModel):
 
 	def setData(self, index, value, role):
 		if role == Qt.EditRole:
-			if index.column() == 1:
-				item = index.internalPointer()
-				item.value = str(value)
-				self.dataChanged.emit(index, index, [Qt.EditRole])
-
-				return True
+			item = index.internalPointer()
+			item.setData(index.column(), value)
+			self.dataChanged.emit(index, index, [Qt.EditRole])
+			return True
 
 		return False
 
@@ -231,8 +246,7 @@ class QJsonTreeModel(QAbstractItemModel):
 
 	def flags(self, index):
 		flags = super(QJsonTreeModel, self).flags(index)
-
-		if index.column() == 1:
+		if index.column() == 0 or index.column() == 1:
 			return Qt.ItemIsEditable | flags
 		else:
 			return flags
@@ -271,7 +285,7 @@ class QJsonTreeModel(QAbstractItemModel):
 	def insertRows(self, position, rows, parent, *args, **kwargs):
 		parentItem = self.getItem(parent)
 		self.beginInsertRows(parent, position, position + rows - 1)
-		success = parentItem.insertChildren(position, rows, self.columnCount()) # self._rootItem.columnCount())
+		success = parentItem.insertChildren(position, rows, self._rootItem.columnCount())
 		self.endInsertRows()
 
 		return success
