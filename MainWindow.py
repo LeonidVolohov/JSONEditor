@@ -137,30 +137,41 @@ class MainWindow(QMainWindow):
 		else:
 			level = 0
 		right_click_menu = QMenu()
-		act_add = right_click_menu.addAction(self.tr("Add Child Item"))
-		# act_add.triggered.connect(partial(self.treeAddItem, level, mdlIdx))
+		act_add = right_click_menu.addAction(self.tr("Add Item"))
 		act_add.triggered.connect(partial(self.treeAddItem))
 
 		# if item.parent() != None:
 		if self.model.parent(mdlIdx) != None:
+			insert_child = right_click_menu.addAction(self.tr("Insert Child"))
+			insert_child.triggered.connect(partial(self.treeAddItemChild))
+
 			insert_up = right_click_menu.addAction(self.tr("Insert Item Above"))
-			insert_up.triggered.connect(partial(self.treeItemInsertUp, level, mdlIdx))
+			insert_up.triggered.connect(partial(self.treeItemInsertUp))
+
 			insert_down = right_click_menu.addAction(self.tr("Insert Item Below"))
 			insert_down.triggered.connect(partial(self.treeItemInsertDown, level, mdlIdx))
+
 			act_del = right_click_menu.addAction(self.tr("Delete Item"))
-			act_del.triggered.connect(partial(self.treeItemDelete, item))
+			act_del.triggered.connect(partial(self.treeItemDelete))
 		right_click_menu.exec_(self.sender().viewport().mapToGlobal(position))
 
 	def treeAddItem(self):
 		index = self.treeView.selectionModel().currentIndex()
 		parent = index.parent()
 
-		if not self.model.insertRow(index.row() + 1, parent):
-			return
+		if self.model.data(parent, Qt.EditRole) == None:
+			if not self.model.insertRow(index.row() + 1, parent):
+				return
 
-		for column in range(self.model.columnCount(parent)):
-			child = self.model.index(index.row() + 1, column, parent)
-			self.model.setData(child, "[No data]", Qt.EditRole)
+			for column in range(self.model.columnCount(parent)):
+				child = self.model.index(index.row() + 1, column, parent)
+				self.model.setData(child, "[No data]", Qt.EditRole)
+		else:
+			# @TODO: add some toast message
+			print("Works only for None parent")
+
+	def treeAddItemChild(self):
+		pass
 
 	def treeItemInsertUp(self):
 		pass
@@ -169,7 +180,11 @@ class MainWindow(QMainWindow):
 		pass
 
 	def treeItemDelete(self):
-		pass
+		# index = self.treeView.selectionModel().currentIndex()
+		index = self.treeView.selectionModel().selectedIndexes()[0]
+		parent = index.parent()
+		print(self.model.data(index, Qt.EditRole), " --- ", self.model.data(parent, Qt.EditRole), " --- ", index.row(), " --- ", parent)
+		self.model.removeRows(position=index.row(), rows=1, parent=parent)
 
 	def center(self):
 		frameGeometry = self.frameGeometry()

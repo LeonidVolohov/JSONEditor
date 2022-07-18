@@ -106,11 +106,11 @@ class QJsonTreeItem(object):
 
 		return rootItem
 
-	def insertChildren(self, position, count, columns):
+	def insertChildren(self, position, rows, columns):
 		if position < 0 or position > len(self._children):
 			return False
 
-		for row in range(count):
+		for row in range(rows):
 			data = [None for v in range(columns)]
 			item = QJsonTreeItem(data, self)
 			self._children.insert(position, item)
@@ -122,10 +122,20 @@ class QJsonTreeItem(object):
 			return False
 
 		for column in range(columns):
-			self.itemData.insert(position, None)
+			self.itemData[position] = "[No Data]"
 
-		for child in self.childItems:
+		for child in self._children:
 			child.insertColumns(position, columns)
+
+		return True
+
+
+	def removeChildren(self, position, rows):
+		if position < 0 or position + rows > len(self._children):
+			return False
+
+		for row in range(rows):
+			self._children.pop(position)
 
 		return True
 
@@ -203,6 +213,19 @@ class QJsonTreeModel(QAbstractItemModel):
 		if orientation == Qt.Horizontal:
 			return self._headers[section]
 
+	def setHeaderData(self, section, orientation, value, role: None):
+		if role != Qt.EditRole or orientation != Qt.Horizontal:
+			return False
+
+		result = self._rootItem.setData(section, value)
+
+		if result:
+			# todo: Check if emit headerDataChanged signal is correct
+			# emit headerDataChanged(orientation, section, section)
+			self.headerDataChanged(orientation, section, section)
+
+		return result
+
 	def index(self, row, column, parent=QModelIndex()):
 		if not self.hasIndex(row, column, parent):
 			return QModelIndex()
@@ -277,7 +300,7 @@ class QJsonTreeModel(QAbstractItemModel):
 
 	def insertColumns(self, position, columns, parent, *args, **keargs):
 		self.beginInsertColumns(parent, position, position + columns - 1)
-		success = self.rootItem.insertColumns(position, columns)
+		success = self._rootItem.insertColumns(position, columns)
 		self.endInsertColumns()
 
 		return success
@@ -287,6 +310,16 @@ class QJsonTreeModel(QAbstractItemModel):
 		self.beginInsertRows(parent, position, position + rows - 1)
 		success = parentItem.insertChildren(position, rows, self._rootItem.columnCount())
 		self.endInsertRows()
+
+		return success
+
+	# @TODO: not working with not parent node
+	def removeRows(self, position, rows, parent):
+		parentItem = self.getItem(parent)
+
+		self.beginRemoveRows(parent, position, position + rows - 1)
+		success = parentItem.removeChildren(position, rows)
+		self.endRemoveRows()
 
 		return success
 
