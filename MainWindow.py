@@ -77,6 +77,9 @@ class MainWindow(QMainWindow):
 		self.treeView.setContextMenuPolicy(Qt.CustomContextMenu)
 		self.treeView.customContextMenuRequested.connect(self.openRightClickMenu)
 
+		self.treeView.setAlternatingRowColors(False)
+		self.treeView.setAnimated(False)
+
 		self.model.clear()
 		self.model.load(self.jsonText)
 
@@ -150,16 +153,14 @@ class MainWindow(QMainWindow):
 
 	def treeAddItem(self):
 		index = self.treeView.selectionModel().currentIndex()
-		model = self.treeView.model()
 		parent = index.parent()
 
-		if not model.insertRow(index.row() + 1, parent):
+		if not self.model.insertRow(index.row() + 1, parent):
 			return
 
-		for column in range(model.columnCount(parent)):
-			child = model.index(index.row() + 1, column, parent)
-			model.setData(child, "[No data]", Qt.EditRole)
-			model.flags(index)
+		for column in range(self.model.columnCount(parent)):
+			child = self.model.index(index.row() + 1, column, parent)
+			self.model.setData(child, "[No data]", Qt.EditRole)
 
 	def treeItemInsertUp(self):
 		pass
