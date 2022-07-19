@@ -180,11 +180,10 @@ class MainWindow(QMainWindow):
 		pass
 
 	def treeItemDelete(self):
-		# index = self.treeView.selectionModel().currentIndex()
-		index = self.treeView.selectionModel().selectedIndexes()[0]
+		index = self.treeView.selectionModel().currentIndex()
 		parent = index.parent()
-		print(self.model.data(index, Qt.EditRole), " --- ", self.model.data(parent, Qt.EditRole), " --- ", index.row(), " --- ", parent)
-		self.model.removeRows(position=index.row(), rows=1, parent=parent)
+
+		self.model.removeRows(position=index.row(), rows=1, parent=parent)	
 
 	def center(self):
 		frameGeometry = self.frameGeometry()
