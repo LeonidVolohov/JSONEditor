@@ -176,7 +176,7 @@ class QJsonTreeModel(QAbstractItemModel):
 		return None
 
 	def getItem(self, index):
-		if not index.isValid():
+		if index.isValid():
 			item = index.internalPointer()
 			if item:
 				return item
@@ -286,6 +286,7 @@ class QJsonTreeModel(QAbstractItemModel):
 
 	def insertRows(self, position, rows, parent, *args, **kwargs):
 		parentItem = self.getItem(parent)
+		
 		self.beginInsertRows(parent, position, position + rows - 1)
 		success = parentItem.insertChildren(position, rows, self._rootItem.columnCount())
 		self.endInsertRows()
@@ -293,10 +294,7 @@ class QJsonTreeModel(QAbstractItemModel):
 		return success
 
 	def removeRows(self, position, rows, parent):
-		if(self.data(parent, Qt.EditRole) == None):
-			parentItem = self.getItem(parent)
-		else:
-			parentItem = parent.internalPointer()
+		parentItem = self.getItem(parent)
 
 		self.beginRemoveRows(parent, position, position + rows - 1)
 		success = parentItem.removeChildren(position, rows)
