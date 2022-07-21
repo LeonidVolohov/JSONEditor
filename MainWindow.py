@@ -115,70 +115,74 @@ class MainWindow(QMainWindow):
 		try:
 			JsonParsing().writeJsonToFile(self.jsonFileName, self.model.getJsonFromTree())
 		except Exception as exception:
-			QMessageBox.about(self, "Exception in menuBarActionSave() function", str(exception))	
+			QMessageBox.about(self, "Exception", "Exception in menuBarActionSave() function: " + str(exception))	
 			return
 
 	def menuBarActionRefresh(self):
 		try:
 			self.model.load(JsonParsing().getJsonFromFile(Utils().getAbsFilePath(self.jsonFileName)))
 		except Exception as exception:
-			QMessageBox.about(self, "Exception in menuBarActionRefresh() function", str(exception))	
+			QMessageBox.about(self, "Exception", "Exception in menuBarActionRefresh() function: " + str(exception))	
 			return
 
 	def menuBarActionClose(self):
 		sys.exit()
 
 	def openRightClickMenu(self, position):
-		index = self.treeView.selectionModel().currentIndex()
-		parent = index.parent()
+		try:
+			index = self.treeView.selectionModel().currentIndex()
+			parent = index.parent()
 
-		if not index.isValid():
+			if not index.isValid():
+				return
+
+			rightClickMenu = QMenu()			
+			actionAddItem = rightClickMenu.addAction(self.tr("Add Item"))
+			actionAddItem.triggered.connect(partial(self.treeAddItem))
+
+			actionInsertChild = rightClickMenu.addAction(self.tr("Insert Child"))
+			actionInsertChild.triggered.connect(partial(self.treeAddItemChild))
+
+			actionDeleteItem = rightClickMenu.addAction(self.tr("Delete Item"))
+			actionDeleteItem.triggered.connect(partial(self.treeItemDelete))
+
+			fileName = self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole)
+			actionTreeItemOpenJsonFile = rightClickMenu.addAction(self.tr("Open File"))
+			actionTreeItemOpenJsonFile.triggered.connect(partial(self.treeItemOpenJsonFile, fileName))
+			actionTreeItemOpenJsonFile.setVisible(False)
+
+			if ((self.model.data(parent, Qt.EditRole) == None) and 
+				(self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) == "")):
+				actionAddItem.setVisible(True)
+				actionInsertChild.setVisible(True)
+				actionDeleteItem.setVisible(True)		
+			elif self.model.data(parent, Qt.EditRole) == None:
+				actionAddItem.setVisible(True)
+				actionInsertChild.setVisible(False)
+				actionDeleteItem.setVisible(True)
+			elif ((self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) != "") and 
+					(Utils().fileNameMatch(fileName))):
+				actionAddItem.setVisible(False)
+				actionInsertChild.setVisible(False)
+				actionTreeItemOpenJsonFile.setVisible(True)
+				actionDeleteItem.setVisible(True)
+			elif (self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) != ""):
+				actionAddItem.setVisible(False)
+				actionInsertChild.setVisible(False)
+				actionDeleteItem.setVisible(True)
+			elif (self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) == ""):
+				actionAddItem.setVisible(False)
+				actionInsertChild.setVisible(True)
+				actionDeleteItem.setVisible(True)
+			else:
+				actionAddItem.setVisible(False)
+				actionInsertChild.setVisible(False)
+				actionDeleteItem.setVisible(True)
+
+			rightClickMenu.exec_(self.sender().viewport().mapToGlobal(position))
+		except Exception as exception:
+			QMessageBox.about(self, "Exception", "Exception in openRightClickMenu() function: " + str(exception))	
 			return
-
-		rightClickMenu = QMenu()			
-		actionAddItem = rightClickMenu.addAction(self.tr("Add Item"))
-		actionAddItem.triggered.connect(partial(self.treeAddItem))
-
-		actionInsertChild = rightClickMenu.addAction(self.tr("Insert Child"))
-		actionInsertChild.triggered.connect(partial(self.treeAddItemChild))
-
-		actionDeleteItem = rightClickMenu.addAction(self.tr("Delete Item"))
-		actionDeleteItem.triggered.connect(partial(self.treeItemDelete))
-
-		fileName = self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole)
-		actionTreeItemOpenJsonFile = rightClickMenu.addAction(self.tr("Open File"))
-		actionTreeItemOpenJsonFile.triggered.connect(partial(self.treeItemOpenJsonFile, fileName))
-		actionTreeItemOpenJsonFile.setVisible(False)
-
-		if ((self.model.data(parent, Qt.EditRole) == None) and 
-			(self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) == "")):
-			actionAddItem.setVisible(True)
-			actionInsertChild.setVisible(True)
-			actionDeleteItem.setVisible(True)		
-		elif self.model.data(parent, Qt.EditRole) == None:
-			actionAddItem.setVisible(True)
-			actionInsertChild.setVisible(False)
-			actionDeleteItem.setVisible(True)
-		elif ((self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) != "") and 
-				(Utils().fileNameMatch(fileName))):
-			actionAddItem.setVisible(False)
-			actionInsertChild.setVisible(False)
-			actionTreeItemOpenJsonFile.setVisible(True)
-			actionDeleteItem.setVisible(True)
-		elif (self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) != ""):
-			actionAddItem.setVisible(False)
-			actionInsertChild.setVisible(False)
-			actionDeleteItem.setVisible(True)
-		elif (self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) == ""):
-			actionAddItem.setVisible(False)
-			actionInsertChild.setVisible(True)
-			actionDeleteItem.setVisible(True)
-		else:
-			actionAddItem.setVisible(False)
-			actionInsertChild.setVisible(False)
-			actionDeleteItem.setVisible(True)
-
-		rightClickMenu.exec_(self.sender().viewport().mapToGlobal(position))
 
 	def treeAddItem(self):
 		try:
@@ -196,7 +200,7 @@ class MainWindow(QMainWindow):
 				QMessageBox.about(self, "Error", 
 					"You can only use this function to root QTreeView Node")
 		except Exception as exception:
-			QMessageBox.about(self, "Exception in treeAddItem() function", str(exception))	
+			QMessageBox.about(self, "Exception", "Exception in treeAddItem() function: " + str(exception))	
 			return
 
 	def treeAddItemChild(self):
@@ -216,7 +220,7 @@ class MainWindow(QMainWindow):
 					"Can`t create subnode to str() value. Create list() or dict() directly from .json file")
 				return
 		except Exception as exception:
-			QMessageBox.about(self, "Exception in treeAddItemChild() function", str(exception))	
+			QMessageBox.about(self, "Exception", "Exception in treeAddItemChild() function: " + str(exception))	
 			return
 
 	def treeItemDelete(self):
@@ -226,14 +230,14 @@ class MainWindow(QMainWindow):
 
 			self.model.removeRows(position=index.row(), rows=1, parent=parent)	
 		except Exception as exception:
-			QMessageBox.about(self, "Exception in treeItemDelete() function", str(exception))	
+			QMessageBox.about(self, "Exception", "Exception in treeItemDelete() function: " + str(exception))	
 			return
 
 	def treeItemOpenJsonFile(self, fileName):
 		try:			
 			self.newWindow = MainWindow(jsonFileName = Utils().getAbsFilePath(fileName), showMaximized = False)
 		except Exception as exception:
-			QMessageBox.about(self, "Exception in treeItemOpenJsonFile() function", str(exception))	
+			QMessageBox.about(self, "Exception", "Exception in treeItemOpenJsonFile() function: " + str(exception))	
 			return	
 
 	def center(self):
