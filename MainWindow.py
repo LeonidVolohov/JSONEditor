@@ -156,22 +156,45 @@ class MainWindow(QMainWindow):
 		right_click_menu.exec_(self.sender().viewport().mapToGlobal(position))
 
 	def treeAddItem(self):
-		index = self.treeView.selectionModel().currentIndex()
-		parent = index.parent()
+		try:
+			index = self.treeView.selectionModel().currentIndex()
+			parent = index.parent()
 
-		if self.model.data(parent, Qt.EditRole) == None:
-			if not self.model.insertRow(index.row() + 1, parent):
-				return
+			if self.model.data(parent, Qt.EditRole) == None:
+				if not self.model.insertRow(index.row() + 1, parent):
+					return
 
-			for column in range(self.model.columnCount(parent)):
-				child = self.model.index(index.row() + 1, column, parent)
-				self.model.setData(child, "[No data]", Qt.EditRole)
-		else:
-			# @TODO: add some toast message
-			print("Works only for None parent")
+				for column in range(self.model.columnCount(parent)):
+					child = self.model.index(index.row() + 1, column, parent)
+					self.model.setData(child, "[No data]", Qt.EditRole)
+			else:
+				QMessageBox.about(self, "Error", 
+					"You can only use this function to root QTreeView Node")
+		except Exception as exception:
+			print("Exception in treeAddItem() function: ", str(exception))
+			QMessageBox.about(self, "Error", str(exception))	
+			return
 
 	def treeAddItemChild(self):
-		pass
+		try:
+			index = self.treeView.selectionModel().currentIndex()
+			parent = index
+
+			if(self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) == ""):
+				if not self.model.insertRow(0, parent):
+					return
+
+				for column in range(self.model.columnCount(parent)):
+					child = self.model.index(0, column, parent)
+					self.model.setData(child, "[No data]", Qt.EditRole)
+			else:
+				QMessageBox.about(self, "Error", 
+					"Can`t create subnode to str() value. Create list() or dict() directly from .json file")
+				return
+		except Exception as exception:
+			print("Exception in treeAddItemChild() function: ", str(exception))
+			QMessageBox.about(self, "Error", str(exception))	
+			return
 
 	def treeItemInsertUp(self):
 		pass
