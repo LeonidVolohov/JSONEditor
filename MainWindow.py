@@ -121,33 +121,32 @@ class MainWindow(QMainWindow):
 		sys.exit()
 
 	def openRightClickMenu(self, position):
-		indexes = self.sender().selectedIndexes()
-		mdlIdx = self.treeView.indexAt(position)
-		parent = self.model.parent(mdlIdx)	
-		if not mdlIdx.isValid():
+		index = self.treeView.selectionModel().currentIndex()
+		parent = index.parent()
+
+		if not index.isValid():
 			return
-		# item = self.model.itemFromIndex(mdlIdx)
-		item = self.model.data(mdlIdx, Qt.EditRole)
-		if len(indexes) > 0:
-			level = 0
-			index = indexes[0]
-			while index.parent().isValid():
-				index = index.parent()
-				level += 1
+
+		rightClickMenu = QMenu()			
+		actionAddItem = rightClickMenu.addAction(self.tr("Add Item"))
+		actionAddItem.triggered.connect(partial(self.treeAddItem))
+
+		actionInsertChild = rightClickMenu.addAction(self.tr("Insert Child"))
+		actionInsertChild.triggered.connect(partial(self.treeAddItemChild))
+
+		actionDeleteItem = rightClickMenu.addAction(self.tr("Delete Item"))
+		actionDeleteItem.triggered.connect(partial(self.treeItemDelete))
+
+		if self.model.data(parent, Qt.EditRole) == None:
+			actionAddItem.setVisible(True)
+			actionInsertChild.setVisible(True)
+			actionDeleteItem.setVisible(True)
 		else:
-			level = 0
-		right_click_menu = QMenu()
-		act_add = right_click_menu.addAction(self.tr("Add Item"))
-		act_add.triggered.connect(partial(self.treeAddItem))
+			actionAddItem.setVisible(False)
+			actionInsertChild.setVisible(True)
+			actionDeleteItem.setVisible(True)
 
-		# if item.parent() != None:
-		if self.model.parent(mdlIdx) != None:
-			insert_child = right_click_menu.addAction(self.tr("Insert Child"))
-			insert_child.triggered.connect(partial(self.treeAddItemChild))
-
-			act_del = right_click_menu.addAction(self.tr("Delete Item"))
-			act_del.triggered.connect(partial(self.treeItemDelete))
-		right_click_menu.exec_(self.sender().viewport().mapToGlobal(position))
+		rightClickMenu.exec_(self.sender().viewport().mapToGlobal(position))
 
 	def treeAddItem(self):
 		try:
@@ -165,8 +164,7 @@ class MainWindow(QMainWindow):
 				QMessageBox.about(self, "Error", 
 					"You can only use this function to root QTreeView Node")
 		except Exception as exception:
-			print("Exception in treeAddItem() function: ", str(exception))
-			QMessageBox.about(self, "Error", str(exception))	
+			QMessageBox.about(self, "Exception in treeAddItem() function", str(exception))	
 			return
 
 	def treeAddItemChild(self):
@@ -186,8 +184,7 @@ class MainWindow(QMainWindow):
 					"Can`t create subnode to str() value. Create list() or dict() directly from .json file")
 				return
 		except Exception as exception:
-			print("Exception in treeAddItemChild() function: ", str(exception))
-			QMessageBox.about(self, "Error", str(exception))	
+			QMessageBox.about(self, "Exception in treeAddItemChild() function", str(exception))	
 			return
 
 	def treeItemDelete(self):
