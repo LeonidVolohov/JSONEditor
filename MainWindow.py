@@ -188,10 +188,14 @@ class MainWindow(QMainWindow):
 			return
 
 	def treeItemDelete(self):
-		index = self.treeView.selectionModel().currentIndex()
-		parent = index.parent()
+		try:			
+			index = self.treeView.selectionModel().currentIndex()
+			parent = index.parent()
 
-		self.model.removeRows(position=index.row(), rows=1, parent=parent)	
+			self.model.removeRows(position=index.row(), rows=1, parent=parent)	
+		except Exception as exception:
+			QMessageBox.about(self, "Exception in treeItemDelete() function", str(exception))	
+			return
 
 	def center(self):
 		frameGeometry = self.frameGeometry()
