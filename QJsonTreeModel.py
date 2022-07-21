@@ -75,7 +75,6 @@ class QJsonTreeItem(object):
 		if column is 1:
 			self.value = value
 
-
 	@classmethod
 	def loadJsonToTree(self, value, parent=None, sort=True):
 		rootItem = QJsonTreeItem(parent=parent, data=value)
@@ -189,7 +188,16 @@ class QJsonTreeModel(QAbstractItemModel):
 			item.setData(index.column(), value)
 			self.dataChanged.emit(index, index, [Qt.EditRole])
 			return True
-
+		if role == Qt.DisplayRole:
+			item = index.internalPointer()
+			item.setData(index.column(), dict())
+			self.dataChanged.emit(index, index, [Qt.EditRole])
+			return True
+		if role == Qt.ToolTipRole:
+			item = index.internalPointer()
+			item.setData(index.column(), list())
+			self.dataChanged.emit(index, index, [Qt.EditRole])
+			return True
 		return False
 
 	def headerData(self, section, orientation, role):
