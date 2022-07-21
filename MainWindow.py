@@ -140,44 +140,62 @@ class MainWindow(QMainWindow):
 			actionAddItem = rightClickMenu.addAction(self.tr("Add Item"))
 			actionAddItem.triggered.connect(partial(self.treeAddItem))
 
+			actionAddDictionary = rightClickMenu.addAction(self.tr("Add dict()"))
+			actionAddDictionary.triggered.connect(partial(self.treeAddDictionary))
+
+			actionAddList = rightClickMenu.addAction(self.tr("Add list()"))
+			actionAddList.triggered.connect(partial(self.treeAddList))
+
+			rightClickMenu.addSeparator()
+
 			actionInsertChild = rightClickMenu.addAction(self.tr("Insert Child"))
 			actionInsertChild.triggered.connect(partial(self.treeAddItemChild))
 
+			actionInsertChildDict = rightClickMenu.addAction(self.tr("Insert Child dict()"))
+			actionInsertChildDict.triggered.connect(partial(self.treeAddItemChildDict))
+
+			actionInsertChildList = rightClickMenu.addAction(self.tr("Insert Child list()"))
+			actionInsertChildList.triggered.connect(partial(self.treeAddItemChildList))
+
+			rightClickMenu.addSeparator()
+
 			actionDeleteItem = rightClickMenu.addAction(self.tr("Delete Item"))
 			actionDeleteItem.triggered.connect(partial(self.treeItemDelete))
+
+			rightClickMenu.addSeparator()			
 
 			fileName = self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole)
 			actionTreeItemOpenJsonFile = rightClickMenu.addAction(self.tr("Open File"))
 			actionTreeItemOpenJsonFile.triggered.connect(partial(self.treeItemOpenJsonFile, fileName))
 			actionTreeItemOpenJsonFile.setVisible(False)
 
-			if ((self.model.data(parent, Qt.EditRole) == None) and 
-				(self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) == "")):
-				actionAddItem.setVisible(True)
-				actionInsertChild.setVisible(True)
-				actionDeleteItem.setVisible(True)		
-			elif self.model.data(parent, Qt.EditRole) == None:
-				actionAddItem.setVisible(True)
-				actionInsertChild.setVisible(False)
-				actionDeleteItem.setVisible(True)
-			elif ((self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) != "") and 
-					(Utils().fileNameMatch(fileName))):
-				actionAddItem.setVisible(False)
-				actionInsertChild.setVisible(False)
-				actionTreeItemOpenJsonFile.setVisible(True)
-				actionDeleteItem.setVisible(True)
-			elif (self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) != ""):
-				actionAddItem.setVisible(False)
-				actionInsertChild.setVisible(False)
-				actionDeleteItem.setVisible(True)
-			elif (self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) == ""):
-				actionAddItem.setVisible(False)
-				actionInsertChild.setVisible(True)
-				actionDeleteItem.setVisible(True)
-			else:
-				actionAddItem.setVisible(False)
-				actionInsertChild.setVisible(False)
-				actionDeleteItem.setVisible(True)
+			# if ((self.model.data(parent, Qt.EditRole) == None) and 
+			# 	(self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) == "")):
+			# 	actionAddItem.setVisible(True)
+			# 	actionInsertChild.setVisible(True)
+			# 	actionDeleteItem.setVisible(True)		
+			# elif self.model.data(parent, Qt.EditRole) == None:
+			# 	actionAddItem.setVisible(True)
+			# 	actionInsertChild.setVisible(False)
+			# 	actionDeleteItem.setVisible(True)
+			# elif ((self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) != "") and 
+			# 		(Utils().fileNameMatch(fileName))):
+			# 	actionAddItem.setVisible(False)
+			# 	actionInsertChild.setVisible(False)
+			# 	actionTreeItemOpenJsonFile.setVisible(True)
+			# 	actionDeleteItem.setVisible(True)
+			# elif (self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) != ""):
+			# 	actionAddItem.setVisible(False)
+			# 	actionInsertChild.setVisible(False)
+			# 	actionDeleteItem.setVisible(True)
+			# elif (self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) == ""):
+			# 	actionAddItem.setVisible(False)
+			# 	actionInsertChild.setVisible(True)
+			# 	actionDeleteItem.setVisible(True)
+			# else:
+			# 	actionAddItem.setVisible(False)
+			# 	actionInsertChild.setVisible(False)
+			# 	actionDeleteItem.setVisible(True)
 
 			rightClickMenu.exec_(self.sender().viewport().mapToGlobal(position))
 		except Exception as exception:
@@ -203,22 +221,97 @@ class MainWindow(QMainWindow):
 			QMessageBox.about(self, "Exception", "Exception in treeAddItem() function: " + str(exception))	
 			return
 
+	def treeAddDictionary(self):
+		try:
+			index = self.treeView.selectionModel().currentIndex()
+			parent = index.parent()
+
+			if self.model.data(parent, Qt.EditRole) == None:
+				if not self.model.insertRow(index.row() + 1, parent):
+					return
+
+				for column in range(self.model.columnCount(parent)):
+					child = self.model.index(index.row() + 1, column, parent)
+					self.model.setData(child, "[No data]", Qt.DisplayRole)
+			else:
+				QMessageBox.about(self, "Error", 
+					"You can only use this function to root QTreeView Node")
+		except Exception as exception:
+			QMessageBox.about(self, "Exception", "Exception in treeAddItem() function: " + str(exception))	
+			return
+
+	def treeAddList(self):
+		try:
+			index = self.treeView.selectionModel().currentIndex()
+			parent = index.parent()
+
+			if self.model.data(parent, Qt.EditRole) == None:
+				if not self.model.insertRow(index.row() + 1, parent):
+					return
+
+				for column in range(self.model.columnCount(parent)):
+					child = self.model.index(index.row() + 1, column, parent)
+					self.model.setData(child, "[No data]", Qt.ToolTipRole)
+			else:
+				QMessageBox.about(self, "Error", 
+					"You can only use this function to root QTreeView Node")
+		except Exception as exception:
+			QMessageBox.about(self, "Exception", "Exception in treeAddItem() function: " + str(exception))	
+			return
+
 	def treeAddItemChild(self):
 		try:
 			index = self.treeView.selectionModel().currentIndex()
 			parent = index
 
-			if(self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) == ""):
-				if not self.model.insertRow(0, parent):
-					return
-
-				for column in range(self.model.columnCount(parent)):
-					child = self.model.index(0, column, parent)
-					self.model.setData(child, "[No data]", Qt.EditRole)
-			else:
-				QMessageBox.about(self, "Error", 
-					"Can`t create subnode to str() value. Create list() or dict() directly from .json file")
+			if not self.model.insertRow(0, parent):
 				return
+
+			for column in range(self.model.columnCount(parent)):
+				child = self.model.index(0, column, parent)
+				self.model.setData(child, "[No data]", Qt.EditRole)
+
+			# if(self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) == ""):
+			# 	if not self.model.insertRow(0, parent):
+			# 		return
+
+			# 	for column in range(self.model.columnCount(parent)):
+			# 		child = self.model.index(0, column, parent)
+			# 		self.model.setData(child, "[No data]", Qt.EditRole)
+			# else:
+			# 	QMessageBox.about(self, "Error", 
+			# 		"Can`t create subnode to str() value. Create list() or dict() directly from .json file")
+			# 	return
+		except Exception as exception:
+			QMessageBox.about(self, "Exception", "Exception in treeAddItemChild() function: " + str(exception))	
+			return
+
+	def treeAddItemChildDict(self):
+		try:
+			index = self.treeView.selectionModel().currentIndex()
+			parent = index
+
+			if not self.model.insertRow(0, parent):
+				return
+
+			for column in range(self.model.columnCount(parent)):
+				child = self.model.index(0, column, parent)
+				self.model.setData(child, "[No data]", Qt.DisplayRole)
+		except Exception as exception:
+			QMessageBox.about(self, "Exception", "Exception in treeAddItemChild() function: " + str(exception))	
+			return
+
+	def treeAddItemChildList(self):
+		try:
+			index = self.treeView.selectionModel().currentIndex()
+			parent = index
+
+			if not self.model.insertRow(0, parent):
+				return
+
+			for column in range(self.model.columnCount(parent)):
+				child = self.model.index(0, column, parent)
+				self.model.setData(child, "[No data]", Qt.ToolTipRole)
 		except Exception as exception:
 			QMessageBox.about(self, "Exception", "Exception in treeAddItemChild() function: " + str(exception))	
 			return
