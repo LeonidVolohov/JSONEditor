@@ -145,12 +145,6 @@ class MainWindow(QMainWindow):
 			insert_child = right_click_menu.addAction(self.tr("Insert Child"))
 			insert_child.triggered.connect(partial(self.treeAddItemChild))
 
-			insert_up = right_click_menu.addAction(self.tr("Insert Item Above"))
-			insert_up.triggered.connect(partial(self.treeItemInsertUp))
-
-			insert_down = right_click_menu.addAction(self.tr("Insert Item Below"))
-			insert_down.triggered.connect(partial(self.treeItemInsertDown, level, mdlIdx))
-
 			act_del = right_click_menu.addAction(self.tr("Delete Item"))
 			act_del.triggered.connect(partial(self.treeItemDelete))
 		right_click_menu.exec_(self.sender().viewport().mapToGlobal(position))
@@ -195,12 +189,6 @@ class MainWindow(QMainWindow):
 			print("Exception in treeAddItemChild() function: ", str(exception))
 			QMessageBox.about(self, "Error", str(exception))	
 			return
-
-	def treeItemInsertUp(self):
-		pass
-
-	def treeItemInsertDown(self):
-		pass
 
 	def treeItemDelete(self):
 		index = self.treeView.selectionModel().currentIndex()
