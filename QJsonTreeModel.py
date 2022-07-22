@@ -209,19 +209,6 @@ class QJsonTreeModel(QAbstractItemModel):
 		if orientation == Qt.Horizontal:
 			return self._headers[section]
 
-	def setHeaderData(self, section, orientation, value, role: None):
-		if role != Qt.EditRole or orientation != Qt.Horizontal:
-			return False
-
-		result = self._rootItem.setData(section, value)
-
-		if result:
-			# todo: Check if emit headerDataChanged signal is correct
-			# emit headerDataChanged(orientation, section, section)
-			self.headerDataChanged(orientation, section, section)
-
-		return result
-
 	def index(self, row, column, parent=QModelIndex()):
 		if not self.hasIndex(row, column, parent):
 			return QModelIndex()
@@ -283,14 +270,12 @@ class QJsonTreeModel(QAbstractItemModel):
 				child = item.child(i)
 				document[child.key] = self.generateJsonFromTree(child)
 			return document
-
 		elif item.type == list:
 			document = []
 			for i in range(numberOfChild):
 				child = item.child(i)
 				document.append(self.generateJsonFromTree(child))
 			return document
-
 		else:
 			return item.value
 
@@ -325,7 +310,6 @@ def main():
 		json.dumps(model.json(), sort_keys=True) ==
 		json.dumps(document, sort_keys=True)
 	)
-
 
 if __name__ == '__main__':
 	main()

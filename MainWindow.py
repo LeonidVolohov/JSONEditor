@@ -314,7 +314,6 @@ def main():
 	application = QApplication(sys.argv)
 	mainWindow = MainWindow({"1": "1", "3": "3", "2": "2"}, showMaximized = False)
 	sys.exit(application.exec_())
-	
 
 if __name__ == '__main__':
 	main()

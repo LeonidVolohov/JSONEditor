@@ -19,7 +19,7 @@ class JsonParsing():
 			openedFile.write(json.dumps(jsonFile, indent=2, ensure_ascii=False, sort_keys=True))
 	
 	def getNameFromDict(self, data):
-		outputString = "Object"
+		outputString = "__Object__"
 
 		if isinstance(data, dict):
 			# Add property name at the beginning
