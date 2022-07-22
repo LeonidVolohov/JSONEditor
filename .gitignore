@@ -129,7 +129,7 @@ dmypy.json
 .pyre/
 
 # Json 
-/jsons
+/signals
 
 # Temp file
 /temp.txt
