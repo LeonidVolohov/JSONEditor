@@ -169,33 +169,57 @@ class MainWindow(QMainWindow):
 			actionTreeItemOpenJsonFile.triggered.connect(partial(self.treeItemOpenJsonFile, fileName))
 			actionTreeItemOpenJsonFile.setVisible(False)
 
-			# if ((self.model.data(parent, Qt.EditRole) == None) and 
-			# 	(self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) == "")):
-			# 	actionAddItem.setVisible(True)
-			# 	actionInsertChild.setVisible(True)
-			# 	actionDeleteItem.setVisible(True)		
-			# elif self.model.data(parent, Qt.EditRole) == None:
-			# 	actionAddItem.setVisible(True)
-			# 	actionInsertChild.setVisible(False)
-			# 	actionDeleteItem.setVisible(True)
-			# elif ((self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) != "") and 
-			# 		(Utils().fileNameMatch(fileName))):
-			# 	actionAddItem.setVisible(False)
-			# 	actionInsertChild.setVisible(False)
-			# 	actionTreeItemOpenJsonFile.setVisible(True)
-			# 	actionDeleteItem.setVisible(True)
-			# elif (self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) != ""):
-			# 	actionAddItem.setVisible(False)
-			# 	actionInsertChild.setVisible(False)
-			# 	actionDeleteItem.setVisible(True)
-			# elif (self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) == ""):
-			# 	actionAddItem.setVisible(False)
-			# 	actionInsertChild.setVisible(True)
-			# 	actionDeleteItem.setVisible(True)
-			# else:
-			# 	actionAddItem.setVisible(False)
-			# 	actionInsertChild.setVisible(False)
-			# 	actionDeleteItem.setVisible(True)
+			if ((self.model.data(parent, Qt.EditRole) == None) and 
+				(self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) == "")):
+				actionAddItem.setVisible(True)
+				actionAddDictionary.setVisible(True)
+				actionAddList.setVisible(True)
+				actionInsertChild.setVisible(True)
+				actionInsertChildDict.setVisible(True)
+				actionInsertChildList.setVisible(True)
+				actionDeleteItem.setVisible(True)		
+			elif self.model.data(parent, Qt.EditRole) == None:
+				actionAddItem.setVisible(True)
+				actionAddDictionary.setVisible(True)
+				actionAddList.setVisible(True)
+				actionInsertChild.setVisible(False)
+				actionInsertChildDict.setVisible(False)
+				actionInsertChildList.setVisible(False)
+				actionDeleteItem.setVisible(True)
+			elif ((self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) != "") and 
+					(Utils().fileNameMatch(fileName))):
+				actionAddItem.setVisible(False)
+				actionAddDictionary.setVisible(False)
+				actionAddList.setVisible(False)
+				actionInsertChild.setVisible(False)
+				actionInsertChildDict.setVisible(False)
+				actionInsertChildList.setVisible(False)
+				actionTreeItemOpenJsonFile.setVisible(True)
+				actionDeleteItem.setVisible(True)
+			elif (self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) != ""):
+				actionAddItem.setVisible(False)
+				actionAddDictionary.setVisible(False)
+				actionAddList.setVisible(False)
+				actionInsertChild.setVisible(False)
+				actionInsertChildDict.setVisible(False)
+				actionInsertChildList.setVisible(False)
+				actionDeleteItem.setVisible(True)
+			elif (self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) == ""):
+				actionAddItem.setVisible(False)
+				actionAddDictionary.setVisible(False)
+				actionAddList.setVisible(False)
+				actionInsertChild.setVisible(True)
+				actionInsertChildDict.setVisible(True)
+				actionInsertChildList.setVisible(True)
+				actionDeleteItem.setVisible(True)
+			else:
+				actionAddItem.setVisible(False)
+				actionAddDictionary.setVisible(False)
+				actionAddList.setVisible(False)
+				actionInsertChild.setVisible(False)
+				actionInsertChildDict.setVisible(False)
+				actionInsertChildList.setVisible(False)
+				actionDeleteItem.setVisible(True)
 
 			rightClickMenu.exec_(self.sender().viewport().mapToGlobal(position))
 		except Exception as exception:
