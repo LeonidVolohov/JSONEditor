@@ -182,20 +182,22 @@ class QJsonTreeModel(QAbstractItemModel):
 
 		return self._rootItem
 
-	def setData(self, index, value, role):
+	def setData(self, index, value, role=Qt.EditRole):
 		if role == Qt.EditRole:
 			item = index.internalPointer()
-			item.setData(index.column(), value)
+			item.setData(index.column(), value) # Somehow not working, need to specify directly column id
 			self.dataChanged.emit(index, index, [Qt.EditRole])
 			return True
 		if role == Qt.DisplayRole:
 			item = index.internalPointer()
-			item.setData(index.column(), dict())
+			item.setData(0, "[No dict() name]")
+			item.setData(1, dict())
 			self.dataChanged.emit(index, index, [Qt.EditRole])
 			return True
 		if role == Qt.ToolTipRole:
 			item = index.internalPointer()
-			item.setData(index.column(), list())
+			item.setData(0, "[No list() name]")
+			item.setData(1, list())
 			self.dataChanged.emit(index, index, [Qt.EditRole])
 			return True
 		return False

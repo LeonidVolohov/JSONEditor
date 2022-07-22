@@ -93,16 +93,16 @@ class MainWindow(QMainWindow):
 	def createMenuBar(self):
 		self.setMenuBar(self.menuBar)
 
-		self.actionOpen.triggered.connect(self.menuBarActionOpen)
+		self.actionOpen.triggered.connect(self.actionOpenFileDialog)
 		self.actionOpen.setShortcut(QKeySequence("Ctrl+O"))
-		self.actionSave.triggered.connect(self.menuBarActionSave)
+		self.actionSave.triggered.connect(self.actionSaveToFile)
 		self.actionSave.setShortcut(QKeySequence("Ctrl+S"))
-		self.actionRefresh.triggered.connect(self.menuBarActionRefresh)
+		self.actionRefresh.triggered.connect(self.actionRefreshApplication)
 		self.actionRefresh.setShortcut(QKeySequence(Qt.Key_F5))
-		self.actionClose.triggered.connect(self.menuBarActionClose)
+		self.actionClose.triggered.connect(self.actionCloseApplication)
 		self.actionClose.setShortcut("Ctrl+Q")
 
-	def menuBarActionOpen(self):
+	def actionOpenFileDialog(self):
 		options = QFileDialog.Options()
 		options |= QFileDialog.DontUseNativeDialog
 		fileName, _ = QFileDialog.getOpenFileName(self,"Choose Json File", "","Json Files (*.json)", options=options)
@@ -111,21 +111,21 @@ class MainWindow(QMainWindow):
 			self.model.load(JsonParsing().getJsonFromFile(fileName))
 			self.setWindowTitle(fileName)
 
-	def menuBarActionSave(self):
+	def actionSaveToFile(self):
 		try:
 			JsonParsing().writeJsonToFile(self.jsonFileName, self.model.getJsonFromTree())
 		except Exception as exception:
-			QMessageBox.about(self, "Exception", "Exception in menuBarActionSave() function: " + str(exception))	
+			QMessageBox.about(self, "Exception", "Exception in actionSaveToFile() function: " + str(exception))	
 			return
 
-	def menuBarActionRefresh(self):
+	def actionRefreshApplication(self):
 		try:
 			self.model.load(JsonParsing().getJsonFromFile(Utils().getAbsFilePath(self.jsonFileName)))
 		except Exception as exception:
-			QMessageBox.about(self, "Exception", "Exception in menuBarActionRefresh() function: " + str(exception))	
+			QMessageBox.about(self, "Exception", "Exception in actionRefreshApplication() function: " + str(exception))	
 			return
 
-	def menuBarActionClose(self):
+	def actionCloseApplication(self):
 		sys.exit()
 
 	def openRightClickMenu(self, position):
@@ -138,24 +138,24 @@ class MainWindow(QMainWindow):
 
 			rightClickMenu = QMenu()			
 			actionAddItem = rightClickMenu.addAction(self.tr("Add Item"))
-			actionAddItem.triggered.connect(partial(self.treeAddItem))
+			actionAddItem.triggered.connect(partial(self.treeAddItem, Qt.EditRole))
 
 			actionAddDictionary = rightClickMenu.addAction(self.tr("Add dict()"))
-			actionAddDictionary.triggered.connect(partial(self.treeAddDictionary))
+			actionAddDictionary.triggered.connect(partial(self.treeAddItem, Qt.DisplayRole))
 
 			actionAddList = rightClickMenu.addAction(self.tr("Add list()"))
-			actionAddList.triggered.connect(partial(self.treeAddList))
+			actionAddList.triggered.connect(partial(self.treeAddItem, Qt.ToolTipRole))
 
 			rightClickMenu.addSeparator()
 
 			actionInsertChild = rightClickMenu.addAction(self.tr("Insert Child"))
-			actionInsertChild.triggered.connect(partial(self.treeAddItemChild))
+			actionInsertChild.triggered.connect(partial(self.treeAddItemChild, Qt.EditRole))
 
 			actionInsertChildDict = rightClickMenu.addAction(self.tr("Insert Child dict()"))
-			actionInsertChildDict.triggered.connect(partial(self.treeAddItemChildDict))
+			actionInsertChildDict.triggered.connect(partial(self.treeAddItemChild, Qt.DisplayRole))
 
 			actionInsertChildList = rightClickMenu.addAction(self.tr("Insert Child list()"))
-			actionInsertChildList.triggered.connect(partial(self.treeAddItemChildList))
+			actionInsertChildList.triggered.connect(partial(self.treeAddItemChild, Qt.ToolTipRole))
 
 			rightClickMenu.addSeparator()
 
@@ -202,7 +202,8 @@ class MainWindow(QMainWindow):
 			QMessageBox.about(self, "Exception", "Exception in openRightClickMenu() function: " + str(exception))	
 			return
 
-	def treeAddItem(self):
+	def treeAddItem(self, role):
+		# Qt.EditRole = str(), Qt.DisplayRole = dict(), Qt.ToolTipRole = list()
 		try:
 			index = self.treeView.selectionModel().currentIndex()
 			parent = index.parent()
@@ -213,105 +214,49 @@ class MainWindow(QMainWindow):
 
 				for column in range(self.model.columnCount(parent)):
 					child = self.model.index(index.row() + 1, column, parent)
-					self.model.setData(child, "[No data]", Qt.EditRole)
+
+					if role == Qt.EditRole:
+						self.model.setData(index=child, value="[No data]", role=role)
+						return
+					elif role == Qt.DisplayRole or Qt.ToolTipRole:
+						self.model.setData(index=child, value=None, role=role)
+						self.actionSaveToFile()
+						self.actionRefreshApplication()
+						return
+					else:
+						return
 			else:
 				QMessageBox.about(self, "Error", 
-					"You can only use this function to root QTreeView Node")
+					"You can only use this function to root QTreeView Node, choose another actions")
 		except Exception as exception:
 			QMessageBox.about(self, "Exception", "Exception in treeAddItem() function: " + str(exception))	
 			return
 
-	def treeAddDictionary(self):
+	def treeAddItemChild(self, role):
+		# Qt.EditRole = str(), Qt.DisplayRole = dict(), Qt.ToolTipRole = list()
 		try:
 			index = self.treeView.selectionModel().currentIndex()
-			parent = index.parent()
+			parent = index
 
-			if self.model.data(parent, Qt.EditRole) == None:
-				if not self.model.insertRow(index.row() + 1, parent):
+			if not self.model.insertRow(0, parent):
+				return
+
+			for column in range(self.model.columnCount(parent)):
+				child = self.model.index(0, column, parent)
+
+				if role == Qt.EditRole:
+					self.model.setData(index=child, value="[No data]", role=role)
+					self.treeView.expand(index)
 					return
-
-				for column in range(self.model.columnCount(parent)):
-					child = self.model.index(index.row() + 1, column, parent)
-					self.model.setData(child, "[No data]", Qt.DisplayRole)
-			else:
-				QMessageBox.about(self, "Error", 
-					"You can only use this function to root QTreeView Node")
-		except Exception as exception:
-			QMessageBox.about(self, "Exception", "Exception in treeAddItem() function: " + str(exception))	
-			return
-
-	def treeAddList(self):
-		try:
-			index = self.treeView.selectionModel().currentIndex()
-			parent = index.parent()
-
-			if self.model.data(parent, Qt.EditRole) == None:
-				if not self.model.insertRow(index.row() + 1, parent):
+				elif role == Qt.DisplayRole or role == Qt.ToolTipRole:
+					self.model.setData(index=child, value=None, role=role)
+					# self.treeView.expand(index)
+					# Only expand or save-refresh. Cant use both
+					self.actionSaveToFile()
+					self.actionRefreshApplication()
 					return
-
-				for column in range(self.model.columnCount(parent)):
-					child = self.model.index(index.row() + 1, column, parent)
-					self.model.setData(child, "[No data]", Qt.ToolTipRole)
-			else:
-				QMessageBox.about(self, "Error", 
-					"You can only use this function to root QTreeView Node")
-		except Exception as exception:
-			QMessageBox.about(self, "Exception", "Exception in treeAddItem() function: " + str(exception))	
-			return
-
-	def treeAddItemChild(self):
-		try:
-			index = self.treeView.selectionModel().currentIndex()
-			parent = index
-
-			if not self.model.insertRow(0, parent):
-				return
-
-			for column in range(self.model.columnCount(parent)):
-				child = self.model.index(0, column, parent)
-				self.model.setData(child, "[No data]", Qt.EditRole)
-
-			# if(self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole) == ""):
-			# 	if not self.model.insertRow(0, parent):
-			# 		return
-
-			# 	for column in range(self.model.columnCount(parent)):
-			# 		child = self.model.index(0, column, parent)
-			# 		self.model.setData(child, "[No data]", Qt.EditRole)
-			# else:
-			# 	QMessageBox.about(self, "Error", 
-			# 		"Can`t create subnode to str() value. Create list() or dict() directly from .json file")
-			# 	return
-		except Exception as exception:
-			QMessageBox.about(self, "Exception", "Exception in treeAddItemChild() function: " + str(exception))	
-			return
-
-	def treeAddItemChildDict(self):
-		try:
-			index = self.treeView.selectionModel().currentIndex()
-			parent = index
-
-			if not self.model.insertRow(0, parent):
-				return
-
-			for column in range(self.model.columnCount(parent)):
-				child = self.model.index(0, column, parent)
-				self.model.setData(child, "[No data]", Qt.DisplayRole)
-		except Exception as exception:
-			QMessageBox.about(self, "Exception", "Exception in treeAddItemChild() function: " + str(exception))	
-			return
-
-	def treeAddItemChildList(self):
-		try:
-			index = self.treeView.selectionModel().currentIndex()
-			parent = index
-
-			if not self.model.insertRow(0, parent):
-				return
-
-			for column in range(self.model.columnCount(parent)):
-				child = self.model.index(0, column, parent)
-				self.model.setData(child, "[No data]", Qt.ToolTipRole)
+				else:
+					return
 		except Exception as exception:
 			QMessageBox.about(self, "Exception", "Exception in treeAddItemChild() function: " + str(exception))	
 			return
