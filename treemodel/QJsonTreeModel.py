@@ -19,11 +19,11 @@ translateQJsonTreeModel = gettext.translation(
 		languages=["ru"])
 translateQJsonTreeModel.install()
 
-translateQJsonTreeModelEn = gettext.translation(
-		domain="QJsonTreeModel", 
+translateQJsonTreeItemEn = gettext.translation(
+		domain="QJsonTreeItem", 
 		localedir=Utils().getAbsFilePath("utils/locale"), 
 		languages=["en"])
-translateQJsonTreeModelEn.install()
+translateQJsonTreeItemEn.install()
 
 translateJsonParsing = gettext.translation(
 		domain="JsonParsing", 
@@ -178,7 +178,7 @@ class QJsonTreeModel(QAbstractItemModel):
 			document = {}
 			for i in range(numberOfChild):
 				child = item.child(i)
-				document[translateQJsonTreeModelEn.gettext(child.key)] = self.generateJsonFromTree(child)
+				document[translateQJsonTreeItemEn.gettext(child.key)] = self.generateJsonFromTree(child)
 			return document
 		elif item.type == list:
 			document = []

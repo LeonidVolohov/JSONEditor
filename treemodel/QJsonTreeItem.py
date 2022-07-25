@@ -6,7 +6,7 @@ from utils.JsonParsing import *
 
 
 translateQJsonTreeItem = gettext.translation(
-		domain="QJsonTreeModel", 
+		domain="QJsonTreeItem", 
 		localedir=Utils().getAbsFilePath("utils/locale"), 
 		languages=["ru"])
 translateQJsonTreeItem.install()

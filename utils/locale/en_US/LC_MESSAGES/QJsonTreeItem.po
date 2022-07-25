@@ -18,3 +18,248 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.3.4\n"
 
+msgid "control"
+msgstr ""
+
+msgid "управление"
+msgstr "control"
+
+msgid "devices"
+msgstr ""
+
+msgid "устройства"
+msgstr "devices"
+
+msgid "interacts"
+msgstr ""
+
+msgid "взаимодействия"
+msgstr "interacts"
+
+msgid "jobs"
+msgstr ""
+
+msgid "службы"
+msgstr "jobs"
+
+msgid "libpath"
+msgstr ""
+
+msgid "путь к библиотеке"
+msgstr "libpath"
+
+msgid "providers"
+msgstr ""
+
+msgid "провайдеры"
+msgstr "providers"
+
+msgid "signals"
+msgstr ""
+
+msgid "сигналы"
+msgstr "signals"
+
+msgid "storages"
+msgstr ""
+
+msgid "хранилища"
+msgstr "storages"
+
+msgid "version"
+msgstr ""
+
+msgid "версия"
+msgstr "version"
+
+msgid "index"
+msgstr ""
+
+msgid "индекс"
+msgstr "index"
+
+msgid "path"
+msgstr ""
+
+msgid "путь"
+msgstr "path"
+
+msgid "port"
+msgstr ""
+
+msgid "порт"
+msgstr "port"
+
+msgid "users"
+msgstr ""
+
+msgid "пользователи"
+msgstr "users"
+
+msgid "name"
+msgstr ""
+
+msgid "имя"
+msgstr "name"
+
+msgid "password"
+msgstr ""
+
+msgid "пароль"
+msgstr "password"
+
+msgid "rights"
+msgstr ""
+
+msgid "права"
+msgstr "rights"
+
+msgid "buffer_size"
+msgstr ""
+
+msgid "размер_буфера"
+msgstr "buffer_size"
+
+msgid "description"
+msgstr ""
+
+msgid "описание"
+msgstr "description"
+
+msgid "enable"
+msgstr ""
+
+msgid "включено"
+msgstr "enable"
+
+msgid "id"
+msgstr ""
+
+msgid "interface"
+msgstr ""
+
+msgid "интерфейс"
+msgstr "interface"
+
+msgid "lib"
+msgstr ""
+
+msgid "библиотека"
+msgstr "lib"
+
+msgid "params"
+msgstr ""
+
+msgid "параметры"
+msgstr "params"
+
+msgid "baudrate"
+msgstr ""
+
+msgid "grain_gap"
+msgstr ""
+
+msgid "portname"
+msgstr ""
+
+msgid "название порта"
+msgstr "portname"
+
+msgid "protocol"
+msgstr ""
+
+msgid "протокол"
+msgstr "protocol"
+
+msgid "address"
+msgstr ""
+
+msgid "адрес"
+msgstr "address"
+
+msgid "parse_interval"
+msgstr ""
+
+msgid "interval"
+msgstr ""
+
+msgid "интервал"
+msgstr "interval"
+
+msgid "interfaces"
+msgstr ""
+
+msgid "интерфейсы"
+msgstr "interfaces"
+
+msgid "protocols"
+msgstr ""
+
+msgid "протоколы"
+msgstr "protocols"
+
+msgid "bindings"
+msgstr ""
+
+msgid "привязки"
+msgstr "bindings"
+
+msgid "device"
+msgstr ""
+
+msgid "устройство"
+msgstr "device"
+
+msgid "tag"
+msgstr ""
+
+msgid "ярлык"
+msgstr "tag"
+
+msgid "group"
+msgstr ""
+
+msgid "группа"
+msgstr "group"
+
+msgid "file"
+msgstr ""
+
+msgid "файл"
+msgstr "file"
+
+msgid "host"
+msgstr ""
+
+msgid "хост"
+msgstr "host"
+
+msgid "queue"
+msgstr ""
+
+msgid "очередь"
+msgstr "queue"
+
+msgid "zone"
+msgstr ""
+
+msgid "зона"
+msgstr "zone"
+
+msgid "bufsize"
+msgstr ""
+
+msgid "размер буфера"
+msgstr "bufsize"
+
+msgid "marker"
+msgstr ""
+
+msgid "маркер"
+msgstr "marker"
+
+msgid "user"
+msgstr ""
+
+msgid "пользователь"
+msgstr "user"
