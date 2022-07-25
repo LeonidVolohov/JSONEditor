@@ -1,129 +1,35 @@
+import sys
+import json
+import gettext
+
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 import PyQt5
 
-import json
+sys.path.insert(1, "..")
+from utils.JsonParsing import *
+sys.path.insert(1, Utils().getAbsFilePath("treemodel"))
+from QJsonTreeItem import *
 
-from JsonParsing import *
 
+translateQJsonTreeModel = gettext.translation(
+		domain="QJsonTreeModel", 
+		localedir=Utils().getAbsFilePath("utils/locale"), 
+		languages=["ru"])
+translateQJsonTreeModel.install()
 
-class QJsonTreeItem(object):
-	def __init__(self, data, parent=None):
-		self._parent = parent
+translateQJsonTreeModelEn = gettext.translation(
+		domain="QJsonTreeModel", 
+		localedir=Utils().getAbsFilePath("utils/locale"), 
+		languages=["en"])
+translateQJsonTreeModelEn.install()
 
-		self._key = ""
-		self._value = ""
-		self._type = None
-		self._children = list()
-		self.itemData = data
-
-	def appendChild(self, item):
-		self._children.append(item)
-
-	def child(self, row):
-		return self._children[row]
-
-	def parent(self):
-		return self._parent
-
-	def childCount(self):
-		return len(self._children)
-
-	def columnCount(self):
-		return len(self.itemData)
-
-	def row(self):
-		return (
-			self._parent._children.index(self)
-			if self._parent else 0
-		)
-
-	@property
-	def key(self):
-		return self._key
-
-	@key.setter
-	def key(self, key):
-		self._key = key
-
-	@property
-	def value(self):
-		return self._value
-
-	@value.setter
-	def value(self, value):
-		self._value = value
-
-	@property
-	def type(self):
-		return self._type
-
-	@type.setter
-	def type(self, typ):
-		self._type = typ
-
-	def data(self, column):
-		if column is 0:
-			return self.key
-		elif column is 1:
-			return self.value
-
-	def setData(self, column, value):
-		if column is 0:
-			self.key = value
-		if column is 1:
-			self.value = value
-
-	@classmethod
-	def loadJsonToTree(self, value, parent=None, sort=True):
-		rootItem = QJsonTreeItem(parent=parent, data=value)
-		rootItem.key = "root"
-
-		if isinstance(value, dict):
-			items = (
-				sorted(value.items())
-				if sort else value.items()
-			)
-
-			for key, value in items:
-				child = self.loadJsonToTree(value, rootItem)
-				child.key = key
-				child.type = type(value)
-				rootItem.appendChild(child)
-
-		elif isinstance(value, list):
-			for index, value in enumerate(value):
-				child = self.loadJsonToTree(value, rootItem)
-				child.key = JsonParsing().getNameFromDict(value)
-				child.type = type(value)
-				rootItem.appendChild(child)
-
-		else:
-			rootItem.value = value
-			rootItem.type = type(value)
-
-		return rootItem
-
-	def insertChildren(self, position, rows, columns):
-		if position < 0 or position > len(self._children):
-			return False
-
-		for row in range(rows):
-			data = [None for v in range(columns)]
-			item = QJsonTreeItem(data, self)
-			self._children.insert(position, item)
-
-		return True
-
-	def removeChildren(self, position, rows):
-		if position < 0 or position + rows > len(self._children):
-			return False
-
-		for row in range(rows):
-			self._children.pop(position)
-
-		return True
+translateJsonParsing = gettext.translation(
+		domain="JsonParsing", 
+		localedir=Utils().getAbsFilePath("utils/locale"), 
+		languages=["ru"])
+translateJsonParsing.install()
 
 
 class QJsonTreeModel(QAbstractItemModel):
@@ -131,8 +37,12 @@ class QJsonTreeModel(QAbstractItemModel):
 		super(QJsonTreeModel, self).__init__(parent)
 
 		# self._rootItem = QJsonTreeItem()
-		self._rootItem = QJsonTreeItem(["Key", "Value"])
-		self._headers = ("Key", "Value")
+		self._rootItem = QJsonTreeItem(
+				[translateQJsonTreeModel.gettext("Key"), 
+				translateQJsonTreeModel.gettext("Value")])
+		self._headers = (
+				translateQJsonTreeModel.gettext("Key"), 
+				translateQJsonTreeModel.gettext("Value"))
 
 	def clear(self):
 		self.load({})
@@ -190,13 +100,13 @@ class QJsonTreeModel(QAbstractItemModel):
 			return True
 		if role == Qt.DisplayRole:
 			item = index.internalPointer()
-			item.setData(0, "[No dict() name]")
+			item.setData(0, translateQJsonTreeModel.gettext("[No dict() name]"))
 			item.setData(1, dict())
 			self.dataChanged.emit(index, index, [Qt.EditRole])
 			return True
 		if role == Qt.ToolTipRole:
 			item = index.internalPointer()
-			item.setData(0, "[No list() name]")
+			item.setData(0, translateQJsonTreeModel.gettext("[No list() name]"))
 			item.setData(1, list())
 			self.dataChanged.emit(index, index, [Qt.EditRole])
 			return True
@@ -268,7 +178,7 @@ class QJsonTreeModel(QAbstractItemModel):
 			document = {}
 			for i in range(numberOfChild):
 				child = item.child(i)
-				document[child.key] = self.generateJsonFromTree(child)
+				document[translateQJsonTreeModelEn.gettext(child.key)] = self.generateJsonFromTree(child)
 			return document
 		elif item.type == list:
 			document = []
@@ -307,9 +217,10 @@ def main():
 
 	# Sanity check
 	assert (
-		json.dumps(model.json(), sort_keys=True) ==
+		json.dumps(model.getJsonFromTree(), sort_keys=True) ==
 		json.dumps(document, sort_keys=True)
 	)
+
 
 if __name__ == '__main__':
 	main()

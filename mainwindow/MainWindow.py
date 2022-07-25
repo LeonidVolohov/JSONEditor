@@ -1,19 +1,39 @@
 # -*- coding: utf-8 -*-
 
+import sys
+import gettext
+from functools import partial
+
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5 import uic
 
-import sys
-from functools import partial
-
-from JsonParsing import *
-from QJsonTreeModel import *
-from Utils import *
+from utils.JsonParsing import *
+from utils.Utils import *
+from treemodel.QJsonTreeModel import *
 
 
-mainWindowFileName = "mainwindow.ui"
+translateMainWindow = gettext.translation(
+		domain="MainWindow", 
+		localedir=Utils().getAbsFilePath("utils/locale"), 
+		languages=["ru"])
+translateMainWindow.install()
+
+translateQJsonTreeModel = gettext.translation(
+		domain="QJsonTreeModel", 
+		localedir=Utils().getAbsFilePath("utils/locale"), 
+		languages=["ru"])
+translateQJsonTreeModel.install()
+
+translateJsonParsing = gettext.translation(
+		domain="JsonParsing", 
+		localedir=Utils().getAbsFilePath("utils/locale"), 
+		languages=["ru"])
+translateJsonParsing.install()
+
+mainWindowFileName = Utils().getAbsFilePath("mainwindow/mainwindow.ui")
+
 
 class MainWindow(QMainWindow):
 	def __init__(self, jsonFileName, showMaximized = False):
@@ -91,21 +111,33 @@ class MainWindow(QMainWindow):
 		self.setCentralWidget(widget)
 
 	def createMenuBar(self):
+		self.menuFile.setTitle(translateMainWindow.gettext("File"))
 		self.setMenuBar(self.menuBar)
 
 		self.actionOpen.triggered.connect(self.actionOpenFileDialog)
+		self.actionOpen.setText(translateMainWindow.gettext("Open"))
 		self.actionOpen.setShortcut(QKeySequence("Ctrl+O"))
+
 		self.actionSave.triggered.connect(self.actionSaveToFile)
+		self.actionSave.setText(translateMainWindow.gettext("Save"))
 		self.actionSave.setShortcut(QKeySequence("Ctrl+S"))
+
 		self.actionRefresh.triggered.connect(self.actionRefreshApplication)
+		self.actionRefresh.setText(translateMainWindow.gettext("Refresh"))
 		self.actionRefresh.setShortcut(QKeySequence(Qt.Key_F5))
+
 		self.actionClose.triggered.connect(self.actionCloseApplication)
+		self.actionClose.setText(translateMainWindow.gettext("Quit"))
 		self.actionClose.setShortcut("Ctrl+Q")
 
 	def actionOpenFileDialog(self):
 		options = QFileDialog.Options()
 		options |= QFileDialog.DontUseNativeDialog
-		fileName, _ = QFileDialog.getOpenFileName(self,"Choose Json File", "","Json Files (*.json)", options=options)
+		fileName, _ = QFileDialog.getOpenFileName(
+				self,translateMainWindow.gettext("Choose Json File"), 
+				"",
+				"Json Files (*.json)", 
+				options=options)
 		if fileName:
 			self.jsonFileName = fileName
 			self.model.load(JsonParsing().getJsonFromFile(fileName))
@@ -115,14 +147,22 @@ class MainWindow(QMainWindow):
 		try:
 			JsonParsing().writeJsonToFile(self.jsonFileName, self.model.getJsonFromTree())
 		except Exception as exception:
-			QMessageBox.about(self, "Exception", "Exception in actionSaveToFile() function: " + str(exception))	
+			QMessageBox.about(
+					self, 
+					translateMainWindow.gettext("Exception"), 
+					translateMainWindow.gettext("Exception in actionSaveToFile() function: %s" % (str(exception))))
+			# "Exception in actionSaveToFile() function: " + str(exception))	
 			return
 
 	def actionRefreshApplication(self):
 		try:
 			self.model.load(JsonParsing().getJsonFromFile(Utils().getAbsFilePath(self.jsonFileName)))
 		except Exception as exception:
-			QMessageBox.about(self, "Exception", "Exception in actionRefreshApplication() function: " + str(exception))	
+			QMessageBox.about(
+					self, 
+					translateMainWindow.gettext("Exception"), 
+					translateMainWindow.gettext("Exception in actionRefreshApplication() function: %s" % (str(exception))))
+			# QMessageBox.about(self, "Exception", "Exception in actionRefreshApplication() function: " + str(exception))	
 			return
 
 	def actionCloseApplication(self):
@@ -137,35 +177,35 @@ class MainWindow(QMainWindow):
 				return
 
 			rightClickMenu = QMenu()			
-			actionAddItem = rightClickMenu.addAction(self.tr("Add Item"))
+			actionAddItem = rightClickMenu.addAction(self.tr(translateMainWindow.gettext("Add Item")))
 			actionAddItem.triggered.connect(partial(self.treeAddItem, Qt.EditRole))
 
-			actionAddDictionary = rightClickMenu.addAction(self.tr("Add dict()"))
+			actionAddDictionary = rightClickMenu.addAction(self.tr(translateMainWindow.gettext("Add dict()")))
 			actionAddDictionary.triggered.connect(partial(self.treeAddItem, Qt.DisplayRole))
 
-			actionAddList = rightClickMenu.addAction(self.tr("Add list()"))
+			actionAddList = rightClickMenu.addAction(self.tr(translateMainWindow.gettext("Add list()")))
 			actionAddList.triggered.connect(partial(self.treeAddItem, Qt.ToolTipRole))
 
 			rightClickMenu.addSeparator()
 
-			actionInsertChild = rightClickMenu.addAction(self.tr("Insert Child"))
+			actionInsertChild = rightClickMenu.addAction(self.tr(translateMainWindow.gettext("Insert Child")))
 			actionInsertChild.triggered.connect(partial(self.treeAddItemChild, Qt.EditRole))
 
-			actionInsertChildDict = rightClickMenu.addAction(self.tr("Insert Child dict()"))
+			actionInsertChildDict = rightClickMenu.addAction(self.tr(translateMainWindow.gettext("Insert Child dict()")))
 			actionInsertChildDict.triggered.connect(partial(self.treeAddItemChild, Qt.DisplayRole))
 
-			actionInsertChildList = rightClickMenu.addAction(self.tr("Insert Child list()"))
+			actionInsertChildList = rightClickMenu.addAction(self.tr(translateMainWindow.gettext("Insert Child list()")))
 			actionInsertChildList.triggered.connect(partial(self.treeAddItemChild, Qt.ToolTipRole))
 
 			rightClickMenu.addSeparator()
 
-			actionDeleteItem = rightClickMenu.addAction(self.tr("Delete Item"))
+			actionDeleteItem = rightClickMenu.addAction(self.tr(translateMainWindow.gettext("Delete Item")))
 			actionDeleteItem.triggered.connect(partial(self.treeItemDelete))
 
 			rightClickMenu.addSeparator()			
 
 			fileName = self.model.data(self.treeView.selectedIndexes()[1], Qt.EditRole)
-			actionTreeItemOpenJsonFile = rightClickMenu.addAction(self.tr("Open File"))
+			actionTreeItemOpenJsonFile = rightClickMenu.addAction(self.tr(translateMainWindow.gettext("Open File")))
 			actionTreeItemOpenJsonFile.triggered.connect(partial(self.treeItemOpenJsonFile, fileName))
 			actionTreeItemOpenJsonFile.setVisible(False)
 
@@ -223,7 +263,11 @@ class MainWindow(QMainWindow):
 
 			rightClickMenu.exec_(self.sender().viewport().mapToGlobal(position))
 		except Exception as exception:
-			QMessageBox.about(self, "Exception", "Exception in openRightClickMenu() function: " + str(exception))	
+			QMessageBox.about(
+					self, 
+					translateMainWindow.gettext("Exception"), 
+					translateMainWindow.gettext("Exception in openRightClickMenu() function: %s" % (str(exception))))
+			# QMessageBox.about(self, "Exception", "Exception in openRightClickMenu() function: " + str(exception))	
 			return
 
 	def treeAddItem(self, role):
@@ -240,7 +284,7 @@ class MainWindow(QMainWindow):
 					child = self.model.index(index.row() + 1, column, parent)
 
 					if role == Qt.EditRole:
-						self.model.setData(index=child, value="[No data]", role=role)
+						self.model.setData(index=child, value=translateMainWindow.gettext("[No data]"), role=role)
 						return
 					elif role == Qt.DisplayRole or Qt.ToolTipRole:
 						self.model.setData(index=child, value=None, role=role)
@@ -250,10 +294,18 @@ class MainWindow(QMainWindow):
 					else:
 						return
 			else:
-				QMessageBox.about(self, "Error", 
-					"You can only use this function to root QTreeView Node, choose another actions")
+				QMessageBox.about(
+						self, 
+						translateMainWindow.gettext("Error"), 
+						translateMainWindow.gettext("You can only use this function to root QTreeView Node, choose another actions"))
+				# QMessageBox.about(self, "Error", 
+				# 	"You can only use this function to root QTreeView Node, choose another actions")
 		except Exception as exception:
-			QMessageBox.about(self, "Exception", "Exception in treeAddItem() function: " + str(exception))	
+			QMessageBox.about(
+					self, 
+					translateMainWindow.gettext("Exception"), 
+					translateMainWindow.gettext("Exception in treeAddItem() function: %s" % (str(exception))))
+			# QMessageBox.about(self, "Exception", "Exception in treeAddItem() function: " + str(exception))	
 			return
 
 	def treeAddItemChild(self, role):
@@ -269,11 +321,17 @@ class MainWindow(QMainWindow):
 				child = self.model.index(0, column, parent)
 
 				if role == Qt.EditRole:
-					self.model.setData(index=child, value="[No data]", role=role)
+					self.model.setData(
+							index=child, 
+							value=translateMainWindow.gettext("[No data]"), 
+							role=role)
 					self.treeView.expand(index)
 					return
 				elif role == Qt.DisplayRole or role == Qt.ToolTipRole:
-					self.model.setData(index=child, value=None, role=role)
+					self.model.setData(
+							index=child, 
+							value=None, 
+							role=role)
 					# self.treeView.expand(index)
 					# Only expand or save-refresh. Cant use both
 					self.actionSaveToFile()
@@ -282,7 +340,11 @@ class MainWindow(QMainWindow):
 				else:
 					return
 		except Exception as exception:
-			QMessageBox.about(self, "Exception", "Exception in treeAddItemChild() function: " + str(exception))	
+			QMessageBox.about(
+					self, 
+					translateMainWindow.gettext("Exception"), 
+					translateMainWindow.gettext("Exception in treeAddItemChild() function: %s" % (str(exception))))
+			# QMessageBox.about(self, "Exception", "Exception in treeAddItemChild() function: " + str(exception))	
 			return
 
 	def treeItemDelete(self):
@@ -290,16 +352,29 @@ class MainWindow(QMainWindow):
 			index = self.treeView.selectionModel().currentIndex()
 			parent = index.parent()
 
-			self.model.removeRows(position=index.row(), rows=1, parent=parent)	
+			self.model.removeRows(
+					position=index.row(), 
+					rows=1, 
+					parent=parent)	
 		except Exception as exception:
-			QMessageBox.about(self, "Exception", "Exception in treeItemDelete() function: " + str(exception))	
+			QMessageBox.about(
+					self, 
+					translateMainWindow.gettext("Exception"), 
+					translateMainWindow.gettext("Exception in treeItemDelete() function: %s" % (str(exception))))
+			# QMessageBox.about(self, "Exception", "Exception in treeItemDelete() function: " + str(exception))	
 			return
 
 	def treeItemOpenJsonFile(self, fileName):
 		try:			
-			self.newWindow = MainWindow(jsonFileName = Utils().getAbsFilePath(fileName), showMaximized = False)
+			self.newWindow = MainWindow(
+					jsonFileName = Utils().getAbsFilePath(fileName), 
+					showMaximized = False)
 		except Exception as exception:
-			QMessageBox.about(self, "Exception", "Exception in treeItemOpenJsonFile() function: " + str(exception))	
+			QMessageBox.about(
+					self, 
+					translateMainWindow.gettext("Exception"), 
+					translateMainWindow.gettext("Exception in treeItemOpenJsonFile() function: %s" % (str(exception))))
+			# QMessageBox.about(self, "Exception", "Exception in treeItemOpenJsonFile() function: " + str(exception))	
 			return	
 
 	def center(self):
