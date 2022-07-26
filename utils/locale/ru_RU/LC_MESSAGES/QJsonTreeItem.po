@@ -264,3 +264,10 @@ msgstr "пользователь"
 
 msgid "пользователь"
 msgstr ""
+
+msgid "comment for devices"
+msgstr "комментарий для устройств"
+
+msgid "комментарий для устройств"
+msgstr ""
+

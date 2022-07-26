@@ -263,3 +263,10 @@ msgstr ""
 
 msgid "пользователь"
 msgstr "user"
+
+msgid "comment for devices"
+msgstr ""
+
+msgid "комментарий для устройств"
+msgstr "comment for devices"
+
