@@ -8,9 +8,9 @@ class Utils():
 
 	def getAbsFilePath(self, fileName):
 		try:
-			scriptPath = os.path.abspath(__file__) 		# ../JsonToGUI/utils/JsonParsing.py
-			scriptDir = os.path.split(scriptPath)[0] 	# ../JsonToGUI/utils/
-			scriptDir = os.path.dirname(scriptDir) 		# ../JsonToGUI/
+			scriptPath = os.path.abspath(__file__) 			# ../JsonToGUI/utils/JsonParsing.py
+			scriptDir = os.path.split(scriptPath)[0] 		# ../JsonToGUI/utils/
+			scriptDir = os.path.dirname(scriptDir) 			# ../JsonToGUI/
 			absFilePath = os.path.join(scriptDir, fileName)
 
 			return absFilePath

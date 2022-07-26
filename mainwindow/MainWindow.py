@@ -24,18 +24,6 @@ translateMainWindow = gettext.translation(
 		languages=[configObject.get("Language", "defaultlanguage")])
 translateMainWindow.install()
 
-translateQJsonTreeModel = gettext.translation(
-		domain="QJsonTreeModel", 
-		localedir=Utils().getAbsFilePath("utils/locale"), 
-		languages=[configObject.get("Language", "defaultlanguage")])
-translateQJsonTreeModel.install()
-
-translateJsonParsing = gettext.translation(
-		domain="JsonParsing", 
-		localedir=Utils().getAbsFilePath("utils/locale"), 
-		languages=[configObject.get("Language", "defaultlanguage")])
-translateJsonParsing.install()
-
 mainWindowFileName = Utils().getAbsFilePath("mainwindow/mainwindow.ui")
 
 

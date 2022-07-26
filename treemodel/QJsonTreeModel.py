@@ -29,12 +29,6 @@ translateQJsonTreeItemEn = gettext.translation(
 		languages=[configObject.get("Language", "writetojsonlanguage")])
 translateQJsonTreeItemEn.install()
 
-translateJsonParsing = gettext.translation(
-		domain="JsonParsing", 
-		localedir=Utils().getAbsFilePath("utils/locale"), 
-		languages=[configObject.get("Language", "defaultlanguage")])
-translateJsonParsing.install()
-
 
 class QJsonTreeModel(QAbstractItemModel):
 	def __init__(self, parent=None):
