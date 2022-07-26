@@ -1,14 +1,18 @@
-from collections import OrderedDict
 import json
 import gettext
+from collections import OrderedDict
+from configparser import ConfigParser
 
 from utils.Utils import *
 
 
+configObject = ConfigParser()
+configObject.read("utils/config/config.ini")
+
 translateJsonParsing = gettext.translation(
 		domain="JsonParsing", 
 		localedir=Utils().getAbsFilePath("utils/locale"), 
-		languages=["ru"])
+		languages=[configObject.get("Language", "defaultlanguage")])
 translateJsonParsing.install()
 
 
@@ -32,7 +36,7 @@ class JsonParsing():
 		outputString = translateJsonParsing.gettext("__Object__")
 
 		if isinstance(data, dict):
-			# Add property name at the beginning
+			# Add property name at the beginning of QTreeView dict() key
 			tempDict = OrderedDict()
 			tempDict[translateJsonParsing.gettext("__Name__")] = data.get('name', None)
 			tempDict[translateJsonParsing.gettext("__Group__")] = data.get('group', None)

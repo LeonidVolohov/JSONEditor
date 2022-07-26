@@ -1,6 +1,7 @@
 import sys
 import json
 import gettext
+from configparser import ConfigParser
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -13,30 +14,25 @@ sys.path.insert(1, Utils().getAbsFilePath("treemodel"))
 from QJsonTreeItem import *
 
 
+configObject = ConfigParser()
+configObject.read("utils/config/config.ini")
+
 translateQJsonTreeModel = gettext.translation(
 		domain="QJsonTreeModel", 
 		localedir=Utils().getAbsFilePath("utils/locale"), 
-		languages=["ru"])
+		languages=[configObject.get("Language", "defaultlanguage")])
 translateQJsonTreeModel.install()
 
 translateQJsonTreeItemEn = gettext.translation(
 		domain="QJsonTreeItem", 
 		localedir=Utils().getAbsFilePath("utils/locale"), 
-		languages=["en"])
+		languages=[configObject.get("Language", "writetojsonlanguage")])
 translateQJsonTreeItemEn.install()
-
-translateJsonParsing = gettext.translation(
-		domain="JsonParsing", 
-		localedir=Utils().getAbsFilePath("utils/locale"), 
-		languages=["ru"])
-translateJsonParsing.install()
 
 
 class QJsonTreeModel(QAbstractItemModel):
 	def __init__(self, parent=None):
 		super(QJsonTreeModel, self).__init__(parent)
-
-		# self._rootItem = QJsonTreeItem()
 		self._rootItem = QJsonTreeItem(
 				[translateQJsonTreeModel.gettext("Key"), 
 				translateQJsonTreeModel.gettext("Value")])

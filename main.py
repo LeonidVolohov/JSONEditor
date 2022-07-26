@@ -1,6 +1,7 @@
 import json
 import sys
 import os
+from configparser import ConfigParser
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -17,9 +18,12 @@ def main():
 if __name__ == '__main__':
 	main()
 
-	jsonFileName = "config_apak.json"
-
+	configObject = ConfigParser()
+	configObject.read("utils/config/config.ini")
+	
 	application = QApplication(sys.argv)
-	mainWindow = MainWindow(jsonFileName = jsonFileName, showMaximized = False)
+	mainWindow = MainWindow(
+			jsonFileName = configObject.get("Other", "defaultjsonfilename"), 
+			showMaximized = Utils().stringToBoolean(configObject.get("MainWindow", "showmaximized")))
 
 	sys.exit(application.exec_())

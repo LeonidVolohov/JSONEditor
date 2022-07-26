@@ -1,14 +1,18 @@
 import gettext
 import sys
+from configparser import ConfigParser
 
 sys.path.insert(1, "..")
 from utils.JsonParsing import *
 
 
+configObject = ConfigParser()
+configObject.read("utils/config/config.ini")
+
 translateQJsonTreeItem = gettext.translation(
 		domain="QJsonTreeItem", 
 		localedir=Utils().getAbsFilePath("utils/locale"), 
-		languages=["ru"])
+		languages=[configObject.get("Language", "defaultlanguage")])
 translateQJsonTreeItem.install()
 
 
