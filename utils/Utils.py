@@ -8,14 +8,14 @@ class Utils():
 
 	def getAbsFilePath(self, fileName):
 		try:
-			scriptPath = os.path.abspath(__file__) # i.e. /path/to/dir/foobar.py
-			scriptDir = os.path.split(scriptPath)[0] #i.e. /path/to/dir/
+			scriptPath = os.path.abspath(__file__) 		# ../JsonToGUI/utils/JsonParsing.py
+			scriptDir = os.path.split(scriptPath)[0] 	# ../JsonToGUI/utils/
+			scriptDir = os.path.dirname(scriptDir) 		# ../JsonToGUI/
 			absFilePath = os.path.join(scriptDir, fileName)
 
 			return absFilePath
 		except Exception as exception:
 			return str(exception)
-
 
 	def fileNameMatch(self, fileName):
 		try:
@@ -27,7 +27,9 @@ class Utils():
 
 
 def main():
-	print(Utils().getAbsFilePath("jsons/config_apak.json"))
+	print(Utils().getAbsFilePath("config_apak.json"))
+	print(Utils().getAbsFilePath("QJsonTreeModel.py"))
+	print(Utils().getAbsFilePath("utils/locale"))
 
 if __name__ == '__main__':
 	main()

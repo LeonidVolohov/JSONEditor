@@ -2,13 +2,13 @@ import json
 import sys
 import os
 
-from Utils import *
-from JsonParsing import *
-from MainWindow import *
-
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+
+from utils.Utils import *
+from utils.JsonParsing import *
+from mainwindow.MainWindow import *
 
 
 def main():

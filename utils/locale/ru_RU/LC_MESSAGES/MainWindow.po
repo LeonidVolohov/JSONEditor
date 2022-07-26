@@ -1,0 +1,131 @@
+# Russian (Russia) translations for PROJECT.
+# Copyright (C) 2022 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2022-07-25 16:11+0300\n"
+"PO-Revision-Date: 2022-07-25 16:11+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru_RU\n"
+"Language-Team: ru_RU <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+
+#: MainWindow.py:108
+msgid "File"
+msgstr "Файл"
+
+#: MainWindow.py:111
+msgid "Open"
+msgstr "Открыть"
+
+#: MainWindow.py:115
+msgid "Save"
+msgstr "Сохранить"
+
+#: MainWindow.py:119
+msgid "Refresh"
+msgstr "Обовить"
+
+#: MainWindow.py:123
+msgid "Quit"
+msgstr "Выйти"
+
+#: MainWindow.py:118
+msgid "Choose Json File"
+msgstr "Выберите Json файл"
+
+#: MainWindow.py:129 MainWindow.py:138 MainWindow.py:241 MainWindow.py:275
+#: MainWindow.py:306 MainWindow.py:318 MainWindow.py:327
+msgid "Exception"
+msgstr "Исключение"
+
+#: MainWindow.py:130
+#, python-format
+msgid "Exception in actionSaveToFile() function: %s"
+msgstr "Исключение в функции actionSaveToFile(): %s"
+
+#: MainWindow.py:139
+#, python-format
+msgid "Exception in actionRefreshApplication() function: %s"
+msgstr "Исключение в функции actionRefreshApplication(): %s"
+
+#: MainWindow.py:155
+msgid "Add Item"
+msgstr "Добавление элемента"
+
+#: MainWindow.py:158
+msgid "Add dict()"
+msgstr "Добавление словаря()"
+
+#: MainWindow.py:161
+msgid "Add list()"
+msgstr "Добавление списка()"
+
+#: MainWindow.py:166
+msgid "Insert Child"
+msgstr "Добавление дочернего элемента"
+
+#: MainWindow.py:169
+msgid "Insert Child dict()"
+msgstr "Добавление дочернего словаря()"
+
+#: MainWindow.py:172
+msgid "Insert Child list()"
+msgstr "Добавление дочернего списка()"
+
+#: MainWindow.py:177
+msgid "Delete Item"
+msgstr "Удаление элемента"
+
+#: MainWindow.py:183
+msgid "Open File"
+msgstr "Открытие файла"
+
+#: MainWindow.py:242
+#, python-format
+msgid "Exception in openRightClickMenu() function: %s"
+msgstr "Исключение в функции openRightClickMenu(): %s"
+
+#: MainWindow.py:260 MainWindow.py:293
+msgid "[No data]"
+msgstr "[Нет данных]"
+
+#: MainWindow.py:270
+msgid "Error"
+msgstr "Ошибка"
+
+#: MainWindow.py:271
+msgid ""
+"You can only use this function to root QTreeView Node, choose another "
+"actions"
+msgstr "Данную функцию можно использовать только для корневого элемента, выберите другую функцию"
+
+#: MainWindow.py:276
+#, python-format
+msgid "Exception in treeAddItem() function: %s"
+msgstr "Исключение в функции treeAddItem(): %s"
+
+#: MainWindow.py:307
+#, python-format
+msgid "Exception in treeAddItemChild() function: %s"
+msgstr "Исключение в функции treeAddItemChild(): %s"
+
+#: MainWindow.py:319
+#, python-format
+msgid "Exception in treeItemDelete() function: %s"
+msgstr "Исключение в функции treeItemDelete(): %s"
+
+#: MainWindow.py:328
+#, python-format
+msgid "Exception in treeItemOpenJsonFile() function: %s"
+msgstr "Исключение в функции treeItemOpenJsonFile(): %s"
+

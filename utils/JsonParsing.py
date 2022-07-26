@@ -1,5 +1,15 @@
 from collections import OrderedDict
 import json
+import gettext
+
+from utils.Utils import *
+
+
+translateJsonParsing = gettext.translation(
+		domain="JsonParsing", 
+		localedir=Utils().getAbsFilePath("utils/locale"), 
+		languages=["ru"])
+translateJsonParsing.install()
 
 
 class JsonParsing():
@@ -19,14 +29,14 @@ class JsonParsing():
 			openedFile.write(json.dumps(jsonFile, indent=2, ensure_ascii=False, sort_keys=True))
 	
 	def getNameFromDict(self, data):
-		outputString = "__Object__"
+		outputString = translateJsonParsing.gettext("__Object__")
 
 		if isinstance(data, dict):
 			# Add property name at the beginning
 			tempDict = OrderedDict()
-			tempDict["__Name__"] = data.get('name', None)
-			tempDict["__Group__"] = data.get('group', None)
-			tempDict["__Description__"] = data.get('description', None)
+			tempDict[translateJsonParsing.gettext("__Name__")] = data.get('name', None)
+			tempDict[translateJsonParsing.gettext("__Group__")] = data.get('group', None)
+			tempDict[translateJsonParsing.gettext("__Description__")] = data.get('description', None)
 			filteredDict = {key: value for key, value in tempDict.items() if value is not None}
 
 			tempDict.clear()
