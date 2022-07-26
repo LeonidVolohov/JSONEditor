@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-25 14:48+0300\n"
-"PO-Revision-Date: 2022-07-25 14:48+0300\n"
+"POT-Creation-Date: 2022-07-26 09:22+0300\n"
+"PO-Revision-Date: 2022-07-26 09:22+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru_RU\n"
 "Language-Team: ru_RU <LL@li.org>\n"
@@ -19,19 +19,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.3.4\n"
 
-#: QJsonTreeModel.py:29 QJsonTreeModel.py:30
+#: QJsonTreeModel.py:41 QJsonTreeModel.py:44
 msgid "Key"
 msgstr "Ключ"
 
-#: QJsonTreeModel.py:29 QJsonTreeModel.py:30
+#: QJsonTreeModel.py:42 QJsonTreeModel.py:45
 msgid "Value"
 msgstr "Значение"
 
-#: QJsonTreeModel.py:88
+#: QJsonTreeModel.py:57
+#, python-format
+msgid "`document` must be of dict, list or tuple, not %s"
+msgstr "`документ` должен быть словарем, листом или кортежем, но не %s"
+
+#: QJsonTreeModel.py:102
 msgid "[No dict() name]"
 msgstr "[Нет названия словаря()]"
 
-#: QJsonTreeModel.py:94
+#: QJsonTreeModel.py:108
 msgid "[No list() name]"
 msgstr "[Нет названия списка()]"
 

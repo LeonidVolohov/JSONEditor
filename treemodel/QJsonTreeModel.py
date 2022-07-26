@@ -54,8 +54,7 @@ class QJsonTreeModel(QAbstractItemModel):
 		"""
 
 		assert isinstance(document, (dict, list, tuple)), (
-			"`document` must be of dict, list or tuple, "
-			"not %s" % type(document)
+			translateQJsonTreeModel.gettext("`document` must be of dict, list or tuple, not %s" % (type(document)))
 		)
 
 		self.beginResetModel()
