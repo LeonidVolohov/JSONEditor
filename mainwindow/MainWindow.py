@@ -36,7 +36,7 @@ class MainWindow(QMainWindow):
 		self._jsonFileName = jsonFileName
 
 		if len(jsonFileName) == 0:
-			self.jsonText = {}
+			self.jsonText = {"[No data]": "[No data]"}
 		else:
 			self.jsonText = JsonParsing().getJsonFromFile(Utils().getAbsFilePath(jsonFileName)) # dict
 
@@ -162,6 +162,12 @@ class MainWindow(QMainWindow):
 					"",
 					"Json Files (*.json);;Text Files (*.txt);;All Files (*)")
 			JsonParsing().writeJsonToFile(fileName[0], self.model.getJsonFromTree())
+
+			# load just added file to QTreeView
+			self.jsonFileName = fileName[0]
+			self.model.load(JsonParsing().getJsonFromFile(fileName[0]))
+			self.setWindowTitle(fileName[0])
+
 		except Exception as exception:
 			QMessageBox.about(
 					self, 
