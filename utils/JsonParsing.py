@@ -36,7 +36,7 @@ class JsonParsing():
 		outputString = translateJsonParsing.gettext("__Object__")
 
 		if isinstance(data, dict):
-			# Add property name at the beginning
+			# Add property name at the beginning of QTreeView dict() key
 			tempDict = OrderedDict()
 			tempDict[translateJsonParsing.gettext("__Name__")] = data.get('name', None)
 			tempDict[translateJsonParsing.gettext("__Group__")] = data.get('group', None)

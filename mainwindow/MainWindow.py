@@ -147,7 +147,6 @@ class MainWindow(QMainWindow):
 					self, 
 					translateMainWindow.gettext("Exception"), 
 					translateMainWindow.gettext("Exception in actionSaveToFile() function: %s" % (str(exception))))
-			# "Exception in actionSaveToFile() function: " + str(exception))	
 			return
 
 	def actionRefreshApplication(self):
@@ -158,7 +157,6 @@ class MainWindow(QMainWindow):
 					self, 
 					translateMainWindow.gettext("Exception"), 
 					translateMainWindow.gettext("Exception in actionRefreshApplication() function: %s" % (str(exception))))
-			# QMessageBox.about(self, "Exception", "Exception in actionRefreshApplication() function: " + str(exception))	
 			return
 
 	def actionCloseApplication(self):
@@ -263,7 +261,6 @@ class MainWindow(QMainWindow):
 					self, 
 					translateMainWindow.gettext("Exception"), 
 					translateMainWindow.gettext("Exception in openRightClickMenu() function: %s" % (str(exception))))
-			# QMessageBox.about(self, "Exception", "Exception in openRightClickMenu() function: " + str(exception))	
 			return
 
 	def treeAddItem(self, role):
@@ -294,14 +291,11 @@ class MainWindow(QMainWindow):
 						self, 
 						translateMainWindow.gettext("Error"), 
 						translateMainWindow.gettext("You can only use this function to root QTreeView Node, choose another actions"))
-				# QMessageBox.about(self, "Error", 
-				# 	"You can only use this function to root QTreeView Node, choose another actions")
 		except Exception as exception:
 			QMessageBox.about(
 					self, 
 					translateMainWindow.gettext("Exception"), 
-					translateMainWindow.gettext("Exception in treeAddItem() function: %s" % (str(exception))))
-			# QMessageBox.about(self, "Exception", "Exception in treeAddItem() function: " + str(exception))	
+					translateMainWindow.gettext("Exception in treeAddItem() function: %s" % (str(exception))))	
 			return
 
 	def treeAddItemChild(self, role):
@@ -340,7 +334,6 @@ class MainWindow(QMainWindow):
 					self, 
 					translateMainWindow.gettext("Exception"), 
 					translateMainWindow.gettext("Exception in treeAddItemChild() function: %s" % (str(exception))))
-			# QMessageBox.about(self, "Exception", "Exception in treeAddItemChild() function: " + str(exception))	
 			return
 
 	def treeItemDelete(self):
@@ -357,7 +350,6 @@ class MainWindow(QMainWindow):
 					self, 
 					translateMainWindow.gettext("Exception"), 
 					translateMainWindow.gettext("Exception in treeItemDelete() function: %s" % (str(exception))))
-			# QMessageBox.about(self, "Exception", "Exception in treeItemDelete() function: " + str(exception))	
 			return
 
 	def treeItemOpenJsonFile(self, fileName):
@@ -370,7 +362,6 @@ class MainWindow(QMainWindow):
 					self, 
 					translateMainWindow.gettext("Exception"), 
 					translateMainWindow.gettext("Exception in treeItemOpenJsonFile() function: %s" % (str(exception))))
-			# QMessageBox.about(self, "Exception", "Exception in treeItemOpenJsonFile() function: " + str(exception))	
 			return	
 
 	def center(self):

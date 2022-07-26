@@ -33,8 +33,6 @@ translateQJsonTreeItemEn.install()
 class QJsonTreeModel(QAbstractItemModel):
 	def __init__(self, parent=None):
 		super(QJsonTreeModel, self).__init__(parent)
-
-		# self._rootItem = QJsonTreeItem()
 		self._rootItem = QJsonTreeItem(
 				[translateQJsonTreeModel.gettext("Key"), 
 				translateQJsonTreeModel.gettext("Value")])
