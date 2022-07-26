@@ -36,7 +36,7 @@ class MainWindow(QMainWindow):
 		self._jsonFileName = jsonFileName
 
 		if len(jsonFileName) == 0:
-			self.jsonText = {}
+			self.jsonText = {"[No data]": "[No data]"}
 		else:
 			self.jsonText = JsonParsing().getJsonFromFile(Utils().getAbsFilePath(jsonFileName)) # dict
 
@@ -118,6 +118,10 @@ class MainWindow(QMainWindow):
 		self.actionSave.setText(translateMainWindow.gettext("Save"))
 		self.actionSave.setShortcut(QKeySequence("Ctrl+S"))
 
+		self.actionSaveAs.triggered.connect(self.actionSaveFileAs)
+		self.actionSaveAs.setText(translateMainWindow.gettext("Save As..."))
+		self.actionSaveAs.setShortcut(QKeySequence("Ctrl+Shift+S"))
+
 		self.actionRefresh.triggered.connect(self.actionRefreshApplication)
 		self.actionRefresh.setText(translateMainWindow.gettext("Refresh"))
 		self.actionRefresh.setShortcut(QKeySequence(Qt.Key_F5))
@@ -130,7 +134,8 @@ class MainWindow(QMainWindow):
 		options = QFileDialog.Options()
 		options |= QFileDialog.DontUseNativeDialog
 		fileName, _ = QFileDialog.getOpenFileName(
-				self,translateMainWindow.gettext("Choose Json File"), 
+				self, 
+				translateMainWindow.gettext("Choose Json File"), 
 				"",
 				"Json Files (*.json)", 
 				options=options)
@@ -147,6 +152,27 @@ class MainWindow(QMainWindow):
 					self, 
 					translateMainWindow.gettext("Exception"), 
 					translateMainWindow.gettext("Exception in actionSaveToFile() function: %s" % (str(exception))))
+			return
+
+	def actionSaveFileAs(self):
+		try:
+			fileName = QFileDialog.getSaveFileName(
+					self, 
+					translateMainWindow.gettext("Save File"),
+					"",
+					"Json Files (*.json);;Text Files (*.txt);;All Files (*)")
+			JsonParsing().writeJsonToFile(fileName[0], self.model.getJsonFromTree())
+
+			# load just added file to QTreeView
+			self.jsonFileName = fileName[0]
+			self.model.load(JsonParsing().getJsonFromFile(fileName[0]))
+			self.setWindowTitle(fileName[0])
+
+		except Exception as exception:
+			QMessageBox.about(
+					self, 
+					translateMainWindow.gettext("Exception"), 
+					translateMainWindow.gettext("Exception in actionSaveFileAs() function: %s" % (str(exception))))
 			return
 
 	def actionRefreshApplication(self):
