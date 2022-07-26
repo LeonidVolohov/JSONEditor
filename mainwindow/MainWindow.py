@@ -3,6 +3,7 @@
 import sys
 import gettext
 from functools import partial
+from configparser import ConfigParser
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -14,22 +15,25 @@ from utils.Utils import *
 from treemodel.QJsonTreeModel import *
 
 
+configObject = ConfigParser()
+configObject.read("utils/config/config.ini")
+
 translateMainWindow = gettext.translation(
 		domain="MainWindow", 
 		localedir=Utils().getAbsFilePath("utils/locale"), 
-		languages=["ru"])
+		languages=[configObject.get("Language", "defaultlanguage")])
 translateMainWindow.install()
 
 translateQJsonTreeModel = gettext.translation(
 		domain="QJsonTreeModel", 
 		localedir=Utils().getAbsFilePath("utils/locale"), 
-		languages=["ru"])
+		languages=[configObject.get("Language", "defaultlanguage")])
 translateQJsonTreeModel.install()
 
 translateJsonParsing = gettext.translation(
 		domain="JsonParsing", 
 		localedir=Utils().getAbsFilePath("utils/locale"), 
-		languages=["ru"])
+		languages=[configObject.get("Language", "defaultlanguage")])
 translateJsonParsing.install()
 
 mainWindowFileName = Utils().getAbsFilePath("mainwindow/mainwindow.ui")
@@ -97,16 +101,20 @@ class MainWindow(QMainWindow):
 		self.treeView.setContextMenuPolicy(Qt.CustomContextMenu)
 		self.treeView.customContextMenuRequested.connect(self.openRightClickMenu)
 
-		self.treeView.setAlternatingRowColors(False)
-		self.treeView.setAnimated(False)
+		self.treeView.setAlternatingRowColors(
+				Utils().stringToBoolean(configObject.get("QTreeView", "setalternatingrowcolors")))
+		self.treeView.setAnimated(
+				Utils().stringToBoolean(configObject.get("QTreeView", "setanimated")))
 
 		self.model.clear()
 		self.model.load(self.jsonText)
 
 		layout.addWidget(self.treeView)
 
-		# self.treeView.expandAll()
-		# self.treeView.expandToDepth(0)
+		if(Utils().stringToBoolean(configObject.get("QTreeView", "expandall"))):
+			self.treeView.expandAll()
+		if(int(configObject.get("QTreeView", "expandtodepth")) >= -1):
+			self.treeView.expandToDepth(int(configObject.get("QTreeView", "expandtodepth")))
 
 		self.setCentralWidget(widget)
 

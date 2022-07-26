@@ -25,6 +25,12 @@ class Utils():
 
 		return False
 
+	def stringToBoolean(self, string):
+		if(string == "True"):
+			return True
+		else:
+			return False
+
 
 def main():
 	print(Utils().getAbsFilePath("config_apak.json"))

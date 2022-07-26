@@ -1,14 +1,18 @@
-from collections import OrderedDict
 import json
 import gettext
+from collections import OrderedDict
+from configparser import ConfigParser
 
 from utils.Utils import *
 
 
+configObject = ConfigParser()
+configObject.read("utils/config/config.ini")
+
 translateJsonParsing = gettext.translation(
 		domain="JsonParsing", 
 		localedir=Utils().getAbsFilePath("utils/locale"), 
-		languages=["ru"])
+		languages=[configObject.get("Language", "defaultlanguage")])
 translateJsonParsing.install()
 
 
