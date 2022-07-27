@@ -183,14 +183,13 @@ class MainWindow(QMainWindow):
 				# load just added file to QTreeView
 				self.jsonFileName = fileName[0]
 				self.model.load(JsonParsing().getJsonFromFile(fileName[0]))
+				self.setWindowTitle(fileName[0])
 			else:
 				QMessageBox.about(
 					self, 
 					translateMainWindow.gettext("Error"),
 					translateMainWindow.gettext("File does not match .json files. Name the file correctly"))
 				return
-
-			self.setWindowTitle(fileName[0])
 		except Exception as exception:
 			QMessageBox.about(
 					self, 
