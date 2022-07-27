@@ -36,7 +36,7 @@ class MainWindow(QMainWindow):
 		self._jsonFileName = jsonFileName
 
 		if len(jsonFileName) == 0:
-			self.jsonText = {"[No data]": "[No data]"}
+			self.jsonText = {translateMainWindow.gettext("[No data]"): translateMainWindow.gettext("[No data]")}
 		else:
 			self.jsonText = JsonParsing().getJsonFromFile(Utils().getAbsFilePath(jsonFileName)) # dict
 
@@ -110,6 +110,10 @@ class MainWindow(QMainWindow):
 		self.menuFile.setTitle(translateMainWindow.gettext("File"))
 		self.setMenuBar(self.menuBar)
 
+		self.actionNew.triggered.connect(self.actionNewFile)
+		self.actionNew.setText(translateMainWindow.gettext("New"))
+		self.actionNew.setShortcut(QKeySequence("Ctrl+N"))
+
 		self.actionOpen.triggered.connect(self.actionOpenFileDialog)
 		self.actionOpen.setText(translateMainWindow.gettext("Open"))
 		self.actionOpen.setShortcut(QKeySequence("Ctrl+O"))
@@ -130,6 +134,12 @@ class MainWindow(QMainWindow):
 		self.actionClose.setText(translateMainWindow.gettext("Quit"))
 		self.actionClose.setShortcut("Ctrl+Q")
 
+	def actionNewFile(self):
+		self.jsonFileName = translateMainWindow.gettext("untilted")
+		self.setWindowTitle(self.jsonFileName)
+		self.model.clear()
+		self.model.load({translateMainWindow.gettext("[No data]"): translateMainWindow.gettext("[No data]")})
+
 	def actionOpenFileDialog(self):
 		options = QFileDialog.Options()
 		options |= QFileDialog.DontUseNativeDialog
@@ -146,12 +156,18 @@ class MainWindow(QMainWindow):
 
 	def actionSaveToFile(self):
 		try:
-			JsonParsing().writeJsonToFile(self.jsonFileName, self.model.getJsonFromTree())
+			if(self.jsonFileName == "untilted" or self.jsonFileName == "без названия"):
+				QMessageBox.about(
+					self, 
+					translateMainWindow.gettext("Error"), 
+					translateMainWindow.gettext("Failed to save file. Choose `Save As...` function."))
+			else:
+				JsonParsing().writeJsonToFile(self.jsonFileName, self.model.getJsonFromTree())
 		except Exception as exception:
 			QMessageBox.about(
 					self, 
 					translateMainWindow.gettext("Exception"), 
-					translateMainWindow.gettext("Exception in actionSaveToFile() function: %s" % (str(exception))))
+					translateMainWindow.gettext("Exception in actionSaveToFile() function: %s") % str(exception))
 			return
 
 	def actionSaveFileAs(self):
@@ -161,28 +177,40 @@ class MainWindow(QMainWindow):
 					translateMainWindow.gettext("Save File"),
 					"",
 					"Json Files (*.json);;Text Files (*.txt);;All Files (*)")
-			JsonParsing().writeJsonToFile(fileName[0], self.model.getJsonFromTree())
+			if(Utils().fileNameMatch(fileName[0])):
+				JsonParsing().writeJsonToFile(fileName[0], self.model.getJsonFromTree())
 
-			# load just added file to QTreeView
-			self.jsonFileName = fileName[0]
-			self.model.load(JsonParsing().getJsonFromFile(fileName[0]))
-			self.setWindowTitle(fileName[0])
-
+				# load just added file to QTreeView
+				self.jsonFileName = fileName[0]
+				self.model.load(JsonParsing().getJsonFromFile(fileName[0]))
+				self.setWindowTitle(fileName[0])
+			else:
+				QMessageBox.about(
+					self, 
+					translateMainWindow.gettext("Error"),
+					translateMainWindow.gettext("File does not match .json files. Name the file correctly"))
+				return
 		except Exception as exception:
 			QMessageBox.about(
 					self, 
-					translateMainWindow.gettext("Exception"), 
-					translateMainWindow.gettext("Exception in actionSaveFileAs() function: %s" % (str(exception))))
+					translateMainWindow.gettext("Exception"),
+					translateMainWindow.gettext("Exception in actionSaveFileAs() function: %s") % str(exception))
 			return
 
 	def actionRefreshApplication(self):
 		try:
-			self.model.load(JsonParsing().getJsonFromFile(Utils().getAbsFilePath(self.jsonFileName)))
+			if(self.jsonFileName == "untilted" or self.jsonFileName == "без названия"):
+				QMessageBox.about(
+					self, 
+					translateMainWindow.gettext("Error"), 
+					translateMainWindow.gettext("Failed to save file. Choose `Save As...` function."))
+			else:
+				self.model.load(JsonParsing().getJsonFromFile(Utils().getAbsFilePath(self.jsonFileName)))
 		except Exception as exception:
 			QMessageBox.about(
 					self, 
 					translateMainWindow.gettext("Exception"), 
-					translateMainWindow.gettext("Exception in actionRefreshApplication() function: %s" % (str(exception))))
+					translateMainWindow.gettext("Exception in actionRefreshApplication() function: %s") % str(exception))
 			return
 
 	def actionCloseApplication(self):
@@ -286,7 +314,7 @@ class MainWindow(QMainWindow):
 			QMessageBox.about(
 					self, 
 					translateMainWindow.gettext("Exception"), 
-					translateMainWindow.gettext("Exception in openRightClickMenu() function: %s" % (str(exception))))
+					translateMainWindow.gettext("Exception in openRightClickMenu() function: %s") % str(exception))
 			return
 
 	def treeAddItem(self, role):
@@ -321,7 +349,7 @@ class MainWindow(QMainWindow):
 			QMessageBox.about(
 					self, 
 					translateMainWindow.gettext("Exception"), 
-					translateMainWindow.gettext("Exception in treeAddItem() function: %s" % (str(exception))))	
+					translateMainWindow.gettext("Exception in treeAddItem() function: %s") % str(exception))	
 			return
 
 	def treeAddItemChild(self, role):
@@ -359,7 +387,7 @@ class MainWindow(QMainWindow):
 			QMessageBox.about(
 					self, 
 					translateMainWindow.gettext("Exception"), 
-					translateMainWindow.gettext("Exception in treeAddItemChild() function: %s" % (str(exception))))
+					translateMainWindow.gettext("Exception in treeAddItemChild() function: %s") % str(exception))
 			return
 
 	def treeItemDelete(self):
@@ -375,7 +403,7 @@ class MainWindow(QMainWindow):
 			QMessageBox.about(
 					self, 
 					translateMainWindow.gettext("Exception"), 
-					translateMainWindow.gettext("Exception in treeItemDelete() function: %s" % (str(exception))))
+					translateMainWindow.gettext("Exception in treeItemDelete() function: %s") % str(exception))
 			return
 
 	def treeItemOpenJsonFile(self, fileName):
@@ -387,7 +415,7 @@ class MainWindow(QMainWindow):
 			QMessageBox.about(
 					self, 
 					translateMainWindow.gettext("Exception"), 
-					translateMainWindow.gettext("Exception in treeItemOpenJsonFile() function: %s" % (str(exception))))
+					translateMainWindow.gettext("Exception in treeItemOpenJsonFile() function: %s") % str(exception))
 			return	
 
 	def center(self):
