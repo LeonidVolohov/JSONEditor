@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-27 09:57+0300\n"
-"PO-Revision-Date: 2022-07-27 10:04+0300\n"
+"POT-Creation-Date: 2022-07-27 10:33+0300\n"
+"PO-Revision-Date: 2022-07-27 10:33+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_US\n"
 "Language-Team: en_US <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.3.4\n"
 
-#: MainWindow.py:39 MainWindow.py:141 MainWindow.py:327 MainWindow.py:363
+#: MainWindow.py:39 MainWindow.py:141 MainWindow.py:335 MainWindow.py:371
 msgid "[No data]"
 msgstr ""
 
@@ -58,16 +58,16 @@ msgstr ""
 msgid "Choose Json File"
 msgstr ""
 
-#: MainWindow.py:162 MainWindow.py:198 MainWindow.py:339
+#: MainWindow.py:162 MainWindow.py:189 MainWindow.py:206 MainWindow.py:347
 msgid "Error"
 msgstr ""
 
-#: MainWindow.py:163 MainWindow.py:199
+#: MainWindow.py:163 MainWindow.py:207
 msgid "Failed to save file. Choose `Save As...` function."
 msgstr ""
 
-#: MainWindow.py:169 MainWindow.py:189 MainWindow.py:205 MainWindow.py:309
-#: MainWindow.py:344 MainWindow.py:382 MainWindow.py:398 MainWindow.py:410
+#: MainWindow.py:169 MainWindow.py:197 MainWindow.py:213 MainWindow.py:317
+#: MainWindow.py:352 MainWindow.py:390 MainWindow.py:406 MainWindow.py:418
 msgid "Exception"
 msgstr ""
 
@@ -81,74 +81,78 @@ msgid "Save File"
 msgstr ""
 
 #: MainWindow.py:190
+msgid "File does not match .json files. Name the file correctly"
+msgstr ""
+
+#: MainWindow.py:198
 #, python-format
 msgid "Exception in actionSaveFileAs() function: %s"
 msgstr ""
 
-#: MainWindow.py:206
+#: MainWindow.py:214
 #, python-format
 msgid "Exception in actionRefreshApplication() function: %s"
 msgstr ""
 
-#: MainWindow.py:221
+#: MainWindow.py:229
 msgid "Add Item"
 msgstr ""
 
-#: MainWindow.py:224
+#: MainWindow.py:232
 msgid "Add dict()"
 msgstr ""
 
-#: MainWindow.py:227
+#: MainWindow.py:235
 msgid "Add list()"
 msgstr ""
 
-#: MainWindow.py:232
+#: MainWindow.py:240
 msgid "Insert Child"
 msgstr ""
 
-#: MainWindow.py:235
+#: MainWindow.py:243
 msgid "Insert Child dict()"
 msgstr ""
 
-#: MainWindow.py:238
+#: MainWindow.py:246
 msgid "Insert Child list()"
 msgstr ""
 
-#: MainWindow.py:243
+#: MainWindow.py:251
 msgid "Delete Item"
 msgstr ""
 
-#: MainWindow.py:249
+#: MainWindow.py:257
 msgid "Open File"
 msgstr ""
 
-#: MainWindow.py:310
+#: MainWindow.py:318
 #, python-format
 msgid "Exception in openRightClickMenu() function: %s"
 msgstr ""
 
-#: MainWindow.py:340
+#: MainWindow.py:348
 msgid ""
 "You can only use this function to root QTreeView Node, choose another "
 "actions"
 msgstr ""
 
-#: MainWindow.py:345
+#: MainWindow.py:353
 #, python-format
 msgid "Exception in treeAddItem() function: %s"
 msgstr ""
 
-#: MainWindow.py:383
+#: MainWindow.py:391
 #, python-format
 msgid "Exception in treeAddItemChild() function: %s"
 msgstr ""
 
-#: MainWindow.py:399
+#: MainWindow.py:407
 #, python-format
 msgid "Exception in treeItemDelete() function: %s"
 msgstr ""
 
-#: MainWindow.py:411
+#: MainWindow.py:419
 #, python-format
 msgid "Exception in treeItemOpenJsonFile() function: %s"
 msgstr ""
