@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-27 10:33+0300\n"
-"PO-Revision-Date: 2022-07-27 10:33+0300\n"
+"POT-Creation-Date: 2022-07-27 11:11+0300\n"
+"PO-Revision-Date: 2022-07-27 11:11+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru_RU\n"
 "Language-Team: ru_RU <LL@li.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.3.4\n"
 
-#: MainWindow.py:39 MainWindow.py:141 MainWindow.py:335 MainWindow.py:371
+#: MainWindow.py:39 MainWindow.py:141 MainWindow.py:334 MainWindow.py:370
 msgid "[No data]"
 msgstr "[Нет данных]"
 
@@ -59,16 +59,16 @@ msgstr "без названия"
 msgid "Choose Json File"
 msgstr "Выберите Json файл"
 
-#: MainWindow.py:162 MainWindow.py:189 MainWindow.py:206 MainWindow.py:347
+#: MainWindow.py:162 MainWindow.py:190 MainWindow.py:205 MainWindow.py:346
 msgid "Error"
 msgstr "Ошибка"
 
-#: MainWindow.py:163 MainWindow.py:207
+#: MainWindow.py:163 MainWindow.py:206
 msgid "Failed to save file. Choose `Save As...` function."
 msgstr "Не удалось сохранить файл. Выберите `Сохранить как...` опцию."
 
-#: MainWindow.py:169 MainWindow.py:197 MainWindow.py:213 MainWindow.py:317
-#: MainWindow.py:352 MainWindow.py:390 MainWindow.py:406 MainWindow.py:418
+#: MainWindow.py:169 MainWindow.py:196 MainWindow.py:212 MainWindow.py:316
+#: MainWindow.py:351 MainWindow.py:389 MainWindow.py:405 MainWindow.py:417
 msgid "Exception"
 msgstr "Исключение"
 
@@ -81,79 +81,79 @@ msgstr "Исключение в функции actionSaveToFile(): %s"
 msgid "Save File"
 msgstr "Сохранить файл"
 
-#: MainWindow.py:190
+#: MainWindow.py:191
 msgid "File does not match .json files. Name the file correctly"
 msgstr "Файл не соответствует расширению .json. Назовите файл корректно."
 
-#: MainWindow.py:198
+#: MainWindow.py:197
 #, python-format
 msgid "Exception in actionSaveFileAs() function: %s"
 msgstr "Исключение в функции actionSaveFileAs(): %s"
 
-#: MainWindow.py:214
+#: MainWindow.py:213
 #, python-format
 msgid "Exception in actionRefreshApplication() function: %s"
 msgstr "Исключение в функции actionRefreshApplication(): %s"
 
-#: MainWindow.py:229
+#: MainWindow.py:228
 msgid "Add Item"
 msgstr "Добавить элемент"
 
-#: MainWindow.py:232
+#: MainWindow.py:231
 msgid "Add dict()"
 msgstr "Добавить словарь()"
 
-#: MainWindow.py:235
+#: MainWindow.py:234
 msgid "Add list()"
 msgstr "Добавить список()"
 
-#: MainWindow.py:240
+#: MainWindow.py:239
 msgid "Insert Child"
 msgstr "Добавить дочерний элемент"
 
-#: MainWindow.py:243
+#: MainWindow.py:242
 msgid "Insert Child dict()"
 msgstr "Добавить дочерний словарь()"
 
-#: MainWindow.py:246
+#: MainWindow.py:245
 msgid "Insert Child list()"
 msgstr "Добавить дочерний список()"
 
-#: MainWindow.py:251
+#: MainWindow.py:250
 msgid "Delete Item"
 msgstr "Удалить элемент"
 
-#: MainWindow.py:257
+#: MainWindow.py:256
 msgid "Open File"
 msgstr "Открыть файл"
 
-#: MainWindow.py:318
+#: MainWindow.py:317
 #, python-format
 msgid "Exception in openRightClickMenu() function: %s"
 msgstr "Исключение в функции openRightClickMenu(): %s"
 
-#: MainWindow.py:348
+#: MainWindow.py:347
 msgid ""
 "You can only use this function to root QTreeView Node, choose another "
 "actions"
 msgstr "Данную функцию можно использовать только для корневого элемента, выберите другую опцию"
 
-#: MainWindow.py:353
+#: MainWindow.py:352
 #, python-format
 msgid "Exception in treeAddItem() function: %s"
 msgstr "Исключение в функции treeAddItem(): %s"
 
-#: MainWindow.py:391
+#: MainWindow.py:390
 #, python-format
 msgid "Exception in treeAddItemChild() function: %s"
 msgstr "Исключение в функции treeAddItemChild(): %s"
 
-#: MainWindow.py:407
+#: MainWindow.py:406
 #, python-format
 msgid "Exception in treeItemDelete() function: %s"
 msgstr "Исключение в функции treeItemDelete(): %s"
 
-#: MainWindow.py:419
+#: MainWindow.py:418
 #, python-format
 msgid "Exception in treeItemOpenJsonFile() function: %s"
 msgstr "Исключение в функции treeItemOpenJsonFile(): %s"
