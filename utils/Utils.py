@@ -74,7 +74,9 @@ class Utils():
 
             return abs_file_path
         except OSError as exception:
-            return str(exception)
+            print("OSError occurred: %s" % exception)
+        except BaseException exception:
+            print("Unexpected exception: %s" % exception)
 
     @classmethod
     def file_name_match(cls, file_name: str) -> bool:
