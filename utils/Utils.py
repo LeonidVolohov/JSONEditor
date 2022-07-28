@@ -75,7 +75,7 @@ class Utils():
             return abs_file_path
         except OSError as exception:
             print("OSError occurred: %s" % exception)
-        except BaseException exception:
+        except BaseException as exception:
             print("Unexpected exception: %s" % exception)
 
     @classmethod

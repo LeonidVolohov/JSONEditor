@@ -33,7 +33,7 @@ class JsonParsing():
 
     Attributes:
     -----------
-    _file_name:
+    file_name:
         File name of the file to work with
 
     Methods:
@@ -173,11 +173,11 @@ class JsonParsing():
 
         ordered_dict = OrderedDict()
         ordered_dict[TRANSLATE_JSON_PARSING.gettext("__Name__")] = data.get(
-            'name', default=None)
+            'name', None)
         ordered_dict[TRANSLATE_JSON_PARSING.gettext("__Group__")] = data.get(
-            'group', default=None)
+            'group', None)
         ordered_dict[TRANSLATE_JSON_PARSING.gettext("__Description__")] = data.get(
-            'description', default=None)
+            'description', None)
         filtered_dict = {key: value for key, value in ordered_dict.items() if value is not None}
 
         ordered_dict.clear()
