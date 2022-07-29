@@ -71,7 +71,6 @@ class QJsonTreeItem(object):
 
     load_json_to_tree:
         Prepare data to load it to tree
-
     """
 
     def __init__(self, data, parent=None) -> None:
@@ -177,7 +176,7 @@ class QJsonTreeItem(object):
                 root_item.appendChild(child)
 
         elif isinstance(value, list):
-            for value in enumerate(value):
+            for index, value in enumerate(value):
                 child = cls.load_json_to_tree(value, root_item)
                 child.key = JsonParsing().get_name_from_dict(value)
                 child.type = type(value)

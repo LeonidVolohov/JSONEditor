@@ -21,11 +21,11 @@ from utils.Utils import Utils
 CONFIG_OBJECT = ConfigParser()
 CONFIG_OBJECT.read("utils/config/config.ini")
 
-TRANSLATE_JSON_PARSING = gettext.translation(
+TRANSLATE_JSONPARSING = gettext.translation(
     domain="JsonParsing",
     localedir=Utils().get_abs_file_path("utils/locale"),
     languages=[CONFIG_OBJECT.get("Language", "defaultlanguage")])
-TRANSLATE_JSON_PARSING.install()
+TRANSLATE_JSONPARSING.install()
 
 
 class JsonParsing():
@@ -169,14 +169,14 @@ class JsonParsing():
         -------
             None
         """
-        output_string = TRANSLATE_JSON_PARSING.gettext("__Object__")
+        output_string = TRANSLATE_JSONPARSING.gettext("__Object__")
 
         ordered_dict = OrderedDict()
-        ordered_dict[TRANSLATE_JSON_PARSING.gettext("__Name__")] = data.get(
+        ordered_dict[TRANSLATE_JSONPARSING.gettext("__Name__")] = data.get(
             'name', None)
-        ordered_dict[TRANSLATE_JSON_PARSING.gettext("__Group__")] = data.get(
+        ordered_dict[TRANSLATE_JSONPARSING.gettext("__Group__")] = data.get(
             'group', None)
-        ordered_dict[TRANSLATE_JSON_PARSING.gettext("__Description__")] = data.get(
+        ordered_dict[TRANSLATE_JSONPARSING.gettext("__Description__")] = data.get(
             'description', None)
         filtered_dict = {key: value for key, value in ordered_dict.items() if value is not None}
 
