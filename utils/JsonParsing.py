@@ -60,8 +60,7 @@ class JsonParsing():
 
     @property
     def file_name(self):
-        """Get or set current file_name
-        """
+        """Get or set current file_name"""
         return self._file_name
 
     @file_name.setter
@@ -88,7 +87,7 @@ class JsonParsing():
             OSError:
                 An error occured during opening the file
             BaseException:
-                Base exception if others could not catch exception
+                Base exception if others could not catch the exception
         """
         try:
             with open(self.file_name, mode='r', encoding="utf-8") as opened_file:
@@ -128,7 +127,7 @@ class JsonParsing():
             OSError:
                 An error occured during opening the file
             BaseException:
-                Base exception if others could not catch exception
+                Base exception if others could not the catch exception
         """
         try:
             with open(self.file_name, mode="w", encoding="utf-8") as opened_file:

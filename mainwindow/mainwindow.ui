@@ -39,46 +39,46 @@
      <string>File</string>
     </property>
     <addaction name="separator"/>
-    <addaction name="actionNew"/>
-    <addaction name="actionOpen"/>
+    <addaction name="action_new_json"/>
+    <addaction name="action_open_file"/>
     <addaction name="separator"/>
-    <addaction name="actionSave"/>
-    <addaction name="actionSaveAs"/>
+    <addaction name="action_save_file"/>
+    <addaction name="action_save_file_as"/>
     <addaction name="separator"/>
-    <addaction name="actionRefresh"/>
+    <addaction name="action_refresh_file"/>
     <addaction name="separator"/>
-    <addaction name="actionClose"/>
+    <addaction name="action_close_app"/>
     <addaction name="separator"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionOpen">
+  <action name="action_open_file">
    <property name="text">
     <string>Open</string>
    </property>
   </action>
-  <action name="actionClose">
+  <action name="action_close_app">
    <property name="text">
     <string>Close</string>
    </property>
   </action>
-  <action name="actionSave">
+  <action name="action_save_file">
    <property name="text">
     <string>Save</string>
    </property>
   </action>
-  <action name="actionRefresh">
+  <action name="action_refresh_file">
    <property name="text">
     <string>Refresh</string>
    </property>
   </action>
-  <action name="actionSaveAs">
+  <action name="action_save_file_as">
    <property name="text">
     <string>Save As...</string>
    </property>
   </action>
-  <action name="actionNew">
+  <action name="action_new_json">
    <property name="text">
     <string>New</string>
    </property>
