@@ -649,10 +649,14 @@ class MainWindow(QMainWindow):
                             index=child,
                             value=TRANSLATE_MAINWINDOW.gettext("[No data]"),
                             role=role)
+                        return
                     elif role == Qt.DisplayRole or Qt.ToolTipRole:
                         self.model.setData(index=child, value=None, role=role)
                         self.action_save_json_file()
                         self.action_refresh_json_file()
+                        return
+                    else:
+                        return
             else:
                 QMessageBox.about(
                     self,
