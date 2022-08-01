@@ -285,9 +285,9 @@ class MainWindow(QMainWindow):
         options |= QFileDialog.DontUseNativeDialog
         file_name, _ = QFileDialog.getOpenFileName(
             self,
-            TRANSLATE_MAINWINDOW.gettext("Choose Json File"),
+            TRANSLATE_MAINWINDOW.gettext("Choose JSON File"),
             "",
-            "Json Files (*.json)",
+            "JSON Files (*.json)",
             options=options)
         if file_name:
             self.json_file_name = file_name
@@ -369,7 +369,7 @@ class MainWindow(QMainWindow):
                 self,
                 TRANSLATE_MAINWINDOW.gettext("Save File"),
                 "",
-                "Json Files (*.json);;Text Files (*.txt);;All Files (*)")
+                "JSON Files (*.json);;Text Files (*.txt);;All Files (*)")
             if Utils().file_name_match(file_name[0]):
                 JsonParsing(file_name[0]).write_json_to_file(self.model.get_json_from_tree())
 
@@ -646,7 +646,6 @@ class MainWindow(QMainWindow):
 
                 for column in range(self.model.columnCount(parent)):
                     child = self.model.index(index.row() + 1, column, parent)
-
                     if role == Qt.EditRole:
                         self.model.setData(
                             index=child,
