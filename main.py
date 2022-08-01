@@ -14,7 +14,7 @@ if __name__ == '__main__':
 
     APPLICATION = QApplication(sys.argv)
     MAIN_WINDOW = MainWindow(
-        json_file_name=CONFIG_OBJECT.get("Other", "defaultjsonfilename"),
-        show_maximized=Utils().string_to_boolean(CONFIG_OBJECT.get("MainWindow", "showmaximized")))
+        json_file_name=CONFIG_OBJECT.get("Other", "default_json_file_name"),
+        show_maximized=Utils().string_to_boolean(CONFIG_OBJECT.get("MainWindow", "show_maximized")))
 
     sys.exit(APPLICATION.exec_())

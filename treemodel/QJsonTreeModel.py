@@ -29,13 +29,13 @@ CONFIG_OBJECT.read("utils/config/config.ini")
 TRANSLATE_QJSONTREEMODEL = gettext.translation(
     domain="QJsonTreeModel",
     localedir=Utils().get_abs_file_path("utils/locale"),
-    languages=[CONFIG_OBJECT.get("Language", "defaultlanguage")])
+    languages=[CONFIG_OBJECT.get("Language", "default_language")])
 TRANSLATE_QJSONTREEMODEL.install()
 
 TRANSLATE_QJSONTREEITEM_ENGLISH = gettext.translation(
     domain="QJsonTreeItem",
     localedir=Utils().get_abs_file_path("utils/locale"),
-    languages=[CONFIG_OBJECT.get("Language", "writetojsonlanguage")])
+    languages=[CONFIG_OBJECT.get("Language", "write_to_json_language")])
 TRANSLATE_QJSONTREEITEM_ENGLISH.install()
 
 

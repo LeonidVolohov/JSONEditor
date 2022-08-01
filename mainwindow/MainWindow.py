@@ -35,7 +35,7 @@ CONFIG_OBJECT.read("utils/config/config.ini")
 TRANSLATE_MAINWINDOW = gettext.translation(
     domain="MainWindow",
     localedir=Utils().get_abs_file_path("utils/locale"),
-    languages=[CONFIG_OBJECT.get("Language", "defaultlanguage")])
+    languages=[CONFIG_OBJECT.get("Language", "default_language")])
 TRANSLATE_MAINWINDOW.install()
 
 MAIN_WINDOW_FILE_NAME = Utils().get_abs_file_path("mainwindow/mainwindow.ui")
@@ -110,12 +110,14 @@ class MainWindow(QMainWindow):
         uic.loadUi(MAIN_WINDOW_FILE_NAME, self)
 
         self._json_file_name = json_file_name
+        self._model = None
+        self.new_window = None
 
         if len(json_file_name) == 0:
-            self.json_text = {TRANSLATE_MAINWINDOW.gettext("[No data]"):
-                              TRANSLATE_MAINWINDOW.gettext("[No data]")}
+            self._json_text = {TRANSLATE_MAINWINDOW.gettext("[No data]"):
+                               TRANSLATE_MAINWINDOW.gettext("[No data]")}
         else:
-            self.json_text = JsonParsing(json_file_name).get_json_from_file() # dict
+            self._json_text = JsonParsing(json_file_name).get_json_from_file() # dict
 
         self.setWindowTitle(Utils().get_abs_file_path(json_file_name))
         #self.setGeometry(0, 0, 640, 480)
@@ -183,19 +185,19 @@ class MainWindow(QMainWindow):
         self.tree_view.customContextMenuRequested.connect(self.open_right_click_menu)
 
         self.tree_view.setAlternatingRowColors(
-            Utils().string_to_boolean(CONFIG_OBJECT.get("QTreeView", "setalternatingrowcolors")))
+            Utils().string_to_boolean(CONFIG_OBJECT.get("QTreeView", "set_alternating_row_colors")))
         self.tree_view.setAnimated(
-            Utils().string_to_boolean(CONFIG_OBJECT.get("QTreeView", "setanimated")))
+            Utils().string_to_boolean(CONFIG_OBJECT.get("QTreeView", "set_animated")))
 
         self.model.clear()
         self.model.load(self.json_text)
 
         layout.addWidget(self.tree_view)
 
-        if Utils().string_to_boolean(CONFIG_OBJECT.get("QTreeView", "expandall")):
+        if Utils().string_to_boolean(CONFIG_OBJECT.get("QTreeView", "expand_all")):
             self.tree_view.expandAll()
-        if int(CONFIG_OBJECT.get("QTreeView", "expandtodepth")) >= -1:
-            self.tree_view.expandToDepth(int(CONFIG_OBJECT.get("QTreeView", "expandtodepth")))
+        if int(CONFIG_OBJECT.get("QTreeView", "expand_to_depth")) >= -1:
+            self.tree_view.expandToDepth(int(CONFIG_OBJECT.get("QTreeView", "expand_to_depth")))
 
         self.setCentralWidget(widget)
 
@@ -454,7 +456,8 @@ class MainWindow(QMainWindow):
                 TRANSLATE_MAINWINDOW.gettext(
                     "BaseException in action_refresh_json_file() function: %s") % str(exception))
 
-    def action_close_application(self) -> None:
+    @classmethod
+    def action_close_application(cls) -> None:
         """Closes MainWindow application.
 
         Args:
@@ -637,7 +640,7 @@ class MainWindow(QMainWindow):
             index = self.tree_view.selectionModel().currentIndex()
             parent = index.parent()
 
-            if self.model.data(parent, Qt.EditRole) == None:
+            if self.model.data(parent, Qt.EditRole) is None:
                 if not self.model.insertRow(index.row() + 1, parent):
                     return
 
@@ -664,7 +667,7 @@ class MainWindow(QMainWindow):
                     TRANSLATE_MAINWINDOW.gettext(
                         "You can only use this function to root QTreeView Node, \
                         choose another actions"))
-        except Exception as exception:
+        except BaseException as exception:
             QMessageBox.about(
                 self,
                 TRANSLATE_MAINWINDOW.gettext("Exception"),
@@ -717,7 +720,7 @@ class MainWindow(QMainWindow):
                     # Only expand or save-refresh. Cant use both
                     self.action_save_json_file()
                     self.action_refresh_json_file()
-        except Exception as exception:
+        except BaseException as exception:
             QMessageBox.about(
                 self,
                 TRANSLATE_MAINWINDOW.gettext("Exception"),
@@ -748,7 +751,7 @@ class MainWindow(QMainWindow):
                 position=index.row(),
                 rows=1,
                 parent=parent)
-        except Exception as exception:
+        except BaseException as exception:
             QMessageBox.about(
                 self,
                 TRANSLATE_MAINWINDOW.gettext("Exception"),
@@ -778,7 +781,7 @@ class MainWindow(QMainWindow):
             self.new_window = MainWindow(
                 json_file_name=Utils().get_abs_file_path(file_name),
                 show_maximized=False)
-        except Exception as exception:
+        except BaseException as exception:
             QMessageBox.about(
                 self,
                 TRANSLATE_MAINWINDOW.gettext("Exception"),

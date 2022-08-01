@@ -24,7 +24,7 @@ CONFIG_OBJECT.read("utils/config/config.ini")
 TRANSLATE_JSONPARSING = gettext.translation(
     domain="JsonParsing",
     localedir=Utils().get_abs_file_path("utils/locale"),
-    languages=[CONFIG_OBJECT.get("Language", "defaultlanguage")])
+    languages=[CONFIG_OBJECT.get("Language", "default_language")])
 TRANSLATE_JSONPARSING.install()
 
 
