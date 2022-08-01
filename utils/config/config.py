@@ -1,27 +1,31 @@
+"""This module creates config.ini file for an easier changing Application properties."""
 from configparser import ConfigParser
 
-configObject = ConfigParser()
 
-configObject["QTreeView"] = {
-	"setAlternatingRowColors":	"False",
-	"setAnimated":				"False",
-	
-	"expandAll":				"False",
-	"expandToDepth":			"-2", 				# -2: Dont Expand, -1: ExpandAll, 0: Zero level, ...
+CONFIG_OBJECT = ConfigParser()
+
+CONFIG_OBJECT["QTreeView"] = {
+    "set_alternating_row_colors": "False",
+    "set_animated": "False",
+
+    "expand_all": "False",
+
+    # -2: Dont Expand, -1: ExpandAll, 0: Expand to 1 level, ...
+    "expand_to_depth": "-2",
 }
 
-configObject["Other"] = {
-	"defaultJsonFileName":		"config_apak.json"	# default: ""
+CONFIG_OBJECT["Other"] = {
+    "default_json_file_name": "config_apak.json" # default: ""
 }
 
-configObject["Language"] = {
-	"defaultLanguage":			"en",				# Language for GUI
-	"writeToJsonLanguage":		"en" 				# Language for writing back to JSON-file
+CONFIG_OBJECT["Language"] = {
+    "default_language": "en", # Language for GUI
+    "write_to_json_language": "en" # Language for writing back to JSON-file
 }
 
-configObject["MainWindow"] = {
-	"showMaximized":			"False"
+CONFIG_OBJECT["MainWindow"] = {
+    "show_maximized": "False"
 }
 
-with open('config.ini', 'w') as config:
-	configObject.write(config)
+with open("config.ini", "w") as config:
+    CONFIG_OBJECT.write(config)

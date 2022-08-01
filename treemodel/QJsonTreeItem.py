@@ -1,141 +1,212 @@
+"""This module create basic TreeItem for QJsonTreeModel
+
+    Typical usage example:
+    ----------------------
+
+    rootItem = QJsonTreeItem("Key", "Value")
+    document = {"Example": "Example value"}
+    rootItem.load_json_to_tree(document)
+
+"""
 import gettext
 import sys
 from configparser import ConfigParser
 
 sys.path.insert(1, "..")
-from utils.JsonParsing import *
+from utils.JsonParsing import JsonParsing
+from utils.Utils import Utils
 
 
-configObject = ConfigParser()
-configObject.read("utils/config/config.ini")
+CONFIG_OBJECT = ConfigParser()
+CONFIG_OBJECT.read("utils/config/config.ini")
 
-translateQJsonTreeItem = gettext.translation(
-		domain="QJsonTreeItem", 
-		localedir=Utils().getAbsFilePath("utils/locale"), 
-		languages=[configObject.get("Language", "defaultlanguage")])
-translateQJsonTreeItem.install()
+TRANSLATE_QJSONTREEITEM = gettext.translation(
+    domain="QJsonTreeItem",
+    localedir=Utils().get_abs_file_path("utils/locale"),
+    languages=[CONFIG_OBJECT.get("Language", "default_language")])
+TRANSLATE_QJSONTREEITEM.install()
 
 
 class QJsonTreeItem(object):
-	def __init__(self, data, parent=None):
-		self._parent = parent
+    """Class to create basic tree item
 
-		self._key = ""
-		self._value = ""
-		self._type = None
-		self._children = list()
-		self.itemData = data
+    Attributes:
+    -----------
+    data:
+        Data for the tree item
+    parent:
+        Parent of the item
 
-	def appendChild(self, item):
-		self._children.append(item)
+    Methods:
+    --------
+    appendChild:
+        Appends child to the list
 
-	def child(self, row):
-		return self._children[row]
+    child:
+        Return child for specific row
 
-	def parent(self):
-		return self._parent
+    parent:
+        Return parent
 
-	def childCount(self):
-		return len(self._children)
+    childCount:
+        Return length of list
 
-	def columnCount(self):
-		return len(self.itemData)
+    columnCount:
+        Return column count
 
-	def row(self):
-		return (
-			self._parent._children.index(self)
-			if self._parent else 0
-		)
+    row:
+        Return index of tree
 
-	@property
-	def key(self):
-		return self._key
+    data:
+        Return data for specific column
 
-	@key.setter
-	def key(self, key):
-		self._key = key
+    setData:
+        Sets given data for specific column
 
-	@property
-	def value(self):
-		return self._value
+    insertChildren:
+        Insert children for specific row and column
 
-	@value.setter
-	def value(self, value):
-		self._value = value
+    removeChildren:
+        Remove children from specicif row
 
-	@property
-	def type(self):
-		return self._type
+    load_json_to_tree:
+        Prepare data to load it to tree
+    """
 
-	@type.setter
-	def type(self, typ):
-		self._type = typ
+    def __init__(self, data, parent=None) -> None:
+        self._parent = parent
+        self._key = ""
+        self._value = ""
+        self._type = None
+        self._children = list()
+        self.item_data = data
 
-	def data(self, column):
-		if column is 0:
-			return self.key
-		elif column is 1:
-			return self.value
+    @property
+    def key(self):
+        return self._key
 
-	def setData(self, column, value):
-		if column is 0:
-			self.key = value
-		if column is 1:
-			self.value = value
+    @key.setter
+    def key(self, key):
+        self._key = key
 
-	@classmethod
-	def loadJsonToTree(self, value, parent=None, sort=True):
-		rootItem = QJsonTreeItem(parent=parent, data=value)
-		rootItem.key = "root"
+    @property
+    def value(self):
+        return self._value
 
-		if isinstance(value, dict):
-			items = (
-				sorted(value.items())
-				if sort else value.items()
-			)
+    @value.setter
+    def value(self, value):
+        self._value = value
 
-			for key, value in items:
-				child = self.loadJsonToTree(value, rootItem)
-				child.key = translateQJsonTreeItem.gettext(key)
-				child.type = type(value)
-				rootItem.appendChild(child)
+    @property
+    def type(self):
+        return self._type
 
-		elif isinstance(value, list):
-			for index, value in enumerate(value):
-				child = self.loadJsonToTree(value, rootItem)
-				child.key = JsonParsing().getNameFromDict(value)
-				child.type = type(value)
-				rootItem.appendChild(child)
+    @type.setter
+    def type(self, typ):
+        self._type = typ
 
-		else:
-			rootItem.value = value
-			rootItem.type = type(value)
+    def appendChild(self, item) -> None:
+        self._children.append(item)
 
-		return rootItem
+    def child(self, row) -> None:
+        return self._children[row]
 
-	def insertChildren(self, position, rows, columns):
-		if position < 0 or position > len(self._children):
-			return False
+    def parent(self) -> None:
+        return self._parent
 
-		for row in range(rows):
-			data = [None for v in range(columns)]
-			item = QJsonTreeItem(data, self)
-			self._children.insert(position, item)
+    def childCount(self) -> None:
+        return len(self._children)
 
-		return True
+    def columnCount(self) -> None:
+        return len(self.item_data)
 
-	def removeChildren(self, position, rows):
-		if position < 0 or position + rows > len(self._children):
-			return False
+    def row(self) -> None:
+        return (
+            self._parent._children.index(self) if self._parent
+            else 0
+        )
 
-		for row in range(rows):
-			self._children.pop(position)
+    def data(self, column) -> None:
+        if column is 0:
+            return self.key
+        elif column is 1:
+            return self.value
 
-		return True
+    def setData(self, column, value) -> None:
+        if column is 0:
+            self.key = value
+        if column is 1:
+            self.value = value
+
+    def insertChildren(self, position, rows, columns) -> bool:
+        if position < 0 or position > len(self._children):
+            return False
+
+        for row in range(rows):
+            data = [None for v in range(columns)]
+            item = QJsonTreeItem(data, self)
+            self._children.insert(position, item)
+
+        return True
+
+    def removeChildren(self, position, rows) -> bool:
+        if position < 0 or position + rows > len(self._children):
+            return False
+
+        for row in range(rows):
+            self._children.pop(position)
+
+        return True
 
 
-def main():
-	pass
+    """Loads JSON to tree.
 
-if __name__ == '__main__':
-	main()
+    Recursion function to prepare data for further loading to QTreeView 
+
+    Args:
+    -----
+        value: Any
+            Value to load
+
+        parent: QJsonTreeItem
+
+        sort:
+            Sort or not
+
+    Returns:
+    --------
+        QJsonTreeItem
+
+    Raises:
+    -------
+        None
+    """
+    @classmethod
+    def load_json_to_tree(cls, value, parent=None, sort: bool=True):
+        root_item = QJsonTreeItem(parent=parent, data=value)
+        root_item.key = "root"
+
+        if isinstance(value, dict):
+            items = (
+                sorted(value.items())
+                if sort else value.items()
+            )
+
+            for key, value in items:
+                child = cls.load_json_to_tree(value, root_item)
+                child.key = TRANSLATE_QJSONTREEITEM.gettext(key)
+                child.type = type(value)
+                root_item.appendChild(child)
+
+        elif isinstance(value, list):
+            for index, value in enumerate(value):
+                child = cls.load_json_to_tree(value, root_item)
+                child.key = JsonParsing().get_name_from_dict(value)
+                child.type = type(value)
+                root_item.appendChild(child)
+
+        else:
+            root_item.value = value
+            root_item.type = type(value)
+
+        return root_item

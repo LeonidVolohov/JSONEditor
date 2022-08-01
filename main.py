@@ -1,29 +1,20 @@
-import json
+"""Main module"""
 import sys
-import os
 from configparser import ConfigParser
 
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
+from PyQt5.QtWidgets import QApplication
 
-from utils.Utils import *
-from utils.JsonParsing import *
-from mainwindow.MainWindow import *
+from utils.Utils import Utils
+from mainwindow.MainWindow import MainWindow
 
-
-def main():
-	pass
 
 if __name__ == '__main__':
-	main()
+    CONFIG_OBJECT = ConfigParser()
+    CONFIG_OBJECT.read("utils/config/config.ini")
 
-	configObject = ConfigParser()
-	configObject.read("utils/config/config.ini")
-	
-	application = QApplication(sys.argv)
-	mainWindow = MainWindow(
-			jsonFileName = configObject.get("Other", "defaultjsonfilename"), 
-			showMaximized = Utils().stringToBoolean(configObject.get("MainWindow", "showmaximized")))
+    APPLICATION = QApplication(sys.argv)
+    MAIN_WINDOW = MainWindow(
+        json_file_name=CONFIG_OBJECT.get("Other", "default_json_file_name"),
+        show_maximized=Utils().string_to_boolean(CONFIG_OBJECT.get("MainWindow", "show_maximized")))
 
-	sys.exit(application.exec_())
+    sys.exit(APPLICATION.exec_())
