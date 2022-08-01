@@ -81,27 +81,6 @@ class QJsonTreeItem(object):
         self._children = list()
         self.item_data = data
 
-    def appendChild(self, item):
-        self._children.append(item)
-
-    def child(self, row):
-        return self._children[row]
-
-    def parent(self):
-        return self._parent
-
-    def childCount(self):
-        return len(self._children)
-
-    def columnCount(self):
-        return len(self.item_data)
-
-    def row(self):
-        return (
-            self._parent._children.index(self) if self._parent
-            else 0
-        )
-
     @property
     def key(self):
         return self._key
@@ -126,19 +105,40 @@ class QJsonTreeItem(object):
     def type(self, typ):
         self._type = typ
 
-    def data(self, column):
+    def appendChild(self, item) -> None:
+        self._children.append(item)
+
+    def child(self, row) -> None:
+        return self._children[row]
+
+    def parent(self) -> None:
+        return self._parent
+
+    def childCount(self) -> None:
+        return len(self._children)
+
+    def columnCount(self) -> None:
+        return len(self.item_data)
+
+    def row(self) -> None:
+        return (
+            self._parent._children.index(self) if self._parent
+            else 0
+        )
+
+    def data(self, column) -> None:
         if column is 0:
             return self.key
         elif column is 1:
             return self.value
 
-    def setData(self, column, value):
+    def setData(self, column, value) -> None:
         if column is 0:
             self.key = value
         if column is 1:
             self.value = value
 
-    def insertChildren(self, position, rows, columns):
+    def insertChildren(self, position, rows, columns) -> bool:
         if position < 0 or position > len(self._children):
             return False
 
@@ -149,7 +149,7 @@ class QJsonTreeItem(object):
 
         return True
 
-    def removeChildren(self, position, rows):
+    def removeChildren(self, position, rows) -> bool:
         if position < 0 or position + rows > len(self._children):
             return False
 
@@ -158,8 +158,31 @@ class QJsonTreeItem(object):
 
         return True
 
+
+    """Loads JSON to tree.
+
+    Recursion function to prepare data for further loading to QTreeView 
+
+    Args:
+    -----
+        value: Any
+            Value to load
+
+        parent: QJsonTreeItem
+
+        sort:
+            Sort or not
+
+    Returns:
+    --------
+        QJsonTreeItem
+
+    Raises:
+    -------
+        None
+    """
     @classmethod
-    def load_json_to_tree(cls, value, parent=None, sort=True):
+    def load_json_to_tree(cls, value, parent=None, sort: bool=True):
         root_item = QJsonTreeItem(parent=parent, data=value)
         root_item.key = "root"
 
