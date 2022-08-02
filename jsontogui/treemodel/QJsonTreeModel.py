@@ -235,9 +235,12 @@ class QJsonTreeModel(QAbstractItemModel):
         """Sets value for specific index.
 
         Sets value for specific index.
-        If role is Qt.EditRole, then sets str() value.
-        If value is Qt.DisplayRole, then sets dict() value.
-        If value is Qt.ToolTipRole, then sets list() value.
+        If role is Qt.EditRole, default edit
+        If value is Qt.DecorationRole, then sets str() value.
+        If value is Qt.ToolTipRole, then sets int() value.
+        If value is Qt.StatusTipRole, then sets bool() value.
+        If value is Qt.WhatsThisRole, then sets dict() value.
+        If value is Qt.SizeHintRole, then sets list() value.
 
         Args:
         -----
@@ -258,19 +261,34 @@ class QJsonTreeModel(QAbstractItemModel):
         """
         if role == Qt.EditRole:
             item = index.internalPointer()
-
-            # Somehow not working, need to specify directly column id
-            # Currently it adds value to column=0, column=1 is equal "" after adding
             item.setData(index.column(), value)
             self.dataChanged.emit(index, index, [Qt.EditRole])
             return True
-        if role == Qt.DisplayRole:
+        if role == Qt.DecorationRole:
+            item = index.internalPointer()
+            item.setData(0, value)
+            item.setData(1, TRANSLATE_QJSONTREEMODEL.gettext("[No string value]"))
+            self.dataChanged.emit(index, index, [Qt.EditRole])
+            return True
+        if role == Qt.ToolTipRole:
+            item = index.internalPointer()
+            item.setData(0, value)
+            item.setData(1, int(1))
+            self.dataChanged.emit(index, index, [Qt.EditRole])
+            return True
+        if role == Qt.StatusTipRole:
+            item = index.internalPointer()
+            item.setData(0, value)
+            item.setData(1, False)
+            self.dataChanged.emit(index, index, [Qt.EditRole])
+            return True
+        if role == Qt.WhatsThisRole:
             item = index.internalPointer()
             item.setData(0, TRANSLATE_QJSONTREEMODEL.gettext("[No dict() name]"))
             item.setData(1, dict())
             self.dataChanged.emit(index, index, [Qt.EditRole])
             return True
-        if role == Qt.ToolTipRole:
+        if role == Qt.SizeHintRole:
             item = index.internalPointer()
             item.setData(0, TRANSLATE_QJSONTREEMODEL.gettext("[No list() name]"))
             item.setData(1, list())

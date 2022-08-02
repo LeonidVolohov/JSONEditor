@@ -17,7 +17,7 @@ from functools import partial
 from configparser import ConfigParser
 
 from PyQt5.QtWidgets import (
-    QApplication, QFileDialog, QMainWindow, QMenu,
+    QApplication, QFileDialog, QMainWindow, QMenu, QAction,
     QMessageBox, QTreeView, QVBoxLayout, QWidget
 )
 from PyQt5.QtGui import QKeySequence
@@ -501,37 +501,63 @@ class MainWindow(QMainWindow):
                 return
 
             right_click_menu = QMenu()
-            action_add_item = right_click_menu.addAction(
+            action_add_item = right_click_menu.addMenu(
                 self.tr(TRANSLATE_MAINWINDOW.gettext("Add Item")))
-            action_add_item.triggered.connect(
-                partial(self.tree_add_item, Qt.EditRole))
+
+            action_add_item_str = action_add_item.addAction(
+                 self.tr(TRANSLATE_MAINWINDOW.gettext("Add string")))
+            action_add_item_str.triggered.connect(
+                partial(self.tree_add_item, Qt.DecorationRole))
+
+            action_add_item_int = action_add_item.addAction(
+                 self.tr(TRANSLATE_MAINWINDOW.gettext("Add integer")))
+            action_add_item_int.triggered.connect(
+                partial(self.tree_add_item, Qt.ToolTipRole))
+
+            action_add_item_bool = action_add_item.addAction(
+                 self.tr(TRANSLATE_MAINWINDOW.gettext("Add boolean")))
+            action_add_item_bool.triggered.connect(
+                partial(self.tree_add_item, Qt.StatusTipRole))
 
             action_add_dictionary = right_click_menu.addAction(
                 self.tr(TRANSLATE_MAINWINDOW.gettext("Add dict()")))
             action_add_dictionary.triggered.connect(
-                partial(self.tree_add_item, Qt.DisplayRole))
+                partial(self.tree_add_item, Qt.WhatsThisRole))
 
             action_add_list = right_click_menu.addAction(
                 self.tr(TRANSLATE_MAINWINDOW.gettext("Add list()")))
             action_add_list.triggered.connect(
-                partial(self.tree_add_item, Qt.ToolTipRole))
+                partial(self.tree_add_item, Qt.SizeHintRole))
 
             right_click_menu.addSeparator()
 
-            action_insert_child = right_click_menu.addAction(
+            action_insert_child = right_click_menu.addMenu(
                 self.tr(TRANSLATE_MAINWINDOW.gettext("Insert Child")))
-            action_insert_child.triggered.connect(
-                partial(self.tree_add_item_child, Qt.EditRole))
+
+            action_insert_child_str = action_insert_child.addAction(
+                self.tr(TRANSLATE_MAINWINDOW.gettext("Insert child string"))) 
+            action_insert_child_str.triggered.connect(
+                partial(self.tree_add_item_child, Qt.DecorationRole))
+
+            action_insert_child_int = action_insert_child.addAction(
+                self.tr(TRANSLATE_MAINWINDOW.gettext("Insert child integer"))) 
+            action_insert_child_int.triggered.connect(
+                partial(self.tree_add_item_child, Qt.ToolTipRole))
+
+            action_insert_child_bool = action_insert_child.addAction(
+                self.tr(TRANSLATE_MAINWINDOW.gettext("Insert child boolean"))) 
+            action_insert_child_bool.triggered.connect(
+                partial(self.tree_add_item_child, Qt.StatusTipRole))
 
             action_insert_child_dict = right_click_menu.addAction(
                 self.tr(TRANSLATE_MAINWINDOW.gettext("Insert Child dict()")))
             action_insert_child_dict.triggered.connect(
-                partial(self.tree_add_item_child, Qt.DisplayRole))
+                partial(self.tree_add_item_child, Qt.WhatsThisRole))
 
             action_insert_child_list = right_click_menu.addAction(
                 self.tr(TRANSLATE_MAINWINDOW.gettext("Insert Child list()")))
             action_insert_child_list.triggered.connect(
-                partial(self.tree_add_item_child, Qt.ToolTipRole))
+                partial(self.tree_add_item_child, Qt.SizeHintRole))
 
             right_click_menu.addSeparator()
 
@@ -542,7 +568,7 @@ class MainWindow(QMainWindow):
 
             right_click_menu.addSeparator()
 
-            file_name = self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole)
+            file_name = str(self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole))
             action_tree_item_open_json_file = right_click_menu.addAction(
                 self.tr(TRANSLATE_MAINWINDOW.gettext("Open File")))
             action_tree_item_open_json_file.triggered.connect(
@@ -551,52 +577,52 @@ class MainWindow(QMainWindow):
 
             if ((self.model.data(parent, Qt.EditRole) is None) and
                     (self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole) == "")):
-                action_add_item.setVisible(True)
+                action_add_item.menuAction().setVisible(True)
                 action_add_dictionary.setVisible(True)
                 action_add_list.setVisible(True)
-                action_insert_child.setVisible(True)
+                action_insert_child.menuAction().setVisible(True)
                 action_insert_child_dict.setVisible(True)
                 action_insert_child_list.setVisible(True)
                 action_delete_item.setVisible(True)
             elif self.model.data(parent, Qt.EditRole) is None:
-                action_add_item.setVisible(True)
+                action_add_item.menuAction().setVisible(True)
                 action_add_dictionary.setVisible(True)
                 action_add_list.setVisible(True)
-                action_insert_child.setVisible(False)
+                action_insert_child.menuAction().setVisible(False)
                 action_insert_child_dict.setVisible(False)
                 action_insert_child_list.setVisible(False)
                 action_delete_item.setVisible(True)
             elif ((self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole) != "") and
                   (Utils().file_name_match(file_name))):
-                action_add_item.setVisible(False)
+                action_add_item.menuAction().setVisible(False)
                 action_add_dictionary.setVisible(False)
                 action_add_list.setVisible(False)
-                action_insert_child.setVisible(False)
+                action_insert_child.menuAction().setVisible(False)
                 action_insert_child_dict.setVisible(False)
                 action_insert_child_list.setVisible(False)
                 action_tree_item_open_json_file.setVisible(True)
                 action_delete_item.setVisible(True)
             elif self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole) != "":
-                action_add_item.setVisible(False)
+                action_add_item.menuAction().setVisible(False)
                 action_add_dictionary.setVisible(False)
                 action_add_list.setVisible(False)
-                action_insert_child.setVisible(False)
+                action_insert_child.menuAction().setVisible(False)
                 action_insert_child_dict.setVisible(False)
                 action_insert_child_list.setVisible(False)
                 action_delete_item.setVisible(True)
             elif self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole) == "":
-                action_add_item.setVisible(False)
+                action_add_item.menuAction().setVisible(False)
                 action_add_dictionary.setVisible(False)
                 action_add_list.setVisible(False)
-                action_insert_child.setVisible(True)
+                action_insert_child.menuAction().setVisible(True)
                 action_insert_child_dict.setVisible(True)
                 action_insert_child_list.setVisible(True)
                 action_delete_item.setVisible(True)
             else:
-                action_add_item.setVisible(False)
+                action_add_item.menuAction().setVisible(False)
                 action_add_dictionary.setVisible(False)
                 action_add_list.setVisible(False)
-                action_insert_child.setVisible(False)
+                action_insert_child.menuAction().setVisible(False)
                 action_insert_child_dict.setVisible(False)
                 action_insert_child_list.setVisible(False)
                 action_delete_item.setVisible(True)
@@ -646,13 +672,25 @@ class MainWindow(QMainWindow):
 
                 for column in range(self.model.columnCount(parent)):
                     child = self.model.index(index.row() + 1, column, parent)
-                    if role == Qt.EditRole:
+                    if role == Qt.DecorationRole:
                         self.model.setData(
                             index=child,
-                            value=TRANSLATE_MAINWINDOW.gettext("[No data]"),
+                            value=TRANSLATE_MAINWINDOW.gettext("[No string key]"),
                             role=role)
                         return
-                    elif role == Qt.DisplayRole or Qt.ToolTipRole:
+                    elif role == Qt.ToolTipRole:
+                        self.model.setData(
+                            index=child,
+                            value=TRANSLATE_MAINWINDOW.gettext("[No int data]"),
+                            role=role)
+                        return
+                    elif role == Qt.StatusTipRole:
+                        self.model.setData(
+                            index=child,
+                            value=TRANSLATE_MAINWINDOW.gettext("[No bool data]"),
+                            role=role)
+                        return
+                    elif role == Qt.WhatsThisRole or Qt.SizeHintRole:
                         self.model.setData(index=child, value=None, role=role)
                         self.action_save_json_file()
                         self.action_refresh_json_file()
@@ -664,8 +702,7 @@ class MainWindow(QMainWindow):
                     self,
                     TRANSLATE_MAINWINDOW.gettext("Error"),
                     TRANSLATE_MAINWINDOW.gettext(
-                        "You can only use this function to root QTreeView Node, \
-                        choose another actions"))
+                        "You can only use this function to root QTreeView Node, choose another actions"))
         except BaseException as exception:
             QMessageBox.about(
                 self,
@@ -704,19 +741,26 @@ class MainWindow(QMainWindow):
 
             for column in range(self.model.columnCount(parent)):
                 child = self.model.index(0, column, parent)
-                if role == Qt.EditRole:
+                if role == Qt.DecorationRole:
                     self.model.setData(
                         index=child,
-                        value=TRANSLATE_MAINWINDOW.gettext("[No data]"),
+                        value=TRANSLATE_MAINWINDOW.gettext("[No string key]"),
                         role=role)
-                    self.tree_view.expand(index)
-                elif role == Qt.DisplayRole or role == Qt.ToolTipRole:
+                elif role == Qt.ToolTipRole:
                     self.model.setData(
                         index=child,
-                        value=None,
+                        value=TRANSLATE_MAINWINDOW.gettext("[No int data]"),
                         role=role)
-                    # self.tree_view.expand(index)
-                    # Only expand or save-refresh. Cant use both
+                elif role == Qt.StatusTipRole:
+                    self.model.setData(
+                        index=child,
+                        value=TRANSLATE_MAINWINDOW.gettext("[No bool data]"),
+                        role=role)
+                elif role == Qt.WhatsThisRole or Qt.SizeHintRole:
+                    self.model.setData(
+                        index=child, 
+                        value=None, 
+                        role=role)
                     self.action_save_json_file()
                     self.action_refresh_json_file()
         except BaseException as exception:
