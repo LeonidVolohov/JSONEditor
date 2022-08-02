@@ -17,16 +17,6 @@ from utils.JsonParsing import JsonParsing
 from utils.Utils import Utils
 
 
-CONFIG_OBJECT = ConfigParser()
-CONFIG_OBJECT.read("utils/config/config.ini")
-
-TRANSLATE_QJSONTREEITEM = gettext.translation(
-    domain="QJsonTreeItem",
-    localedir=Utils().get_abs_file_path("utils/locale"),
-    languages=[CONFIG_OBJECT.get("Language", "default_language")])
-TRANSLATE_QJSONTREEITEM.install()
-
-
 class QJsonTreeItem(object):
     """Class to create basic tree item
 
@@ -194,7 +184,7 @@ class QJsonTreeItem(object):
 
             for key, value in items:
                 child = cls.load_json_to_tree(value, root_item)
-                child.key = TRANSLATE_QJSONTREEITEM.gettext(key)
+                child.key = key
                 child.type = type(value)
                 root_item.appendChild(child)
         elif isinstance(value, list):

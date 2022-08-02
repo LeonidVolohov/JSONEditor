@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-08-02 09:21+0300\n"
-"PO-Revision-Date: 2022-08-02 09:24+0300\n"
+"POT-Creation-Date: 2022-08-02 16:07+0300\n"
+"PO-Revision-Date: 2022-08-02 16:07+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru_RU\n"
 "Language-Team: ru_RU <LL@li.org>\n"
@@ -20,7 +20,6 @@ msgstr ""
 "Generated-By: Babel 2.3.4\n"
 
 #: MainWindow.py:117 MainWindow.py:118 MainWindow.py:266 MainWindow.py:267
-#: MainWindow.py:652 MainWindow.py:710
 msgid "[No data]"
 msgstr "[Нет данных]"
 
@@ -46,7 +45,7 @@ msgstr "Сохранить как..."
 
 #: MainWindow.py:239
 msgid "Refresh"
-msgstr "Обовить"
+msgstr "Обновить"
 
 #: MainWindow.py:243
 msgid "Quit"
@@ -60,7 +59,7 @@ msgstr "без названия"
 msgid "Choose JSON File"
 msgstr "Выберите JSON файл"
 
-#: MainWindow.py:321 MainWindow.py:383 MainWindow.py:431 MainWindow.py:665
+#: MainWindow.py:321 MainWindow.py:383 MainWindow.py:431 MainWindow.py:703
 msgid "Error"
 msgstr "Ошибка"
 
@@ -70,8 +69,8 @@ msgstr "Не удалось сохранить файл. Выберите `Со�
 
 #: MainWindow.py:329 MainWindow.py:336 MainWindow.py:343 MainWindow.py:389
 #: MainWindow.py:396 MainWindow.py:403 MainWindow.py:441 MainWindow.py:448
-#: MainWindow.py:455 MainWindow.py:608 MainWindow.py:615 MainWindow.py:672
-#: MainWindow.py:725 MainWindow.py:756 MainWindow.py:786
+#: MainWindow.py:455 MainWindow.py:634 MainWindow.py:641 MainWindow.py:709
+#: MainWindow.py:769 MainWindow.py:800 MainWindow.py:830
 msgid "Exception"
 msgstr "Исключение"
 
@@ -132,66 +131,102 @@ msgstr "BaseException исключение в action_refresh_json_file() фун�
 msgid "Add Item"
 msgstr "Добавить элемент"
 
-#: MainWindow.py:510
+#: MainWindow.py:508
+msgid "Add string"
+msgstr "Добавить строку"
+
+#: MainWindow.py:513
+msgid "Add integer"
+msgstr "Добавить число"
+
+#: MainWindow.py:518
+msgid "Add boolean"
+msgstr "Добавить false"
+
+#: MainWindow.py:523
 msgid "Add dict()"
 msgstr "Добавить словарь()"
 
-#: MainWindow.py:515
+#: MainWindow.py:528
 msgid "Add list()"
 msgstr "Добавить список()"
 
-#: MainWindow.py:522
+#: MainWindow.py:535
 msgid "Insert Child"
-msgstr "Добавить дочерний элемент"
+msgstr "Добавить подэлемент"
 
-#: MainWindow.py:527
+#: MainWindow.py:538
+msgid "Insert child string"
+msgstr "Добавить подстроку"
+
+#: MainWindow.py:543
+msgid "Insert child integer"
+msgstr "Добавить подчисло"
+
+#: MainWindow.py:548
+msgid "Insert child boolean"
+msgstr "Добавить под false"
+
+#: MainWindow.py:553
 msgid "Insert Child dict()"
-msgstr "Добавить дочерний словарь()"
+msgstr "Добавить подсловарь()"
 
-#: MainWindow.py:532
+#: MainWindow.py:558
 msgid "Insert Child list()"
-msgstr Добавить дочерний список()""
+msgstr "Добавить подсписок()"
 
-#: MainWindow.py:539
+#: MainWindow.py:565
 msgid "Delete Item"
 msgstr "Удалить элемент"
 
-#: MainWindow.py:547
+#: MainWindow.py:573
 msgid "Open File"
 msgstr "Открыть файл"
 
-#: MainWindow.py:609
+#: MainWindow.py:635
 #, python-format
 msgid "IndexError exception in open_right_click_menu() function: %s"
 msgstr "IndexError исключение в open_right_click_menu() функции: %s"
 
-#: MainWindow.py:616
+#: MainWindow.py:642
 #, python-format
 msgid "BaseException in open_right_click_menu() function: %s"
 msgstr "BaseException исключение в open_right_click_menu() функции: %s"
 
-#: MainWindow.py:666
+#: MainWindow.py:678 MainWindow.py:747
+msgid "[No string key]"
+msgstr "[Нет ключа строки]"
+
+#: MainWindow.py:684 MainWindow.py:752
+msgid "[No int data]"
+msgstr "[Нет числового значения]"
+
+#: MainWindow.py:690 MainWindow.py:757
+msgid "[No bool data]"
+msgstr "[Нет логического значения]"
+
+#: MainWindow.py:704
 msgid ""
-"You can only use this function to root QTreeView Node,"
-"                         choose another actions"
+"You can only use this function to root QTreeView Node, choose another "
+"actions"
 msgstr "Данную функцию можно использовать только для корневого элемента, выберите другую опцию"
 
-#: MainWindow.py:673
+#: MainWindow.py:710
 #, python-format
 msgid "Exception in tree_add_item() function: %s"
 msgstr "Исключение в функции tree_add_item(): %s"
 
-#: MainWindow.py:726
+#: MainWindow.py:770
 #, python-format
 msgid "Exception in tree_add_item_child() function: %s"
 msgstr "Исключение в функции tree_add_item_child(): %s"
 
-#: MainWindow.py:757
+#: MainWindow.py:801
 #, python-format
 msgid "Exception in tree_item_delete() function: %s"
 msgstr "Исключение в функции tree_item_delete(): %s"
 
-#: MainWindow.py:787
+#: MainWindow.py:831
 #, python-format
 msgid "Exception in tree_item_open_json_file() function: %s"
 msgstr "Исключение в функции tree_item_open_json_file(): %s"
