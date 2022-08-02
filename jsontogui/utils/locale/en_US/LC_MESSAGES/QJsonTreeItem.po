@@ -1,4 +1,4 @@
-# Russian (Russia) translations for PROJECT.
+# English (United States) translations for PROJECT.
 # Copyright (C) 2022 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
@@ -7,152 +7,151 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-08-01 11:27+0300\n"
-"PO-Revision-Date: 2022-08-01 11:27+0300\n"
+"POT-Creation-Date: 2022-08-02 09:22+0300\n"
+"PO-Revision-Date: 2022-08-02 09:25+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: ru_RU\n"
-"Language-Team: ru_RU <LL@li.org>\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Language: en_US\n"
+"Language-Team: en_US <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.3.4\n"
 
 msgid "control"
-msgstr "управление"
+msgstr ""
 
 msgid "управление"
-msgstr ""
+msgstr "control"
 
 msgid "devices"
-msgstr "устройства"
+msgstr ""
 
 msgid "устройства"
-msgstr ""
+msgstr "devices"
 
 msgid "interacts"
-msgstr "взаимодействия"
+msgstr ""
 
 msgid "взаимодействия"
-msgstr ""
+msgstr "interacts"
 
 msgid "jobs"
-msgstr "службы"
+msgstr ""
 
 msgid "службы"
-msgstr ""
+msgstr "jobs"
 
 msgid "libpath"
-msgstr "путь к библиотеке"
+msgstr ""
 
 msgid "путь к библиотеке"
-msgstr ""
+msgstr "libpath"
 
 msgid "providers"
-msgstr "провайдеры"
+msgstr ""
 
 msgid "провайдеры"
-msgstr ""
+msgstr "providers"
 
 msgid "signals"
-msgstr "сигналы"
+msgstr ""
 
 msgid "сигналы"
-msgstr ""
+msgstr "signals"
 
 msgid "storages"
-msgstr "хранилища"
+msgstr ""
 
 msgid "хранилища"
-msgstr ""
+msgstr "storages"
 
 msgid "version"
-msgstr "версия"
+msgstr ""
 
 msgid "версия"
-msgstr ""
+msgstr "version"
 
 msgid "index"
-msgstr "индекс"
+msgstr ""
 
 msgid "индекс"
-msgstr ""
+msgstr "index"
 
 msgid "path"
-msgstr "путь"
+msgstr ""
 
 msgid "путь"
-msgstr ""
+msgstr "path"
 
 msgid "port"
-msgstr "порт"
+msgstr ""
 
 msgid "порт"
-msgstr ""
+msgstr "port"
 
 msgid "users"
-msgstr "пользователи"
+msgstr ""
 
 msgid "пользователи"
-msgstr ""
+msgstr "users"
 
 msgid "name"
-msgstr "имя"
+msgstr ""
 
 msgid "имя"
-msgstr ""
+msgstr "name"
 
 msgid "password"
-msgstr "пароль"
+msgstr ""
 
 msgid "пароль"
-msgstr ""
+msgstr "password"
 
 msgid "rights"
-msgstr "права"
+msgstr ""
 
 msgid "права"
-msgstr ""
+msgstr "rights"
 
 msgid "buffer_size"
-msgstr "размер_буфера"
+msgstr ""
 
 msgid "размер_буфера"
-msgstr ""
+msgstr "buffer_size"
 
 msgid "description"
-msgstr "описание"
+msgstr ""
 
 msgid "описание"
-msgstr ""
+msgstr "description"
 
 msgid "enable"
-msgstr "включено"
+msgstr ""
 
 msgid "включено"
-msgstr ""
+msgstr "enable"
 
 msgid "id"
 msgstr ""
 
 msgid "interface"
-msgstr "интерфейс"
+msgstr ""
 
 msgid "интерфейс"
-msgstr ""
+msgstr "interface"
 
 msgid "lib"
-msgstr "библиотека"
+msgstr ""
 
 msgid "библиотека"
-msgstr ""
+msgstr "lib"
 
 msgid "params"
-msgstr "параметры"
+msgstr ""
 
 msgid "параметры"
-msgstr ""
+msgstr "params"
 
 msgid "baudrate"
 msgstr ""
@@ -161,113 +160,113 @@ msgid "grain_gap"
 msgstr ""
 
 msgid "portname"
-msgstr "название порта"
+msgstr ""
 
 msgid "название порта"
-msgstr ""
+msgstr "portname"
 
 msgid "protocol"
-msgstr "протокол"
+msgstr ""
 
 msgid "протокол"
-msgstr ""
+msgstr "protocol"
 
 msgid "address"
-msgstr "адрес"
+msgstr ""
 
 msgid "адрес"
-msgstr ""
+msgstr "address"
 
 msgid "parse_interval"
 msgstr ""
 
 msgid "interval"
-msgstr "интервал"
+msgstr ""
 
 msgid "интервал"
-msgstr ""
+msgstr "interval"
 
 msgid "interfaces"
-msgstr "интерфейсы"
+msgstr ""
 
 msgid "интерфейсы"
-msgstr ""
+msgstr "interfaces"
 
 msgid "protocols"
-msgstr "протоколы"
+msgstr ""
 
 msgid "протоколы"
-msgstr ""
+msgstr "protocols"
 
 msgid "bindings"
-msgstr "привязки"
+msgstr ""
 
 msgid "привязки"
-msgstr ""
+msgstr "bindings"
 
 msgid "device"
-msgstr "устройство"
+msgstr ""
 
 msgid "устройство"
-msgstr ""
+msgstr "device"
 
 msgid "tag"
-msgstr "ярлык"
+msgstr ""
 
 msgid "ярлык"
-msgstr ""
+msgstr "tag"
 
 msgid "group"
-msgstr "группа"
+msgstr ""
 
 msgid "группа"
-msgstr ""
+msgstr "group"
 
 msgid "file"
-msgstr "файл"
+msgstr ""
 
 msgid "файл"
-msgstr ""
+msgstr "file"
 
 msgid "host"
-msgstr "хост"
+msgstr ""
 
 msgid "хост"
-msgstr ""
+msgstr "host"
 
 msgid "queue"
-msgstr "очередь"
+msgstr ""
 
 msgid "очередь"
-msgstr ""
+msgstr "queue"
 
 msgid "zone"
-msgstr "зона"
+msgstr ""
 
 msgid "зона"
-msgstr ""
+msgstr "zone"
 
 msgid "bufsize"
-msgstr "размер буфера"
+msgstr ""
 
 msgid "размер буфера"
-msgstr ""
+msgstr "bufsize"
 
 msgid "marker"
-msgstr "маркер"
+msgstr ""
 
 msgid "маркер"
-msgstr ""
+msgstr "marker"
 
 msgid "user"
-msgstr "пользователь"
+msgstr ""
 
 msgid "пользователь"
-msgstr ""
+msgstr "user"
 
 msgid "comment for devices"
-msgstr "комментарий для устройств"
+msgstr ""
 
 msgid "комментарий для устройств"
-msgstr ""
+msgstr "comment for devices"
 

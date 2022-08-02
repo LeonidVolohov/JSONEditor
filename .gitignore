@@ -129,7 +129,8 @@ dmypy.json
 .pyre/
 
 # Json 
-/signals
+jsontogui/signals
+jsontogui/config_apak.json
 
 # Temp file
 /temp.txt
