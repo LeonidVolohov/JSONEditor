@@ -168,21 +168,26 @@ class JsonParsing():
         -------
             None
         """
-        output_string = TRANSLATE_JSONPARSING.gettext("__Object__")
+        if isinstance(data, dict):
+            output_string = TRANSLATE_JSONPARSING.gettext("__Object__")
 
-        ordered_dict = OrderedDict()
-        ordered_dict[TRANSLATE_JSONPARSING.gettext("__Name__")] = data.get(
-            'name', None)
-        ordered_dict[TRANSLATE_JSONPARSING.gettext("__Group__")] = data.get(
-            'group', None)
-        ordered_dict[TRANSLATE_JSONPARSING.gettext("__Description__")] = data.get(
-            'description', None)
-        filtered_dict = {key: value for key, value in ordered_dict.items() if value is not None}
+            ordered_dict = OrderedDict()
+            ordered_dict[TRANSLATE_JSONPARSING.gettext("__Name__")] = data.get(
+                'name', None)
+            ordered_dict[TRANSLATE_JSONPARSING.gettext("__Group__")] = data.get(
+                'group', None)
+            ordered_dict[TRANSLATE_JSONPARSING.gettext("__Description__")] = data.get(
+                'description', None)
+            filtered_dict = {key: value for key, value in ordered_dict.items() if value is not None}
 
-        ordered_dict.clear()
-        ordered_dict.update(filtered_dict)
+            ordered_dict.clear()
+            ordered_dict.update(filtered_dict)
 
-        if len(ordered_dict) > 0:
-            output_string = ";  ".join(["%s  :  %s" % (key, value)
-                                        for (key, value) in ordered_dict.items()])
-        return output_string
+            if len(ordered_dict) > 0:
+                output_string = ";  ".join(["%s  :  %s" % (key, value)
+                                            for (key, value) in ordered_dict.items()])
+            return output_string
+        if isinstance(data, list):
+            pass
+        if isinstance(data, tuple):
+            pass
