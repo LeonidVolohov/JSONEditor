@@ -1,4 +1,4 @@
-# Russian (Russia) translations for PROJECT.
+# English (United States) translations for PROJECT.
 # Copyright (C) 2022 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
@@ -7,13 +7,12 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-08-01 11:26+0300\n"
-"PO-Revision-Date: 2022-08-01 11:27+0300\n"
+"POT-Creation-Date: 2022-08-02 09:22+0300\n"
+"PO-Revision-Date: 2022-08-02 09:25+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: ru_RU\n"
-"Language-Team: ru_RU <LL@li.org>\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Language: en_US\n"
+"Language-Team: en_US <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,22 +20,22 @@ msgstr ""
 
 #: QJsonTreeModel.py:110 QJsonTreeModel.py:113
 msgid "Key"
-msgstr "Ключ"
+msgstr ""
 
 #: QJsonTreeModel.py:111 QJsonTreeModel.py:114
 msgid "Value"
-msgstr "Значение"
+msgstr ""
 
 #: QJsonTreeModel.py:156
 #, python-format
 msgid "`document` must be of dict, list or tuple, not %s"
-msgstr "`документ` должен быть словарем, листом или кортежем, но не %s"
+msgstr ""
 
 #: QJsonTreeModel.py:269
 msgid "[No dict() name]"
-msgstr "[Нет названия словаря()]"
+msgstr ""
 
 #: QJsonTreeModel.py:275
 msgid "[No list() name]"
-msgstr "[Нет названия списка()]"
+msgstr ""
 
