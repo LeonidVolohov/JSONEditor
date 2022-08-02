@@ -169,14 +169,14 @@ class JsonParsing():
             None
         """
         if isinstance(data, dict):
-            output_string = TRANSLATE_JSONPARSING.gettext("__Object__")
+            output_string = TRANSLATE_JSONPARSING.gettext("Object")
 
             ordered_dict = OrderedDict()
-            ordered_dict[TRANSLATE_JSONPARSING.gettext("__Name__")] = data.get(
+            ordered_dict[TRANSLATE_JSONPARSING.gettext("Name")] = data.get(
                 'name', None)
-            ordered_dict[TRANSLATE_JSONPARSING.gettext("__Group__")] = data.get(
+            ordered_dict[TRANSLATE_JSONPARSING.gettext("Group")] = data.get(
                 'group', None)
-            ordered_dict[TRANSLATE_JSONPARSING.gettext("__Description__")] = data.get(
+            ordered_dict[TRANSLATE_JSONPARSING.gettext("Description")] = data.get(
                 'description', None)
             filtered_dict = {key: value for key, value in ordered_dict.items() if value is not None}
 
