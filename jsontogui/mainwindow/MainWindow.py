@@ -35,11 +35,10 @@ CONFIG_OBJECT.read("utils/config/config.ini")
 TRANSLATE_MAINWINDOW = gettext.translation(
     domain="MainWindow",
     localedir=Utils().get_abs_file_path("utils/locale"),
-    languages=[CONFIG_OBJECT.get("Language", "default_language")])
+    languages=[CONFIG_OBJECT.get("Language", "default_gui_language")])
 TRANSLATE_MAINWINDOW.install()
 
 MAIN_WINDOW_FILE_NAME = Utils().get_abs_file_path("mainwindow/mainwindow.ui")
-
 
 class MainWindow(QMainWindow):
     """Class to create main window.

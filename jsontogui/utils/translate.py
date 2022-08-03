@@ -1,0 +1,12 @@
+translate_dictionary = {
+	"comment for devices": "комментарий для устройств",
+	"control": "управление",
+	"devices": "устройства",
+	"interacts": "взаимодействия",
+	"jobs": "службы",
+	"libpath": "путь к библиотеке",
+	"providers": "провайдеры",
+	"signals": "сигналы",
+	"storages": "хранилища",
+	"version": "версия"
+}

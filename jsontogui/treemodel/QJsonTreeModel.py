@@ -19,6 +19,7 @@ from PyQt5.QtCore import QAbstractItemModel, QModelIndex, Qt
 
 sys.path.insert(1, "..")
 from utils.Utils import Utils
+#from utils.translate import translate
 sys.path.insert(1, Utils().get_abs_file_path("treemodel"))
 from QJsonTreeItem import QJsonTreeItem
 
@@ -29,15 +30,8 @@ CONFIG_OBJECT.read("utils/config/config.ini")
 TRANSLATE_QJSONTREEMODEL = gettext.translation(
     domain="QJsonTreeModel",
     localedir=Utils().get_abs_file_path("utils/locale"),
-    languages=[CONFIG_OBJECT.get("Language", "default_language")])
+    languages=[CONFIG_OBJECT.get("Language", "default_gui_language")])
 TRANSLATE_QJSONTREEMODEL.install()
-
-TRANSLATE_QJSONTREEITEM_ENGLISH = gettext.translation(
-    domain="QJsonTreeItem",
-    localedir=Utils().get_abs_file_path("utils/locale"),
-    languages=[CONFIG_OBJECT.get("Language", "write_to_json_language")])
-TRANSLATE_QJSONTREEITEM_ENGLISH.install()
-
 
 class QJsonTreeModel(QAbstractItemModel):
     """Class to create basic tree item.
@@ -578,7 +572,7 @@ class QJsonTreeModel(QAbstractItemModel):
             document = {}
             for i in range(amount_of_child):
                 child = item.child(i)
-                document[TRANSLATE_QJSONTREEITEM_ENGLISH.gettext(child.key)] = \
+                document[Utils().translate(child.key, CONFIG_OBJECT.get("Language", "write_to_json_language"))] = \
                     self.generate_json_from_free(child)
             return document
         elif item.type == list:

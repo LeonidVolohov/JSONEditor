@@ -13,6 +13,8 @@
 import os
 import re
 
+from utils.translate import translate_dictionary
+
 
 class Utils():
     """Class for for the necessary functions needed during process of preparing data for the GUI.
@@ -128,3 +130,37 @@ class Utils():
             return False
         else:
             return
+
+    @classmethod
+    def translate(cls, input_string: str, language: str) -> str:
+        """Translates input string to another language
+
+        Translated from translate.translate_dictionary dictionary from utils/translate file
+
+        Args:
+        -----
+            input_string: str
+                Input string to translae
+            language:
+                Language to translate
+
+        Raises:
+        -------
+            KeyError:
+                If input_string is not in dictionary
+
+
+        Returns:
+        --------
+            Return True if input_string is "True" False if "False".
+        """
+        try:
+            if language == "en":
+                return next((key for key, value in translate_dictionary.items()
+                    if value == input_string), input_string)
+            elif language == "ru":
+                return translate_dictionary[input_string]
+            else:
+                return
+        except KeyError as exception:
+            return input_string
