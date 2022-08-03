@@ -19,7 +19,8 @@ CONFIG_OBJECT["Other"] = {
 }
 
 CONFIG_OBJECT["Language"] = {
-    "default_language": "en", # Language for GUI
+    "default_gui_language": "en", # Language for GUI
+    "default_tree_language": "en", # Language for QTreeView
     "write_to_json_language": "en" # Language for writing back to JSON-file
 }
 

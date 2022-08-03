@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-08-02 09:23+0300\n"
-"PO-Revision-Date: 2022-08-02 09:25+0300\n"
+"POT-Creation-Date: 2022-08-02 16:20+0300\n"
+"PO-Revision-Date: 2022-08-02 16:20+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_US\n"
 "Language-Team: en_US <LL@li.org>\n"
@@ -18,19 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.3.4\n"
 
-#: JsonParsing.py:171
-msgid "__Object__"
+#: JsonParsing.py:172
+msgid "Object"
 msgstr ""
 
-#: JsonParsing.py:174
-msgid "__Name__"
+#: JsonParsing.py:175
+msgid "Name"
 msgstr ""
 
-#: JsonParsing.py:176
-msgid "__Group__"
+#: JsonParsing.py:177
+msgid "Group"
 msgstr ""
 
-#: JsonParsing.py:178
-msgid "__Description__"
+#: JsonParsing.py:179
+msgid "Description"
 msgstr ""
 
