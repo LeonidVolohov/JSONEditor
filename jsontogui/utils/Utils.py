@@ -107,7 +107,7 @@ class Utils():
 
         """
         try:
-            return True if re.search(r".\.json$", file_name) else False
+            return True if re.search(r"\w\.json$", file_name) else False
         except re.error:
             return False
 

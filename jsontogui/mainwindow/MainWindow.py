@@ -369,19 +369,17 @@ class MainWindow(QMainWindow):
                 TRANSLATE_MAINWINDOW.gettext("Save File"),
                 "",
                 "JSON Files (*.json);;Text Files (*.txt);;All Files (*)")
-            if Utils().file_name_match(file_name[0]):
-                JsonParsing(file_name[0]).write_json_to_file(self.model.get_json_from_tree())
+            if file_name:
+                if Utils().file_name_match(file_name[0]):
+                    file_name = file_name[0]
+                else:
+                    file_name = file_name[0] + ".json"
+            JsonParsing(file_name).write_json_to_file(self.model.get_json_from_tree())
 
-                # load just added file to QTreeView
-                self.json_file_name = file_name[0]
-                self.model.load(JsonParsing(file_name[0]).get_json_from_file())
-                self.setWindowTitle(file_name[0])
-            else:
-                QMessageBox.about(
-                    self,
-                    TRANSLATE_MAINWINDOW.gettext("Error"),
-                    TRANSLATE_MAINWINDOW.gettext(
-                        "File does not match .json files. Name the file correctly"))
+            # load just added file to QTreeView
+            self.json_file_name = file_name
+            self.model.load(JsonParsing(file_name).get_json_from_file())
+            self.setWindowTitle(file_name)
         except FileNotFoundError as exception:
             QMessageBox.about(
                 self,
