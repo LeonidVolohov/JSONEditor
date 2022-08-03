@@ -83,7 +83,7 @@ class Utils():
             print("Unexpected exception: %s" % exception)
 
     @classmethod
-    def file_name_match(cls, file_name: str) -> bool:
+    def file_name_match(cls, file_name: str, file_type: str) -> bool:
         """Check if given file_name match for .jsons file extension.
 
         Function check if given file_name matches for the standard .json extension.
@@ -93,6 +93,8 @@ class Utils():
         -----
             file_name: str
                 Input json file_name
+            file_type: str
+                Type of file: txt or json
 
         Returns:
         --------
@@ -107,7 +109,12 @@ class Utils():
 
         """
         try:
-            return True if re.search(r"\w\.json$", file_name) else False
+            if file_type == "txt":
+                return True if re.search(r"\w\.txt$", file_name) else False
+            elif file_type == "json":
+                return True if re.search(r"\w\.json$", file_name) else False
+            else:
+                return False
         except re.error:
             return False
 

@@ -370,16 +370,29 @@ class MainWindow(QMainWindow):
                 "",
                 "JSON Files (*.json);;Text Files (*.txt);;All Files (*)")
             if file_name:
-                if Utils().file_name_match(file_name[0]):
-                    file_name = file_name[0]
-                else:
-                    file_name = file_name[0] + ".json"
-            JsonParsing(file_name).write_json_to_file(self.model.get_json_from_tree())
+                if file_name[0] == "" and file_name[1] == "":
+                    return
 
-            # load just added file to QTreeView
-            self.json_file_name = file_name
-            self.model.load(JsonParsing(file_name).get_json_from_file())
-            self.setWindowTitle(file_name)
+                new_file_name = None
+                if file_name[1] == "Text Files (*.txt)":
+                    if Utils().file_name_match(file_name[0], "txt"):
+                        new_file_name = file_name[0]
+                    else:
+                        new_file_name = file_name[0] + ".txt"
+                elif file_name[1] == "JSON Files (*.json)":
+                    if Utils().file_name_match(file_name[0], "json"):
+                        new_file_name = file_name[0]
+                    else:
+                        new_file_name = file_name[0] + ".json"
+                else:
+                    new_file_name = file_name[0]
+
+                JsonParsing(new_file_name).write_json_to_file(self.model.get_json_from_tree())
+
+                # load just added file to QTreeView
+                self.json_file_name = new_file_name
+                self.model.load(JsonParsing(new_file_name).get_json_from_file())
+                self.setWindowTitle(new_file_name)
         except FileNotFoundError as exception:
             QMessageBox.about(
                 self,
