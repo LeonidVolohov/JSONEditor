@@ -15,7 +15,6 @@ from configparser import ConfigParser
 sys.path.insert(1, "..")
 from utils.JsonParsing import JsonParsing
 from utils.Utils import Utils
-#from utils.translate import translate
 
 
 CONFIG_OBJECT = ConfigParser()

@@ -19,7 +19,6 @@ from PyQt5.QtCore import QAbstractItemModel, QModelIndex, Qt
 
 sys.path.insert(1, "..")
 from utils.Utils import Utils
-#from utils.translate import translate
 sys.path.insert(1, Utils().get_abs_file_path("treemodel"))
 from QJsonTreeItem import QJsonTreeItem
 

@@ -33,6 +33,8 @@ class Utils():
 
     string_to_boolean(input_string: str) -> bool
         Return True if input_string is "True" False if "False"
+    translate(input_string: str, language: str) -> str:
+        Return translated input_string from translate.py dictionary
     """
 
     def __init__(self) -> None:
