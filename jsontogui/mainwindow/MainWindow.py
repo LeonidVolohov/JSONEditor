@@ -552,9 +552,9 @@ class MainWindow(QMainWindow):
             None
         """
         if self.action_is_editable.isChecked():
-            self.model.isEditable = True
+            self.model.is_editable = True
         else:
-            self.model.isEditable = False
+            self.model.is_editable = False
 
     def open_right_click_menu(self, position) -> None:
         """Opens right cklick menu on QTreeView items.
@@ -657,57 +657,69 @@ class MainWindow(QMainWindow):
                 partial(self.tree_item_open_json_file, file_name))
             action_tree_item_open_json_file.setVisible(False)
 
-            if ((self.model.data(parent, Qt.EditRole) is None) and
-                    (self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole) == "")):
-                action_add_item.menuAction().setVisible(True)
-                action_add_dictionary.setVisible(True)
-                action_add_list.setVisible(True)
-                action_insert_child.menuAction().setVisible(True)
-                action_insert_child_dict.setVisible(True)
-                action_insert_child_list.setVisible(True)
-                action_delete_item.setVisible(True)
-            elif self.model.data(parent, Qt.EditRole) is None:
-                action_add_item.menuAction().setVisible(True)
-                action_add_dictionary.setVisible(True)
-                action_add_list.setVisible(True)
-                action_insert_child.menuAction().setVisible(False)
-                action_insert_child_dict.setVisible(False)
-                action_insert_child_list.setVisible(False)
-                action_delete_item.setVisible(True)
-            elif ((self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole) != "") and
-                  (Utils().file_name_match(file_name, "json"))):
+            if(self.model.is_editable is False):
+                if((self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole) != "") and
+                      (Utils().file_name_match(file_name, "json"))):
+                    action_tree_item_open_json_file.setVisible(True)
                 action_add_item.menuAction().setVisible(False)
                 action_add_dictionary.setVisible(False)
                 action_add_list.setVisible(False)
                 action_insert_child.menuAction().setVisible(False)
                 action_insert_child_dict.setVisible(False)
                 action_insert_child_list.setVisible(False)
-                action_tree_item_open_json_file.setVisible(True)
-                action_delete_item.setVisible(True)
-            elif self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole) != "":
-                action_add_item.menuAction().setVisible(False)
-                action_add_dictionary.setVisible(False)
-                action_add_list.setVisible(False)
-                action_insert_child.menuAction().setVisible(False)
-                action_insert_child_dict.setVisible(False)
-                action_insert_child_list.setVisible(False)
-                action_delete_item.setVisible(True)
-            elif self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole) == "":
-                action_add_item.menuAction().setVisible(False)
-                action_add_dictionary.setVisible(False)
-                action_add_list.setVisible(False)
-                action_insert_child.menuAction().setVisible(True)
-                action_insert_child_dict.setVisible(True)
-                action_insert_child_list.setVisible(True)
-                action_delete_item.setVisible(True)
+                action_delete_item.setVisible(False)
             else:
-                action_add_item.menuAction().setVisible(False)
-                action_add_dictionary.setVisible(False)
-                action_add_list.setVisible(False)
-                action_insert_child.menuAction().setVisible(False)
-                action_insert_child_dict.setVisible(False)
-                action_insert_child_list.setVisible(False)
-                action_delete_item.setVisible(True)
+                if ((self.model.data(parent, Qt.EditRole) is None) and
+                        (self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole) == "")):
+                    action_add_item.menuAction().setVisible(True)
+                    action_add_dictionary.setVisible(True)
+                    action_add_list.setVisible(True)
+                    action_insert_child.menuAction().setVisible(True)
+                    action_insert_child_dict.setVisible(True)
+                    action_insert_child_list.setVisible(True)
+                    action_delete_item.setVisible(True)
+                elif self.model.data(parent, Qt.EditRole) is None:
+                    action_add_item.menuAction().setVisible(True)
+                    action_add_dictionary.setVisible(True)
+                    action_add_list.setVisible(True)
+                    action_insert_child.menuAction().setVisible(False)
+                    action_insert_child_dict.setVisible(False)
+                    action_insert_child_list.setVisible(False)
+                    action_delete_item.setVisible(True)
+                elif ((self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole) != "") and
+                      (Utils().file_name_match(file_name, "json"))):
+                    action_add_item.menuAction().setVisible(False)
+                    action_add_dictionary.setVisible(False)
+                    action_add_list.setVisible(False)
+                    action_insert_child.menuAction().setVisible(False)
+                    action_insert_child_dict.setVisible(False)
+                    action_insert_child_list.setVisible(False)
+                    action_tree_item_open_json_file.setVisible(True)
+                    action_delete_item.setVisible(True)
+                elif self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole) != "":
+                    action_add_item.menuAction().setVisible(False)
+                    action_add_dictionary.setVisible(False)
+                    action_add_list.setVisible(False)
+                    action_insert_child.menuAction().setVisible(False)
+                    action_insert_child_dict.setVisible(False)
+                    action_insert_child_list.setVisible(False)
+                    action_delete_item.setVisible(True)
+                elif self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole) == "":
+                    action_add_item.menuAction().setVisible(False)
+                    action_add_dictionary.setVisible(False)
+                    action_add_list.setVisible(False)
+                    action_insert_child.menuAction().setVisible(True)
+                    action_insert_child_dict.setVisible(True)
+                    action_insert_child_list.setVisible(True)
+                    action_delete_item.setVisible(True)
+                else:
+                    action_add_item.menuAction().setVisible(False)
+                    action_add_dictionary.setVisible(False)
+                    action_add_list.setVisible(False)
+                    action_insert_child.menuAction().setVisible(False)
+                    action_insert_child_dict.setVisible(False)
+                    action_insert_child_list.setVisible(False)
+                    action_delete_item.setVisible(True)
 
             right_click_menu.exec_(self.sender().viewport().mapToGlobal(position))
         except IndexError as exception:

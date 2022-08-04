@@ -105,15 +105,15 @@ class QJsonTreeModel(QAbstractItemModel):
         self._headers = (
             TRANSLATE_QJSONTREEMODEL.gettext("Key"),
             TRANSLATE_QJSONTREEMODEL.gettext("Value"))
-        self._isEditable = False
+        self._is_editable = False
 
     @property
-    def isEditable(self):
-        return self._isEditable
+    def is_editable(self):
+        return self._is_editable
 
-    @isEditable.setter
-    def isEditable(self, isEditable):
-        self._isEditable = isEditable
+    @is_editable.setter
+    def is_editable(self, is_editable):
+        self._is_editable = is_editable
 
     def clear(self) -> None:
         """Clear model.
@@ -467,14 +467,11 @@ class QJsonTreeModel(QAbstractItemModel):
             None
         """
         flags = super(QJsonTreeModel, self).flags(index)
-        if self.isEditable:
+        if self.is_editable:
             if index.column() == 0 or index.column() == 1:
                 return Qt.ItemIsEditable | flags
         else:
-            if index.column() == 1:
-                return Qt.ItemIsEditable | flags
-            else:
-                return flags
+            return flags
 
     def insertRows(self, position: int, rows: int, parent: QModelIndex) -> bool:
         """Inserts rows.
