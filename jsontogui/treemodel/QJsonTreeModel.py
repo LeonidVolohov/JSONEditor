@@ -470,6 +470,8 @@ class QJsonTreeModel(QAbstractItemModel):
         if self.is_editable:
             if index.column() == 0 or index.column() == 1:
                 return Qt.ItemIsEditable | flags
+            else:
+                return flags
         else:
             return flags
 
