@@ -77,6 +77,9 @@ class MainWindow(QMainWindow):
     action_close_application:
         Action for closing application
 
+    action_change_flags:
+        Changes opportunity for editing item
+
     open_right_click_menu:
         Action for creating on QTreeView right click menu
 
@@ -242,6 +245,9 @@ class MainWindow(QMainWindow):
         self.action_close_app.triggered.connect(self.action_close_application)
         self.action_close_app.setText(TRANSLATE_MAINWINDOW.gettext("Quit"))
         self.action_close_app.setShortcut("Ctrl+Q")
+
+        self.action_is_editable.triggered.connect(self.action_change_flags)
+        self.action_is_editable.setText(TRANSLATE_MAINWINDOW.gettext("Is Editable"))
 
     def action_new_json_file(self) -> None:
         """Creates new an empty JSON-file to QTreeView.
@@ -483,6 +489,26 @@ class MainWindow(QMainWindow):
             None
         """
         sys.exit()
+
+    def action_change_flags(self) -> None:
+        """Changes boolean parameter in QJsonTreeModel for editing or not item
+
+        Args:
+        -----
+            None
+
+        Returns:
+        --------
+            None
+
+        Raises:
+        -------
+            None
+        """
+        if self.action_is_editable.isChecked():
+            self.model.isEditable = True
+        else:
+            self.model.isEditable = False
 
     def open_right_click_menu(self, position) -> None:
         """Opens right cklick menu on QTreeView items.
@@ -834,7 +860,7 @@ class MainWindow(QMainWindow):
             file_path = os.path.dirname(self.json_file_name)
             file_path = os.path.join(file_path, file_name)
             self.new_window = MainWindow(
-                json_file_name=file_path, # Utils().get_abs_file_path(file_name),
+                json_file_name=file_path,
                 show_maximized=False)
         except BaseException as exception:
             QMessageBox.about(
