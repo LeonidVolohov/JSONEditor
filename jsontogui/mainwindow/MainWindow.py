@@ -11,6 +11,7 @@ MainWindow inherited from QMainWindow.
             show_maximized = Utils().string_to_boolean(configObject.get(
                 "MainWindow", "showmaximized")))
 """
+import os
 import sys
 import gettext
 from functools import partial
@@ -118,7 +119,7 @@ class MainWindow(QMainWindow):
         else:
             self._json_text = JsonParsing(json_file_name).get_json_from_file() # dict
 
-        self.setWindowTitle(Utils().get_abs_file_path(json_file_name))
+        self.setWindowTitle(Utils().get_abs_file_path(self.json_file_name))
         #self.setGeometry(0, 0, 640, 480)
         self.resize(1024, 720)
         self.center()
@@ -443,8 +444,7 @@ class MainWindow(QMainWindow):
                         "Failed to save file. Choose `Save As...` function."))
             else:
                 self.model.load(
-                    JsonParsing(Utils().get_abs_file_path(
-                        self.json_file_name)).get_json_from_file())
+                    JsonParsing(self.json_file_name).get_json_from_file())
         except FileNotFoundError as exception:
             QMessageBox.about(
                 self,
@@ -603,7 +603,7 @@ class MainWindow(QMainWindow):
                 action_insert_child_list.setVisible(False)
                 action_delete_item.setVisible(True)
             elif ((self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole) != "") and
-                  (Utils().file_name_match(file_name))):
+                  (Utils().file_name_match(file_name, "json"))):
                 action_add_item.menuAction().setVisible(False)
                 action_add_dictionary.setVisible(False)
                 action_add_list.setVisible(False)
@@ -831,8 +831,10 @@ class MainWindow(QMainWindow):
                 Basic exception
         """
         try:
+            file_path = os.path.dirname(self.json_file_name)
+            file_path = os.path.join(file_path, file_name)
             self.new_window = MainWindow(
-                json_file_name=Utils().get_abs_file_path(file_name),
+                json_file_name=file_path, # Utils().get_abs_file_path(file_name),
                 show_maximized=False)
         except BaseException as exception:
             QMessageBox.about(

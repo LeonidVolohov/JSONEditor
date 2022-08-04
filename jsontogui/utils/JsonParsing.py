@@ -7,8 +7,6 @@
     json_parsing.get_json_from_file("example.json")
     json_parsing.write_json_to_file("example.json")
     json_parsing.get_name_from_dict({"name": "username"})
-
-    print(Utils().get_abs_file_path("test.json"))
 """
 import json
 import gettext
