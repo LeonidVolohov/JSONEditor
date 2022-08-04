@@ -56,6 +56,9 @@ class MainWindow(QMainWindow):
     ui_components:
         Creates main components of the window
 
+    closeEvent:
+        Close event for QMainWindow
+
     create_menu_bar:
         Creates manu bar
 
@@ -203,6 +206,35 @@ class MainWindow(QMainWindow):
             self.tree_view.expandToDepth(int(CONFIG_OBJECT.get("QTreeView", "expand_to_depth")))
 
         self.setCentralWidget(widget)
+
+
+    def closeEvent(self, event):
+        """Close event for QMainWindow.
+
+        Checks if data from model does not match to json_file data and throws an QMessageBox
+        with the offer to save information
+
+        Args:
+        -----
+            None
+
+        Returns:
+        --------
+            None
+
+        Raises:
+        -------
+            None
+        """
+        if self.model.get_json_from_tree() != JsonParsing(self.json_file_name).get_json_from_file():
+            message = QMessageBox()
+            message.setIcon(QMessageBox.Warning)
+            message.setText(TRANSLATE_MAINWINDOW.gettext("Save changes to file before closing?"))
+            message.setWindowTitle(TRANSLATE_MAINWINDOW.gettext("Warning"))
+            message.setStandardButtons(QMessageBox.Save | QMessageBox.Close)
+            return_value = message.exec()
+            if return_value == QMessageBox.Save:
+                self.action_save_json_file()
 
     def create_menu_bar(self) -> None:
         """Creates menu bar.
@@ -472,9 +504,11 @@ class MainWindow(QMainWindow):
                 TRANSLATE_MAINWINDOW.gettext(
                     "BaseException in action_refresh_json_file() function: %s") % str(exception))
 
-    @classmethod
-    def action_close_application(cls) -> None:
+    def action_close_application(self) -> None:
         """Closes MainWindow application.
+
+        Checks if data from model does not match to json_file data and throws an QMessageBox
+        with the offer to save information
 
         Args:
         -----
@@ -488,7 +522,19 @@ class MainWindow(QMainWindow):
         -------
             None
         """
-        sys.exit()
+        if self.model.get_json_from_tree() == JsonParsing(self.json_file_name).get_json_from_file():
+            sys.exit()
+        else:
+            message = QMessageBox()
+            message.setIcon(QMessageBox.Warning)
+            message.setText(TRANSLATE_MAINWINDOW.gettext("Save changes to file before closing?"))
+            message.setWindowTitle(TRANSLATE_MAINWINDOW.gettext("Warning"))
+            message.setStandardButtons(QMessageBox.Save | QMessageBox.Close)
+            return_value = message.exec()
+            if return_value == QMessageBox.Save:
+                self.action_save_json_file()
+            else:
+                sys.exit()
 
     def action_change_flags(self) -> None:
         """Changes boolean parameter in QJsonTreeModel for editing or not item
