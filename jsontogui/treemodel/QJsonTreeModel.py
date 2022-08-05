@@ -577,6 +577,10 @@ class QJsonTreeModel(QAbstractItemModel):
         -------
             None
         """
+
+        if item is None:
+            item = self._rootItem
+
         amount_of_child = item.childCount()
 
         if item.type is dict:

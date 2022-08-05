@@ -784,10 +784,13 @@ class MainWindow(QMainWindow):
                             value=TRANSLATE_MAINWINDOW.gettext("[No bool data]"),
                             role=role)
                         return
-                    elif role == Qt.WhatsThisRole or Qt.SizeHintRole:
+                    elif role == Qt.WhatsThisRole:
                         self.model.setData(index=child, value=None, role=role)
-                        self.action_save_json_file()
-                        self.action_refresh_json_file()
+                        self.model.getItem(child).type = dict
+                        return
+                    elif role == Qt.SizeHintRole:
+                        self.model.setData(index=child, value=None, role=role)
+                        self.model.getItem(child).type = list
                         return
                     else:
                         return
@@ -849,14 +852,20 @@ class MainWindow(QMainWindow):
                     self.model.setData(
                         index=child,
                         value=TRANSLATE_MAINWINDOW.gettext("[No bool data]"),
-                        role=role)
-                elif role == Qt.WhatsThisRole or Qt.SizeHintRole:
+                        role=role)                    
+                elif role == Qt.WhatsThisRole:
                     self.model.setData(
                         index=child, 
                         value=None, 
                         role=role)
-                    self.action_save_json_file()
-                    self.action_refresh_json_file()
+                    self.model.getItem(child).type = dict
+                elif role == Qt.SizeHintRole:
+                    self.model.setData(
+                        index=child, 
+                        value=None, 
+                        role=role)
+                    self.model.getItem(child).type = list
+                self.tree_view.expand(index)
         except BaseException as exception:
             QMessageBox.about(
                 self,
