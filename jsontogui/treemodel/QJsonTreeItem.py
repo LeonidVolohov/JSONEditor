@@ -114,7 +114,7 @@ class QJsonTreeItem(object):
 
     def row(self) -> None:
         return (
-            self.parent._children.index(self) if self._parent
+            self._parent._children.index(self) if self._parent
             else 0
         )
 
