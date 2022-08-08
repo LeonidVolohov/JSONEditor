@@ -656,6 +656,8 @@ class MainWindow(QMainWindow):
             action_tree_item_open_json_file.triggered.connect(
                 partial(self.tree_item_open_json_file, file_name))
 
+            empty_value = self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole) == ""
+
             if not self.model.is_editable:
                 action_add_item.menuAction().setVisible(False)
                 action_add_dictionary.setVisible(False)
@@ -663,15 +665,18 @@ class MainWindow(QMainWindow):
                 action_insert_child.menuAction().setVisible(False)
                 action_insert_child_dict.setVisible(False)
                 action_insert_child_list.setVisible(False)
-                action_tree_item_open_json_file.setVisible(False)
                 action_delete_item.setVisible(False)
+
+                if not empty_value and Utils().file_name_match(file_name, "json"):
+                    action_tree_item_open_json_file.setVisible(True)
+                else:
+                    action_tree_item_open_json_file.setVisible(False)
             else:
                 is_parent_root = self.model.data(parent, Qt.EditRole) is None
                 item_type_dict_or_list = \
                     self.model.getItem(self.tree_view.selectedIndexes()[1]).type is dict or \
                     self.model.getItem(self.tree_view.selectedIndexes()[1]).type is list
-                empty_value = self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole) == ""
-
+                
                 action_add_item.menuAction().setVisible(False)
                 action_add_dictionary.setVisible(False)
                 action_add_list.setVisible(False)
