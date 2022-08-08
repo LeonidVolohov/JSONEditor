@@ -18,7 +18,7 @@ from functools import partial
 from configparser import ConfigParser
 
 from PyQt5.QtWidgets import (
-    QApplication, QFileDialog, QMainWindow, QMenu, QAction,
+    QApplication, QFileDialog, QMainWindow, QMenu,
     QMessageBox, QTreeView, QVBoxLayout, QWidget
 )
 from PyQt5.QtGui import QKeySequence
@@ -587,17 +587,17 @@ class MainWindow(QMainWindow):
                 self.tr(TRANSLATE_MAINWINDOW.gettext("Add Item")))
 
             action_add_item_str = action_add_item.addAction(
-                 self.tr(TRANSLATE_MAINWINDOW.gettext("Add string")))
+                self.tr(TRANSLATE_MAINWINDOW.gettext("Add string")))
             action_add_item_str.triggered.connect(
                 partial(self.tree_add_item, Qt.DecorationRole))
 
             action_add_item_int = action_add_item.addAction(
-                 self.tr(TRANSLATE_MAINWINDOW.gettext("Add integer")))
+                self.tr(TRANSLATE_MAINWINDOW.gettext("Add integer")))
             action_add_item_int.triggered.connect(
                 partial(self.tree_add_item, Qt.ToolTipRole))
 
             action_add_item_bool = action_add_item.addAction(
-                 self.tr(TRANSLATE_MAINWINDOW.gettext("Add boolean")))
+                self.tr(TRANSLATE_MAINWINDOW.gettext("Add boolean")))
             action_add_item_bool.triggered.connect(
                 partial(self.tree_add_item, Qt.StatusTipRole))
 
@@ -617,17 +617,17 @@ class MainWindow(QMainWindow):
                 self.tr(TRANSLATE_MAINWINDOW.gettext("Insert Child")))
 
             action_insert_child_str = action_insert_child.addAction(
-                self.tr(TRANSLATE_MAINWINDOW.gettext("Insert child string"))) 
+                self.tr(TRANSLATE_MAINWINDOW.gettext("Insert child string")))
             action_insert_child_str.triggered.connect(
                 partial(self.tree_add_item_child, Qt.DecorationRole))
 
             action_insert_child_int = action_insert_child.addAction(
-                self.tr(TRANSLATE_MAINWINDOW.gettext("Insert child integer"))) 
+                self.tr(TRANSLATE_MAINWINDOW.gettext("Insert child integer")))
             action_insert_child_int.triggered.connect(
                 partial(self.tree_add_item_child, Qt.ToolTipRole))
 
             action_insert_child_bool = action_insert_child.addAction(
-                self.tr(TRANSLATE_MAINWINDOW.gettext("Insert child boolean"))) 
+                self.tr(TRANSLATE_MAINWINDOW.gettext("Insert child boolean")))
             action_insert_child_bool.triggered.connect(
                 partial(self.tree_add_item_child, Qt.StatusTipRole))
 
@@ -656,7 +656,7 @@ class MainWindow(QMainWindow):
             action_tree_item_open_json_file.triggered.connect(
                 partial(self.tree_item_open_json_file, file_name))
 
-            if(self.model.is_editable is False):
+            if not self.model.is_editable:
                 action_add_item.menuAction().setVisible(False)
                 action_add_dictionary.setVisible(False)
                 action_add_list.setVisible(False)
@@ -667,7 +667,8 @@ class MainWindow(QMainWindow):
                 action_delete_item.setVisible(False)
             else:
                 is_parent_root = self.model.data(parent, Qt.EditRole) is None
-                item_type_dict_or_list = self.model.getItem(self.tree_view.selectedIndexes()[1]).type is dict or \
+                item_type_dict_or_list = \
+                    self.model.getItem(self.tree_view.selectedIndexes()[1]).type is dict or \
                     self.model.getItem(self.tree_view.selectedIndexes()[1]).type is list
                 empty_value = self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole) == ""
 
@@ -755,18 +756,21 @@ class MainWindow(QMainWindow):
                             index=child,
                             value=TRANSLATE_MAINWINDOW.gettext("[No string key]"),
                             role=role)
+                        self.model.getItem(child).type = str
                         return
                     elif role == Qt.ToolTipRole:
                         self.model.setData(
                             index=child,
                             value=TRANSLATE_MAINWINDOW.gettext("[No int data]"),
                             role=role)
+                        self.model.getItem(child).type = int
                         return
                     elif role == Qt.StatusTipRole:
                         self.model.setData(
                             index=child,
                             value=TRANSLATE_MAINWINDOW.gettext("[No bool data]"),
                             role=role)
+                        self.model.getItem(child).type = bool
                         return
                     elif role == Qt.WhatsThisRole:
                         self.model.setData(index=child, value=None, role=role)
@@ -827,26 +831,29 @@ class MainWindow(QMainWindow):
                         index=child,
                         value=TRANSLATE_MAINWINDOW.gettext("[No string key]"),
                         role=role)
+                    self.model.getItem(child).type = str
                 elif role == Qt.ToolTipRole:
                     self.model.setData(
                         index=child,
                         value=TRANSLATE_MAINWINDOW.gettext("[No int data]"),
                         role=role)
+                    self.model.getItem(child).type = int
                 elif role == Qt.StatusTipRole:
                     self.model.setData(
                         index=child,
                         value=TRANSLATE_MAINWINDOW.gettext("[No bool data]"),
-                        role=role)                    
+                        role=role)
+                    self.model.getItem(child).type = bool
                 elif role == Qt.WhatsThisRole:
                     self.model.setData(
-                        index=child, 
-                        value=None, 
+                        index=child,
+                        value=None,
                         role=role)
                     self.model.getItem(child).type = dict
                 elif role == Qt.SizeHintRole:
                     self.model.setData(
-                        index=child, 
-                        value=None, 
+                        index=child,
+                        value=None,
                         role=role)
                     self.model.getItem(child).type = list
                 self.tree_view.expand(index)

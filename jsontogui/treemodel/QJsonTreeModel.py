@@ -109,6 +109,7 @@ class QJsonTreeModel(QAbstractItemModel):
 
     @property
     def is_editable(self):
+        """Get or set current _is_editable property"""
         return self._is_editable
 
     @is_editable.setter
@@ -587,7 +588,10 @@ class QJsonTreeModel(QAbstractItemModel):
             document = {}
             for i in range(amount_of_child):
                 child = item.child(i)
-                document[Utils().translate(child.key, CONFIG_OBJECT.get("Language", "write_to_json_language"))] = \
+                document[
+                    Utils().translate(
+                        child.key,
+                        CONFIG_OBJECT.get("Language", "write_to_json_language"))] = \
                     self.generate_json_from_free(child)
             return document
         elif item.type == list:
