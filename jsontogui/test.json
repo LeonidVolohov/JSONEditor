@@ -1,0 +1,18 @@
+{
+  "[No data]": "123",
+  "[No dict() name]": {
+    "[No dict() name]": {
+      "[No list() name]": [
+        {
+          "[No string key]": "[No string value]",
+          "asd": {
+            "name": "abc"
+          },
+          "file": "config_apak.json"
+        },
+        {}
+      ],
+      "[No string key]": "[No string value]"
+    }
+  }
+}

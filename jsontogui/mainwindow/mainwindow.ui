@@ -49,6 +49,8 @@
     <addaction name="separator"/>
     <addaction name="action_close_app"/>
     <addaction name="separator"/>
+    <addaction name="action_is_editable"/>
+    <addaction name="separator"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -81,6 +83,14 @@
   <action name="action_new_json">
    <property name="text">
     <string>New</string>
+   </property>
+  </action>
+  <action name="action_is_editable">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Is editable</string>
    </property>
   </action>
  </widget>

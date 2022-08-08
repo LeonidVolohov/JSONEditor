@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-08-02 16:07+0300\n"
-"PO-Revision-Date: 2022-08-02 16:07+0300\n"
+"POT-Creation-Date: 2022-08-04 15:31+0300\n"
+"PO-Revision-Date: 2022-08-04 15:31+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru_RU\n"
 "Language-Team: ru_RU <LL@li.org>\n"
@@ -19,214 +19,224 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.3.4\n"
 
-#: MainWindow.py:117 MainWindow.py:118 MainWindow.py:266 MainWindow.py:267
+#: MainWindow.py:123 MainWindow.py:124 MainWindow.py:304 MainWindow.py:305
 msgid "[No data]"
 msgstr "[Нет данных]"
 
-#: MainWindow.py:219
+#: MainWindow.py:232 MainWindow.py:530
+msgid "Save changes to file before closing?"
+msgstr "Сохранить изменения перед закрытием?"
+
+#: MainWindow.py:233 MainWindow.py:531
+msgid "Warning"
+msgstr "Предупреждение"
+
+#: MainWindow.py:254
 msgid "File"
 msgstr "Файл"
 
-#: MainWindow.py:223
+#: MainWindow.py:258
 msgid "New"
 msgstr "Новый"
 
-#: MainWindow.py:227
+#: MainWindow.py:262
 msgid "Open"
 msgstr "Открыть"
 
-#: MainWindow.py:231
+#: MainWindow.py:266
 msgid "Save"
 msgstr "Сохранить"
 
-#: MainWindow.py:235
+#: MainWindow.py:270
 msgid "Save As..."
 msgstr "Сохранить как..."
 
-#: MainWindow.py:239
+#: MainWindow.py:274
 msgid "Refresh"
 msgstr "Обновить"
 
-#: MainWindow.py:243
+#: MainWindow.py:278
 msgid "Quit"
 msgstr "Выйти"
 
-#: MainWindow.py:263
+#: MainWindow.py:282
+msgid "Is Editable"
+msgstr "Редактировать"
+
+#: MainWindow.py:301
 msgid "untilted"
 msgstr "без названия"
 
-#: MainWindow.py:288
+#: MainWindow.py:326
 msgid "Choose JSON File"
 msgstr "Выберите JSON файл"
 
-#: MainWindow.py:321 MainWindow.py:383 MainWindow.py:431 MainWindow.py:703
+#: MainWindow.py:359 MainWindow.py:480 MainWindow.py:785
 msgid "Error"
 msgstr "Ошибка"
 
-#: MainWindow.py:322 MainWindow.py:432
+#: MainWindow.py:360 MainWindow.py:481
 msgid "Failed to save file. Choose `Save As...` function."
 msgstr "Не удалось сохранить файл. Выберите `Сохранить как...` опцию."
 
-#: MainWindow.py:329 MainWindow.py:336 MainWindow.py:343 MainWindow.py:389
-#: MainWindow.py:396 MainWindow.py:403 MainWindow.py:441 MainWindow.py:448
-#: MainWindow.py:455 MainWindow.py:634 MainWindow.py:641 MainWindow.py:709
-#: MainWindow.py:769 MainWindow.py:800 MainWindow.py:830
+#: MainWindow.py:367 MainWindow.py:374 MainWindow.py:381 MainWindow.py:438
+#: MainWindow.py:445 MainWindow.py:452 MainWindow.py:489 MainWindow.py:496
+#: MainWindow.py:503 MainWindow.py:716 MainWindow.py:723 MainWindow.py:791
+#: MainWindow.py:851 MainWindow.py:882 MainWindow.py:914
 msgid "Exception"
 msgstr "Исключение"
 
-#: MainWindow.py:330
+#: MainWindow.py:368
 #, python-format
 msgid "FileNotFoundError exception in action_save_json_file() function: %s"
 msgstr "FileNotFoundError исключение в action_save_json_file() функции: %s"
 
-#: MainWindow.py:337
+#: MainWindow.py:375
 #, python-format
 msgid "OSError exception in action_save_json_file() function: %s"
 msgstr "OSError исключение в action_save_json_file() функции: %s"
 
-#: MainWindow.py:344
+#: MainWindow.py:382
 #, python-format
 msgid "BaseException in action_save_json_file() function: %s"
 msgstr "BaseException исключение в action_save_json_file() функции: %s"
 
-#: MainWindow.py:370
+#: MainWindow.py:408
 msgid "Save File"
 msgstr "Сохранить файл"
 
-#: MainWindow.py:384
-msgid "File does not match .json files. Name the file correctly"
-msgstr "Файл не соответствует расширению .json. Назовите файл корректно."
-
-#: MainWindow.py:390
+#: MainWindow.py:439
 #, python-format
 msgid "FileNotFoundError exception in action_save_json_file_as() function: %s"
 msgstr "FileNotFoundError исключение в action_save_json_file_as() функции: %s"
 
-#: MainWindow.py:397
+#: MainWindow.py:446
 #, python-format
 msgid "OSError exception in action_save_json_file_as() function: %s"
 msgstr "OSError исключение в action_save_json_file_as() функции: %s"
 
-#: MainWindow.py:404
+#: MainWindow.py:453
 #, python-format
 msgid "BaseException in action_save_json_file_as() function: %s"
 msgstr "BaseException исключение в action_save_json_file_as() функции: %s"
 
-#: MainWindow.py:442
+#: MainWindow.py:490
 #, python-format
 msgid "FileNotFoundError exception in action_refresh_json_file() function: %s"
 msgstr "FileNotFoundError исключение в action_refresh_json_file() функции: %s"
 
-#: MainWindow.py:449
+#: MainWindow.py:497
 #, python-format
 msgid "OSError exception in action_refresh_json_file() function: %s"
 msgstr "OSError исключение в action_refresh_json_file() функции: %s"
 
-#: MainWindow.py:456
+#: MainWindow.py:504
 #, python-format
 msgid "BaseException in action_refresh_json_file() function: %s"
 msgstr "BaseException исключение в action_refresh_json_file() функции: %s"
 
-#: MainWindow.py:505
+#: MainWindow.py:587
 msgid "Add Item"
 msgstr "Добавить элемент"
 
-#: MainWindow.py:508
+#: MainWindow.py:590
 msgid "Add string"
 msgstr "Добавить строку"
 
-#: MainWindow.py:513
+#: MainWindow.py:595
 msgid "Add integer"
 msgstr "Добавить число"
 
-#: MainWindow.py:518
+#: MainWindow.py:600
 msgid "Add boolean"
 msgstr "Добавить false"
 
-#: MainWindow.py:523
+#: MainWindow.py:605
 msgid "Add dict()"
 msgstr "Добавить словарь()"
 
-#: MainWindow.py:528
+#: MainWindow.py:610
 msgid "Add list()"
 msgstr "Добавить список()"
 
-#: MainWindow.py:535
+#: MainWindow.py:617
 msgid "Insert Child"
 msgstr "Добавить подэлемент"
 
-#: MainWindow.py:538
+#: MainWindow.py:620
 msgid "Insert child string"
 msgstr "Добавить подстроку"
 
-#: MainWindow.py:543
+#: MainWindow.py:625
 msgid "Insert child integer"
 msgstr "Добавить подчисло"
 
-#: MainWindow.py:548
+#: MainWindow.py:630
 msgid "Insert child boolean"
 msgstr "Добавить под false"
 
-#: MainWindow.py:553
+#: MainWindow.py:635
 msgid "Insert Child dict()"
 msgstr "Добавить подсловарь()"
 
-#: MainWindow.py:558
+#: MainWindow.py:640
 msgid "Insert Child list()"
 msgstr "Добавить подсписок()"
 
-#: MainWindow.py:565
+#: MainWindow.py:647
 msgid "Delete Item"
 msgstr "Удалить элемент"
 
-#: MainWindow.py:573
+#: MainWindow.py:655
 msgid "Open File"
 msgstr "Открыть файл"
 
-#: MainWindow.py:635
+#: MainWindow.py:717
 #, python-format
 msgid "IndexError exception in open_right_click_menu() function: %s"
 msgstr "IndexError исключение в open_right_click_menu() функции: %s"
 
-#: MainWindow.py:642
+#: MainWindow.py:724
 #, python-format
 msgid "BaseException in open_right_click_menu() function: %s"
 msgstr "BaseException исключение в open_right_click_menu() функции: %s"
 
-#: MainWindow.py:678 MainWindow.py:747
+#: MainWindow.py:760 MainWindow.py:829
 msgid "[No string key]"
 msgstr "[Нет ключа строки]"
 
-#: MainWindow.py:684 MainWindow.py:752
+#: MainWindow.py:766 MainWindow.py:834
 msgid "[No int data]"
 msgstr "[Нет числового значения]"
 
-#: MainWindow.py:690 MainWindow.py:757
+#: MainWindow.py:772 MainWindow.py:839
 msgid "[No bool data]"
 msgstr "[Нет логического значения]"
 
-#: MainWindow.py:704
+#: MainWindow.py:786
 msgid ""
 "You can only use this function to root QTreeView Node, choose another "
 "actions"
-msgstr "Данную функцию можно использовать только для корневого элемента, выберите другую опцию"
+msgstr ""
+"Данную функцию можно использовать только для корневого элемента, выберите"
+" другую опцию"
 
-#: MainWindow.py:710
+#: MainWindow.py:792
 #, python-format
 msgid "Exception in tree_add_item() function: %s"
 msgstr "Исключение в функции tree_add_item(): %s"
 
-#: MainWindow.py:770
+#: MainWindow.py:852
 #, python-format
 msgid "Exception in tree_add_item_child() function: %s"
 msgstr "Исключение в функции tree_add_item_child(): %s"
 
-#: MainWindow.py:801
+#: MainWindow.py:883
 #, python-format
 msgid "Exception in tree_item_delete() function: %s"
 msgstr "Исключение в функции tree_item_delete(): %s"
 
-#: MainWindow.py:831
+#: MainWindow.py:915
 #, python-format
 msgid "Exception in tree_item_open_json_file() function: %s"
 msgstr "Исключение в функции tree_item_open_json_file(): %s"

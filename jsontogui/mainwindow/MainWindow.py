@@ -11,13 +11,14 @@ MainWindow inherited from QMainWindow.
             show_maximized = Utils().string_to_boolean(configObject.get(
                 "MainWindow", "showmaximized")))
 """
+import os
 import sys
 import gettext
 from functools import partial
 from configparser import ConfigParser
 
 from PyQt5.QtWidgets import (
-    QApplication, QFileDialog, QMainWindow, QMenu, QAction,
+    QApplication, QFileDialog, QMainWindow, QMenu,
     QMessageBox, QTreeView, QVBoxLayout, QWidget
 )
 from PyQt5.QtGui import QKeySequence
@@ -55,6 +56,9 @@ class MainWindow(QMainWindow):
     ui_components:
         Creates main components of the window
 
+    closeEvent:
+        Close event for QMainWindow
+
     create_menu_bar:
         Creates manu bar
 
@@ -75,6 +79,9 @@ class MainWindow(QMainWindow):
 
     action_close_application:
         Action for closing application
+
+    action_change_flags:
+        Changes opportunity for editing item
 
     open_right_click_menu:
         Action for creating on QTreeView right click menu
@@ -118,7 +125,7 @@ class MainWindow(QMainWindow):
         else:
             self._json_text = JsonParsing(json_file_name).get_json_from_file() # dict
 
-        self.setWindowTitle(Utils().get_abs_file_path(json_file_name))
+        self.setWindowTitle(Utils().get_abs_file_path(self.json_file_name))
         #self.setGeometry(0, 0, 640, 480)
         self.resize(1024, 720)
         self.center()
@@ -200,6 +207,35 @@ class MainWindow(QMainWindow):
 
         self.setCentralWidget(widget)
 
+
+    def closeEvent(self, event):
+        """Close event for QMainWindow.
+
+        Checks if data from model does not match to json_file data and throws an QMessageBox
+        with the offer to save information
+
+        Args:
+        -----
+            None
+
+        Returns:
+        --------
+            None
+
+        Raises:
+        -------
+            None
+        """
+        if self.model.get_json_from_tree() != JsonParsing(self.json_file_name).get_json_from_file():
+            message = QMessageBox()
+            message.setIcon(QMessageBox.Warning)
+            message.setText(TRANSLATE_MAINWINDOW.gettext("Save changes to file before closing?"))
+            message.setWindowTitle(TRANSLATE_MAINWINDOW.gettext("Warning"))
+            message.setStandardButtons(QMessageBox.Save | QMessageBox.Close)
+            return_value = message.exec()
+            if return_value == QMessageBox.Save:
+                self.action_save_json_file()
+
     def create_menu_bar(self) -> None:
         """Creates menu bar.
 
@@ -241,6 +277,9 @@ class MainWindow(QMainWindow):
         self.action_close_app.triggered.connect(self.action_close_application)
         self.action_close_app.setText(TRANSLATE_MAINWINDOW.gettext("Quit"))
         self.action_close_app.setShortcut("Ctrl+Q")
+
+        self.action_is_editable.triggered.connect(self.action_change_flags)
+        self.action_is_editable.setText(TRANSLATE_MAINWINDOW.gettext("Is Editable"))
 
     def action_new_json_file(self) -> None:
         """Creates new an empty JSON-file to QTreeView.
@@ -369,19 +408,30 @@ class MainWindow(QMainWindow):
                 TRANSLATE_MAINWINDOW.gettext("Save File"),
                 "",
                 "JSON Files (*.json);;Text Files (*.txt);;All Files (*)")
-            if Utils().file_name_match(file_name[0]):
-                JsonParsing(file_name[0]).write_json_to_file(self.model.get_json_from_tree())
+            if file_name:
+                if file_name[0] == "" and file_name[1] == "":
+                    return
+
+                new_file_name = None
+                if file_name[1] == "Text Files (*.txt)":
+                    if Utils().file_name_match(file_name[0], "txt"):
+                        new_file_name = file_name[0]
+                    else:
+                        new_file_name = file_name[0] + ".txt"
+                elif file_name[1] == "JSON Files (*.json)":
+                    if Utils().file_name_match(file_name[0], "json"):
+                        new_file_name = file_name[0]
+                    else:
+                        new_file_name = file_name[0] + ".json"
+                else:
+                    new_file_name = file_name[0]
+
+                JsonParsing(new_file_name).write_json_to_file(self.model.get_json_from_tree())
 
                 # load just added file to QTreeView
-                self.json_file_name = file_name[0]
-                self.model.load(JsonParsing(file_name[0]).get_json_from_file())
-                self.setWindowTitle(file_name[0])
-            else:
-                QMessageBox.about(
-                    self,
-                    TRANSLATE_MAINWINDOW.gettext("Error"),
-                    TRANSLATE_MAINWINDOW.gettext(
-                        "File does not match .json files. Name the file correctly"))
+                self.json_file_name = new_file_name
+                self.model.load(JsonParsing(new_file_name).get_json_from_file())
+                self.setWindowTitle(new_file_name)
         except FileNotFoundError as exception:
             QMessageBox.about(
                 self,
@@ -432,8 +482,7 @@ class MainWindow(QMainWindow):
                         "Failed to save file. Choose `Save As...` function."))
             else:
                 self.model.load(
-                    JsonParsing(Utils().get_abs_file_path(
-                        self.json_file_name)).get_json_from_file())
+                    JsonParsing(self.json_file_name).get_json_from_file())
         except FileNotFoundError as exception:
             QMessageBox.about(
                 self,
@@ -455,9 +504,11 @@ class MainWindow(QMainWindow):
                 TRANSLATE_MAINWINDOW.gettext(
                     "BaseException in action_refresh_json_file() function: %s") % str(exception))
 
-    @classmethod
-    def action_close_application(cls) -> None:
+    def action_close_application(self) -> None:
         """Closes MainWindow application.
+
+        Checks if data from model does not match to json_file data and throws an QMessageBox
+        with the offer to save information
 
         Args:
         -----
@@ -471,7 +522,39 @@ class MainWindow(QMainWindow):
         -------
             None
         """
-        sys.exit()
+        if self.model.get_json_from_tree() == JsonParsing(self.json_file_name).get_json_from_file():
+            sys.exit()
+        else:
+            message = QMessageBox()
+            message.setIcon(QMessageBox.Warning)
+            message.setText(TRANSLATE_MAINWINDOW.gettext("Save changes to file before closing?"))
+            message.setWindowTitle(TRANSLATE_MAINWINDOW.gettext("Warning"))
+            message.setStandardButtons(QMessageBox.Save | QMessageBox.Close)
+            return_value = message.exec()
+            if return_value == QMessageBox.Save:
+                self.action_save_json_file()
+            else:
+                sys.exit()
+
+    def action_change_flags(self) -> None:
+        """Changes boolean parameter in QJsonTreeModel for editing or not item
+
+        Args:
+        -----
+            None
+
+        Returns:
+        --------
+            None
+
+        Raises:
+        -------
+            None
+        """
+        if self.action_is_editable.isChecked():
+            self.model.is_editable = True
+        else:
+            self.model.is_editable = False
 
     def open_right_click_menu(self, position) -> None:
         """Opens right cklick menu on QTreeView items.
@@ -504,17 +587,17 @@ class MainWindow(QMainWindow):
                 self.tr(TRANSLATE_MAINWINDOW.gettext("Add Item")))
 
             action_add_item_str = action_add_item.addAction(
-                 self.tr(TRANSLATE_MAINWINDOW.gettext("Add string")))
+                self.tr(TRANSLATE_MAINWINDOW.gettext("Add string")))
             action_add_item_str.triggered.connect(
                 partial(self.tree_add_item, Qt.DecorationRole))
 
             action_add_item_int = action_add_item.addAction(
-                 self.tr(TRANSLATE_MAINWINDOW.gettext("Add integer")))
+                self.tr(TRANSLATE_MAINWINDOW.gettext("Add integer")))
             action_add_item_int.triggered.connect(
                 partial(self.tree_add_item, Qt.ToolTipRole))
 
             action_add_item_bool = action_add_item.addAction(
-                 self.tr(TRANSLATE_MAINWINDOW.gettext("Add boolean")))
+                self.tr(TRANSLATE_MAINWINDOW.gettext("Add boolean")))
             action_add_item_bool.triggered.connect(
                 partial(self.tree_add_item, Qt.StatusTipRole))
 
@@ -534,17 +617,17 @@ class MainWindow(QMainWindow):
                 self.tr(TRANSLATE_MAINWINDOW.gettext("Insert Child")))
 
             action_insert_child_str = action_insert_child.addAction(
-                self.tr(TRANSLATE_MAINWINDOW.gettext("Insert child string"))) 
+                self.tr(TRANSLATE_MAINWINDOW.gettext("Insert child string")))
             action_insert_child_str.triggered.connect(
                 partial(self.tree_add_item_child, Qt.DecorationRole))
 
             action_insert_child_int = action_insert_child.addAction(
-                self.tr(TRANSLATE_MAINWINDOW.gettext("Insert child integer"))) 
+                self.tr(TRANSLATE_MAINWINDOW.gettext("Insert child integer")))
             action_insert_child_int.triggered.connect(
                 partial(self.tree_add_item_child, Qt.ToolTipRole))
 
             action_insert_child_bool = action_insert_child.addAction(
-                self.tr(TRANSLATE_MAINWINDOW.gettext("Insert child boolean"))) 
+                self.tr(TRANSLATE_MAINWINDOW.gettext("Insert child boolean")))
             action_insert_child_bool.triggered.connect(
                 partial(self.tree_add_item_child, Qt.StatusTipRole))
 
@@ -572,52 +655,23 @@ class MainWindow(QMainWindow):
                 self.tr(TRANSLATE_MAINWINDOW.gettext("Open File")))
             action_tree_item_open_json_file.triggered.connect(
                 partial(self.tree_item_open_json_file, file_name))
-            action_tree_item_open_json_file.setVisible(False)
 
-            if ((self.model.data(parent, Qt.EditRole) is None) and
-                    (self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole) == "")):
-                action_add_item.menuAction().setVisible(True)
-                action_add_dictionary.setVisible(True)
-                action_add_list.setVisible(True)
-                action_insert_child.menuAction().setVisible(True)
-                action_insert_child_dict.setVisible(True)
-                action_insert_child_list.setVisible(True)
-                action_delete_item.setVisible(True)
-            elif self.model.data(parent, Qt.EditRole) is None:
-                action_add_item.menuAction().setVisible(True)
-                action_add_dictionary.setVisible(True)
-                action_add_list.setVisible(True)
-                action_insert_child.menuAction().setVisible(False)
-                action_insert_child_dict.setVisible(False)
-                action_insert_child_list.setVisible(False)
-                action_delete_item.setVisible(True)
-            elif ((self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole) != "") and
-                  (Utils().file_name_match(file_name))):
+            if not self.model.is_editable:
                 action_add_item.menuAction().setVisible(False)
                 action_add_dictionary.setVisible(False)
                 action_add_list.setVisible(False)
                 action_insert_child.menuAction().setVisible(False)
                 action_insert_child_dict.setVisible(False)
                 action_insert_child_list.setVisible(False)
-                action_tree_item_open_json_file.setVisible(True)
-                action_delete_item.setVisible(True)
-            elif self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole) != "":
-                action_add_item.menuAction().setVisible(False)
-                action_add_dictionary.setVisible(False)
-                action_add_list.setVisible(False)
-                action_insert_child.menuAction().setVisible(False)
-                action_insert_child_dict.setVisible(False)
-                action_insert_child_list.setVisible(False)
-                action_delete_item.setVisible(True)
-            elif self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole) == "":
-                action_add_item.menuAction().setVisible(False)
-                action_add_dictionary.setVisible(False)
-                action_add_list.setVisible(False)
-                action_insert_child.menuAction().setVisible(True)
-                action_insert_child_dict.setVisible(True)
-                action_insert_child_list.setVisible(True)
-                action_delete_item.setVisible(True)
+                action_tree_item_open_json_file.setVisible(False)
+                action_delete_item.setVisible(False)
             else:
+                is_parent_root = self.model.data(parent, Qt.EditRole) is None
+                item_type_dict_or_list = \
+                    self.model.getItem(self.tree_view.selectedIndexes()[1]).type is dict or \
+                    self.model.getItem(self.tree_view.selectedIndexes()[1]).type is list
+                empty_value = self.model.data(self.tree_view.selectedIndexes()[1], Qt.EditRole) == ""
+
                 action_add_item.menuAction().setVisible(False)
                 action_add_dictionary.setVisible(False)
                 action_add_list.setVisible(False)
@@ -625,6 +679,32 @@ class MainWindow(QMainWindow):
                 action_insert_child_dict.setVisible(False)
                 action_insert_child_list.setVisible(False)
                 action_delete_item.setVisible(True)
+                action_tree_item_open_json_file.setVisible(False)
+                if is_parent_root and not item_type_dict_or_list:
+                    action_add_item.menuAction().setVisible(True)
+                    action_add_dictionary.setVisible(True)
+                    action_add_list.setVisible(True)
+                elif is_parent_root and item_type_dict_or_list:
+                    action_add_item.menuAction().setVisible(True)
+                    action_add_dictionary.setVisible(True)
+                    action_add_list.setVisible(True)
+                    action_insert_child.menuAction().setVisible(True)
+                    action_insert_child_dict.setVisible(True)
+                    action_insert_child_list.setVisible(True)
+                elif not is_parent_root and item_type_dict_or_list:
+                    action_insert_child.menuAction().setVisible(True)
+                    action_insert_child_dict.setVisible(True)
+                    action_insert_child_list.setVisible(True)
+                elif item_type_dict_or_list:
+                    action_insert_child.menuAction().setVisible(True)
+                    action_insert_child_dict.setVisible(True)
+                    action_insert_child_list.setVisible(True)
+                elif not empty_value and Utils().file_name_match(file_name, "json"):
+                    action_tree_item_open_json_file.setVisible(True)
+                elif is_parent_root:
+                    action_add_item.menuAction().setVisible(True)
+                    action_add_dictionary.setVisible(True)
+                    action_add_list.setVisible(True)
 
             right_click_menu.exec_(self.sender().viewport().mapToGlobal(position))
         except IndexError as exception:
@@ -676,23 +756,29 @@ class MainWindow(QMainWindow):
                             index=child,
                             value=TRANSLATE_MAINWINDOW.gettext("[No string key]"),
                             role=role)
+                        self.model.getItem(child).type = str
                         return
                     elif role == Qt.ToolTipRole:
                         self.model.setData(
                             index=child,
                             value=TRANSLATE_MAINWINDOW.gettext("[No int data]"),
                             role=role)
+                        self.model.getItem(child).type = int
                         return
                     elif role == Qt.StatusTipRole:
                         self.model.setData(
                             index=child,
                             value=TRANSLATE_MAINWINDOW.gettext("[No bool data]"),
                             role=role)
+                        self.model.getItem(child).type = bool
                         return
-                    elif role == Qt.WhatsThisRole or Qt.SizeHintRole:
+                    elif role == Qt.WhatsThisRole:
                         self.model.setData(index=child, value=None, role=role)
-                        self.action_save_json_file()
-                        self.action_refresh_json_file()
+                        self.model.getItem(child).type = dict
+                        return
+                    elif role == Qt.SizeHintRole:
+                        self.model.setData(index=child, value=None, role=role)
+                        self.model.getItem(child).type = list
                         return
                     else:
                         return
@@ -745,23 +831,32 @@ class MainWindow(QMainWindow):
                         index=child,
                         value=TRANSLATE_MAINWINDOW.gettext("[No string key]"),
                         role=role)
+                    self.model.getItem(child).type = str
                 elif role == Qt.ToolTipRole:
                     self.model.setData(
                         index=child,
                         value=TRANSLATE_MAINWINDOW.gettext("[No int data]"),
                         role=role)
+                    self.model.getItem(child).type = int
                 elif role == Qt.StatusTipRole:
                     self.model.setData(
                         index=child,
                         value=TRANSLATE_MAINWINDOW.gettext("[No bool data]"),
                         role=role)
-                elif role == Qt.WhatsThisRole or Qt.SizeHintRole:
+                    self.model.getItem(child).type = bool
+                elif role == Qt.WhatsThisRole:
                     self.model.setData(
-                        index=child, 
-                        value=None, 
+                        index=child,
+                        value=None,
                         role=role)
-                    self.action_save_json_file()
-                    self.action_refresh_json_file()
+                    self.model.getItem(child).type = dict
+                elif role == Qt.SizeHintRole:
+                    self.model.setData(
+                        index=child,
+                        value=None,
+                        role=role)
+                    self.model.getItem(child).type = list
+                self.tree_view.expand(index)
         except BaseException as exception:
             QMessageBox.about(
                 self,
@@ -820,8 +915,10 @@ class MainWindow(QMainWindow):
                 Basic exception
         """
         try:
+            file_path = os.path.dirname(self.json_file_name)
+            file_path = os.path.join(file_path, file_name)
             self.new_window = MainWindow(
-                json_file_name=Utils().get_abs_file_path(file_name),
+                json_file_name=file_path,
                 show_maximized=False)
         except BaseException as exception:
             QMessageBox.about(

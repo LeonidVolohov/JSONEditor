@@ -105,6 +105,16 @@ class QJsonTreeModel(QAbstractItemModel):
         self._headers = (
             TRANSLATE_QJSONTREEMODEL.gettext("Key"),
             TRANSLATE_QJSONTREEMODEL.gettext("Value"))
+        self._is_editable = False
+
+    @property
+    def is_editable(self):
+        """Get or set current _is_editable property"""
+        return self._is_editable
+
+    @is_editable.setter
+    def is_editable(self, is_editable):
+        self._is_editable = is_editable
 
     def clear(self) -> None:
         """Clear model.
@@ -458,8 +468,11 @@ class QJsonTreeModel(QAbstractItemModel):
             None
         """
         flags = super(QJsonTreeModel, self).flags(index)
-        if index.column() == 0 or index.column() == 1:
-            return Qt.ItemIsEditable | flags
+        if self.is_editable:
+            if index.column() == 0 or index.column() == 1:
+                return Qt.ItemIsEditable | flags
+            else:
+                return flags
         else:
             return flags
 
@@ -565,13 +578,20 @@ class QJsonTreeModel(QAbstractItemModel):
         -------
             None
         """
+
+        if item is None:
+            item = self._rootItem
+
         amount_of_child = item.childCount()
 
         if item.type is dict:
             document = {}
             for i in range(amount_of_child):
                 child = item.child(i)
-                document[Utils().translate(child.key, CONFIG_OBJECT.get("Language", "write_to_json_language"))] = \
+                document[
+                    Utils().translate(
+                        child.key,
+                        CONFIG_OBJECT.get("Language", "write_to_json_language"))] = \
                     self.generate_json_from_free(child)
             return document
         elif item.type == list:

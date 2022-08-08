@@ -8,7 +8,6 @@
     rootItem.load_json_to_tree(document)
 
 """
-import gettext
 import sys
 from configparser import ConfigParser
 
@@ -151,31 +150,30 @@ class QJsonTreeItem(object):
 
         return True
 
-
-    """Loads JSON to tree.
-
-    Recursion function to prepare data for further loading to QTreeView 
-
-    Args:
-    -----
-        value: Any
-            Value to load
-
-        parent: QJsonTreeItem
-
-        sort:
-            Sort or not
-
-    Returns:
-    --------
-        QJsonTreeItem
-
-    Raises:
-    -------
-        None
-    """
     @classmethod
     def load_json_to_tree(cls, value, parent=None, sort: bool=True):
+        """Loads JSON to tree.
+
+        Recursion function to prepare data for further loading to QTreeView
+
+        Args:
+        -----
+            value: Any
+                Value to load
+
+            parent: QJsonTreeItem
+
+            sort:
+                Sort or not
+
+        Returns:
+        --------
+            QJsonTreeItem
+
+        Raises:
+        -------
+            None
+        """
         root_item = QJsonTreeItem(parent=parent, data=value)
         root_item.key = "root"
 
@@ -187,7 +185,8 @@ class QJsonTreeItem(object):
 
             for key, value in items:
                 child = cls.load_json_to_tree(value, root_item)
-                child.key = Utils().translate(key, CONFIG_OBJECT.get("Language", "default_tree_language"))
+                child.key = Utils().translate(
+                    key, CONFIG_OBJECT.get("Language", "default_tree_language"))
                 child.type = type(value)
                 root_item.appendChild(child)
         elif isinstance(value, list):

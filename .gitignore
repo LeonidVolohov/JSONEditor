@@ -134,3 +134,6 @@ jsontogui/config_apak.json
 
 # Temp file
 /temp.txt
+
+# VS Code
+/jsontogui/.vscode
