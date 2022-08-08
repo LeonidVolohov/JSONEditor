@@ -217,7 +217,9 @@ msgstr "[Нет логического значения]"
 msgid ""
 "You can only use this function to root QTreeView Node, choose another "
 "actions"
-msgstr "Данную функцию можно использовать только для корневого элемента, выберите другую опцию"
+msgstr ""
+"Данную функцию можно использовать только для корневого элемента, выберите"
+" другую опцию"
 
 #: MainWindow.py:792
 #, python-format
