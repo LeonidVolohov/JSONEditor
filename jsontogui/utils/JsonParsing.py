@@ -181,7 +181,7 @@ class JsonParsing():
             ordered_dict.update(filtered_dict)
 
             if len(ordered_dict) > 0:
-                output_string = ";  ".join(["%s  :  %s" % (key, value)
+                output_string = ";  ".join(["%s: %s" % (key, value)
                                             for (key, value) in ordered_dict.items()])
             return output_string
         if isinstance(data, list):
