@@ -16,6 +16,7 @@ import gettext
 from configparser import ConfigParser
 
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, Qt
+from PyQt5 import QtGui
 
 sys.path.insert(1, "..")
 from utils.Utils import Utils
@@ -192,9 +193,6 @@ class QJsonTreeModel(QAbstractItemModel):
         if not index.isValid():
             return None
 
-        if role != Qt.DisplayRole and role != Qt.EditRole:
-            return None
-
         item = index.internalPointer()
 
         if role == Qt.DisplayRole or role == Qt.EditRole:
@@ -203,6 +201,67 @@ class QJsonTreeModel(QAbstractItemModel):
 
             if index.column() == 1:
                 return item.value
+        # if role == Qt.ForegroundRole:
+        #     if item.type is dict:
+        #         return QtGui.QBrush(QtGui.QColor('#FF9900'))
+        #     elif item.type is list:
+        #         return QtGui.QBrush(QtGui.QColor('#ff0080'))
+        #     elif item.type is str or item.type is int or item.type is bool:
+        #         pass
+
+        # only one choose: or Qt.ForegroundRole or in MainWindow in self.tree_view.setStyleSheet -> item
+        # if role == Qt.BackgroundRole:
+        #     if item.type is dict:
+        #         if index.column() == 0:
+        #             return QtGui.QBrush(QtGui.QColor('#c7c7c7'))
+        #     if item.type is list:
+        #         if index.column() == 0:
+        #             return QtGui.QBrush(QtGui.QColor('#a8a8a8'))
+
+        if role == Qt.FontRole:
+            font = QtGui.QFont()
+            font.setFamily("Segoe UI")
+            if item.data(index.parent().column()) is None:
+                if index.column() == 0:
+                    # font.setBold(False)
+                    font.setPointSize(14)
+                elif index.column() == 1:
+                    #font.setBold(False)
+                    font.setItalic(True)
+                    font.setPointSize(12)
+            else:
+                if index.column() == 0:
+                    font.setBold(False)
+                    font.setPointSize(10)
+                elif index.column() == 1:
+                    font.setBold(False)
+                    font.setItalic(True)
+                    font.setPointSize(10)
+            return font
+
+        if role == Qt.DecorationRole:
+            if index.column() == 0:
+                if item.type is dict:
+                    return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/object.png"))
+                if item.type is list:
+                    return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/array.png"))
+                if item.type is int:
+                    return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/int.png"))
+                if item.type is str and item.key != "file":
+                    return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/str.png"))
+                if item.type is bool:
+                    return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/bool.png"))
+                if item.key == "file":
+                    return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/file.png"))
+            elif index.column() == 1:
+                pass
+
+        # if role == Qt.TextAlignmentRole:
+        #     if index.column() == 1:
+        #         return Qt.AlignCenter
+        #     if item.type is bool:
+        #         if index.column() == 1:
+        #             return Qt.AlignCenter
         return None
 
     def getItem(self, index: QModelIndex) -> QJsonTreeItem:
