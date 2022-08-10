@@ -222,7 +222,6 @@ class QJsonTreeModel(QAbstractItemModel):
                     return QtGui.QBrush(QtGui.QColor('#bbdefb'))
                 else:
                     return QtGui.QBrush(QtGui.QColor('#e3f2fd'))
-                    
 
         if role == Qt.FontRole:
             font = QtGui.QFont()
