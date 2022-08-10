@@ -210,13 +210,19 @@ class QJsonTreeModel(QAbstractItemModel):
         #         pass
 
         # only one choose: or Qt.ForegroundRole or in MainWindow in self.tree_view.setStyleSheet -> item
-        # if role == Qt.BackgroundRole:
-        #     if item.type is dict:
-        #         if index.column() == 0:
-        #             return QtGui.QBrush(QtGui.QColor('#c7c7c7'))
-        #     if item.type is list:
-        #         if index.column() == 0:
-        #             return QtGui.QBrush(QtGui.QColor('#a8a8a8'))
+        if role == Qt.BackgroundRole:
+            if item.data(index.parent().column()) is None:
+                if item.type is dict:
+                    # if index.column() == 0:
+                    #     return QtGui.QBrush(QtGui.QColor('#90caf9'))
+                    return QtGui.QBrush(QtGui.QColor('#90caf9'))
+                if item.type is list:
+                    # if index.column() == 0:
+                    #     return QtGui.QBrush(QtGui.QColor('#bbdefb'))
+                    return QtGui.QBrush(QtGui.QColor('#bbdefb'))
+                else:
+                    return QtGui.QBrush(QtGui.QColor('#e3f2fd'))
+                    
 
         if role == Qt.FontRole:
             font = QtGui.QFont()
