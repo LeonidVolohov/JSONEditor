@@ -27,6 +27,7 @@ from PyQt5 import uic
 
 from utils.JsonParsing import JsonParsing
 from utils.Utils import Utils
+from utils.stylesheets import QTREEVIEW_STYLESHEET
 from treemodel.QJsonTreeModel import QJsonTreeModel
 
 
@@ -189,81 +190,12 @@ class MainWindow(QMainWindow):
         self.tree_view.setColumnWidth(0, 512)
         self.tree_view.setContextMenuPolicy(Qt.CustomContextMenu)
         self.tree_view.customContextMenuRequested.connect(self.open_right_click_menu)
+        self.tree_view.setStyleSheet(QTREEVIEW_STYLESHEET)
 
         self.tree_view.setAlternatingRowColors(
             Utils().string_to_boolean(CONFIG_OBJECT.get("QTreeView", "set_alternating_row_colors")))
         self.tree_view.setAnimated(
             Utils().string_to_boolean(CONFIG_OBJECT.get("QTreeView", "set_animated")))
-
-        self.tree_view.setStyleSheet("""
-            QTreeView {
-                border: 3px solid;
-                border-color: #678DB2;
-                /*alternate-background-color: yellow;
-                show-decoration-selected: 100; */
-                background: #FFFFFF;
-            }
-
-            QTreeView::item {
-                border: 1px solid #D9D9D9;
-                border-top-color: transparent;
-                border-bottom-color: transparent;
-                border-left-color: transparent;
-            }   
-            
-            QTreeView::item:children {
-                height: 28px;
-            }
-
-            QTreeView::item:hover {
-                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #E5F3FF, stop: 1 #E5F3FF);
-                border: 1px solid #bfcde4;
-            }
-
-            QTreeView::item:selected {
-                border: 1px solid #678DB2;
-                color: #000000;
-            }
-
-            QTreeView::item:selected:active{
-                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #CCE8FF, stop: 1 #CCE8FF);
-            }
-        
-            /*
-            QTreeView::branch {
-                background-color: white;
-            } */
-            
-            /*
-            QTreeView::branch:closed:has-children {
-                image: url("utils/images/treeview/branch-closed.png");
-            }
-
-            QTreeView::branch:has-siblings:!adjoins-item {
-                border-image: url("utils/images/treeview/vline.png") 0;
-            }
-
-            QTreeView::branch:has-siblings:adjoins-item {
-                border-image: url("utils/images/treeview/branch-more.png") 0;
-            }
-
-            QTreeView::branch:!has-children:!has-siblings:adjoins-item {
-                border-image: url("utils/images/treeview/branch-end.png") 0;
-            }
-
-            QTreeView::branch:has-children:!has-siblings:closed,
-            QTreeView::branch:closed:has-children:has-siblings {
-                border-image: none;
-                image: url("utils/images/treeview/branch-closed.png)";
-            }
-
-            QTreeView::branch:open:has-children:!has-siblings,
-            QTreeView::branch:open:has-children:has-siblings  {
-                border-image: none;
-                image: url("utils/images/treeview/branch-open.png");
-            } 
-            */
-        """)
 
         self.model.clear()
         self.model.load(self.json_text)
