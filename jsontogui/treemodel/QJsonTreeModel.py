@@ -218,12 +218,8 @@ class QJsonTreeModel(QAbstractItemModel):
         if role == Qt.BackgroundRole:
             if item.data(index.parent().column()) is None:
                 if item.type is dict:
-                    # if index.column() == 0:
-                    #     return QtGui.QBrush(QtGui.QColor('#90caf9'))
                     return QtGui.QBrush(QtGui.QColor('#90caf9'))
                 if item.type is list:
-                    # if index.column() == 0:
-                    #     return QtGui.QBrush(QtGui.QColor('#bbdefb'))
                     return QtGui.QBrush(QtGui.QColor('#bbdefb'))
                 else:
                     return QtGui.QBrush(QtGui.QColor('#e3f2fd'))
@@ -233,15 +229,16 @@ class QJsonTreeModel(QAbstractItemModel):
             font.setFamily("Segoe UI")
             if item.data(index.parent().column()) is None:
                 if index.column() == 0:
-                    # font.setBold(False)
                     font.setPointSize(14)
                 elif index.column() == 1:
-                    #font.setBold(False)
                     font.setItalic(True)
                     font.setPointSize(12)
             else:
                 if index.column() == 0:
-                    font.setBold(False)
+                    if item.type is dict or item.type is list:
+                        font.setBold(True)
+                    else:
+                        font.setBold(False)
                     font.setPointSize(10)
                 elif index.column() == 1:
                     font.setBold(False)
