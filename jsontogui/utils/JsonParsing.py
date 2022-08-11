@@ -173,8 +173,6 @@ class JsonParsing():
                 'name', None)
             ordered_dict[TRANSLATE_JSONPARSING.gettext("Group")] = data.get(
                 'group', None)
-            ordered_dict[TRANSLATE_JSONPARSING.gettext("Description")] = data.get(
-                'description', None)
             filtered_dict = {key: value for key, value in ordered_dict.items() if value is not None}
 
             ordered_dict.clear()
