@@ -264,7 +264,7 @@ class MainWindow(QMainWindow):
         self.action_refresh_file.setText(TRANSLATE_MAINWINDOW.gettext("Refresh"))
         self.action_refresh_file.setShortcut(QKeySequence(Qt.Key_F5))
 
-        self.action_close_app.triggered.connect(self.action_close_application)
+        self.action_close_app.triggered.connect(self.close)
         self.action_close_app.setText(TRANSLATE_MAINWINDOW.gettext("Quit"))
         self.action_close_app.setShortcut("Ctrl+Q")
 
@@ -493,23 +493,6 @@ class MainWindow(QMainWindow):
             self.create_message_box(
                 message=message,
                 type="Critical")
-
-    def action_close_application(self) -> None:
-        """Closes MainWindow application.
-
-        Args:
-        -----
-            None
-
-        Returns:
-        --------
-            None
-
-        Raises:
-        -------
-            None
-        """
-        self.check_saved_before_exit()
 
     def action_change_flags(self) -> None:
         """Changes boolean parameter in QJsonTreeModel for editing or not item
@@ -986,9 +969,7 @@ class MainWindow(QMainWindow):
         -------
             None
         """
-        if self.model.get_json_from_tree() == JsonParsing(self.json_file_name).get_json_from_file():
-            self.close()
-        else:
+        if self.model.get_json_from_tree() != JsonParsing(self.json_file_name).get_json_from_file():
             message = QMessageBox()
             message.setIcon(QMessageBox.Warning)
             message.setText(TRANSLATE_MAINWINDOW.gettext("Save changes to file before closing?"))
@@ -997,5 +978,3 @@ class MainWindow(QMainWindow):
             return_value = message.exec()
             if return_value == QMessageBox.Save:
                 self.action_save_json_file()
-            else:
-                self.close()
