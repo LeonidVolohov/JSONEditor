@@ -225,7 +225,6 @@ class MainWindow(QMainWindow):
             None
         """
         self.check_saved_before_exit()
-        #sys.exit()
 
     def create_menu_bar(self) -> None:
         """Creates menu bar.

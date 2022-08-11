@@ -201,6 +201,11 @@ class QJsonTreeModel(QAbstractItemModel):
 
             if index.column() == 1:
                 return item.value
+         
+        if role == Qt.CheckStateRole and item.type is bool:
+            if index.column() == 1:
+                return Qt.Checked if item.value == True else Qt.Unchecked
+
         # if role == Qt.ForegroundRole:
         #     if item.type is dict:
         #         return QtGui.QBrush(QtGui.QColor('#FF9900'))
@@ -262,8 +267,6 @@ class QJsonTreeModel(QAbstractItemModel):
                 pass
 
         # if role == Qt.TextAlignmentRole:
-        #     if index.column() == 1:
-        #         return Qt.AlignCenter
         #     if item.type is bool:
         #         if index.column() == 1:
         #             return Qt.AlignCenter
