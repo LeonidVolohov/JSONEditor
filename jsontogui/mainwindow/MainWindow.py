@@ -12,6 +12,7 @@ MainWindow inherited from QMainWindow.
                 "MainWindow", "showmaximized")))
 """
 import os
+import sys
 import gettext
 from functools import partial
 from configparser import ConfigParser
