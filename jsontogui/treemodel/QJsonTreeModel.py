@@ -9,7 +9,6 @@ Due to this QJsonTreeModel inherited from QAbstractItemModel with some overriden
     model = QJsonTreeModel()
     model.load({"Example key", "Example value"})
     model.get_json_from_tree()
-
 """
 import sys
 import gettext
@@ -110,7 +109,7 @@ class QJsonTreeModel(QAbstractItemModel):
 
     @property
     def is_editable(self):
-        """Get or set current _is_editable property"""
+        """Get or set current _is_editable property."""
         return self._is_editable
 
     @is_editable.setter
@@ -121,18 +120,6 @@ class QJsonTreeModel(QAbstractItemModel):
         """Clear model.
 
         Clear model by loading to it an empty dictionary
-
-        Args:
-        -----
-            None
-
-        Returns:
-        --------
-            None
-
-        Raises:
-        -------
-            None
         """
         self.load({})
 
@@ -150,10 +137,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             True if model was successfully loaded
-
-        Raises:
-        -------
-            None
         """
         assert isinstance(document, (dict, list, tuple)), (
             TRANSLATE_QJSONTREEMODEL.gettext("`document` must be of dict, list or tuple, not %s" %
@@ -185,10 +168,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             True data if role is acceptable and index is valid; otherwise None
-
-        Raises:
-        -------
-            None
         """
         if not index.isValid():
             return None
@@ -282,10 +261,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             QJsonTreeItem
-
-        Raises:
-        -------
-            None
         """
         if index.isValid():
             item = index.internalPointer()
@@ -321,10 +296,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             True if data was successfully seted, False if not
-
-        Raises:
-        -------
-            None
         """
         if role == Qt.EditRole:
             item = index.internalPointer()
@@ -387,10 +358,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             Return header data only for Qt.DisplayRole role, else return None
-
-        Raises:
-        -------
-            None
         """
         if role != Qt.DisplayRole:
             return None
@@ -416,10 +383,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             QModelIndex
-
-        Raises:
-        -------
-            None
         """
         if not self.hasIndex(row, column, parent):
             return QModelIndex()
@@ -449,10 +412,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             QModelIndex
-
-        Raises:
-        -------
-            None
         """
         if not index.isValid():
             return QModelIndex()
@@ -480,10 +439,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             Amount of rows
-
-        Raises:
-        -------
-            None
         """
         if parent.column() > 0:
             return 0
@@ -508,10 +463,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             Amount of column
-
-        Raises:
-        -------
-            None
         """
         return 2
 
@@ -526,10 +477,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             Qt.ItemFlags
-
-        Raises:
-        -------
-            None
         """
         flags = super(QJsonTreeModel, self).flags(index)
         if self.is_editable:
@@ -562,10 +509,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             Returns True if the rows were successfully inserted; otherwise returns False.
-
-        Raises:
-        -------
-            None
         """
         parent_item = self.getItem(parent)
 
@@ -594,10 +537,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             Returns True if the rows were successfully removed; otherwise returns False.
-
-        Raises:
-        -------
-            None
         """
         parent_item = self.getItem(parent)
 
@@ -618,10 +557,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             Generated JSON from tree to dictionary
-
-        Raises:
-        -------
-            None
         """
         root = root or self._root_item
         return self.generate_json_from_free(root)
@@ -637,10 +572,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             Generated JSON from tree to dictionary
-
-        Raises:
-        -------
-            None
         """
 
         if item is None:

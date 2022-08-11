@@ -6,7 +6,6 @@
     rootItem = QJsonTreeItem("Key", "Value")
     document = {"Example": "Example value"}
     rootItem.load_json_to_tree(document)
-
 """
 import sys
 from configparser import ConfigParser
@@ -162,17 +161,14 @@ class QJsonTreeItem(object):
                 Value to load
 
             parent: QJsonTreeItem
+                Parent item
 
-            sort:
+            sort: bool
                 Sort or not
 
         Returns:
         --------
             QJsonTreeItem
-
-        Raises:
-        -------
-            None
         """
         root_item = QJsonTreeItem(parent=parent, data=value)
         root_item.key = "root"

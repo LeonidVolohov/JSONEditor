@@ -1,4 +1,4 @@
-"""Main module"""
+"""Main module."""
 import sys
 from configparser import ConfigParser
 

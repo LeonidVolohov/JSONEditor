@@ -30,7 +30,7 @@ class JsonParsing():
 
     Attributes:
     -----------
-    file_name:
+    file_name: str
         File name of the file to work with
 
     Methods:
@@ -50,14 +50,14 @@ class JsonParsing():
 
         Args:
         -----
-            _file_name:
+            _file_name: str
                 File name of the file to work with.
         """
         self._file_name = file_name
 
     @property
     def file_name(self):
-        """Get or set current file_name"""
+        """Get or set current file_name."""
         return self._file_name
 
     @file_name.setter
@@ -68,10 +68,6 @@ class JsonParsing():
         """Get JSON from file.
 
         Return dictionary filled with JSONs data.
-
-        Args:
-        -----
-            None
 
         Returns:
         --------
@@ -102,7 +98,6 @@ class JsonParsing():
             print("BaseException occurred trying open the file: %s" % self.file_name)
             print(exception)
 
-
     def write_json_to_file(self, json_data: dict) -> None:
         """Write JSON to file.
 
@@ -112,10 +107,6 @@ class JsonParsing():
         -----
             json_data: dict
                 Dictionary with JSON-data
-
-        Returns:
-        --------
-            None
 
         Raises:
         -------
@@ -160,10 +151,6 @@ class JsonParsing():
             Predefied parameters are: "name", "group" and "description".
             If parameters was not found it returns default string
             which is "__Object__"
-
-        Raises:
-        -------
-            None
         """
         if isinstance(data, dict):
             output_string = TRANSLATE_JSONPARSING.gettext("Object")

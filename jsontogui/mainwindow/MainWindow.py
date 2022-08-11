@@ -12,7 +12,6 @@ MainWindow inherited from QMainWindow.
                 "MainWindow", "showmaximized")))
 """
 import os
-import sys
 import gettext
 from functools import partial
 from configparser import ConfigParser
@@ -107,9 +106,9 @@ class MainWindow(QMainWindow):
 
         Args:
         -----
-            json_file_name:
+            json_file_name: str
                 File name of file to open it it QTreeView. Could be "".
-            show_maximized:
+            show_maximized: bool
                 Show maximized or minimized MainWindow
         """
         super().__init__()
@@ -140,7 +139,7 @@ class MainWindow(QMainWindow):
 
     @property
     def model(self):
-        """Get or set current model"""
+        """Get or set current model."""
         return self._model
 
     @model.setter
@@ -149,7 +148,7 @@ class MainWindow(QMainWindow):
 
     @property
     def json_text(self):
-        """Get or set current json_text"""
+        """Get or set current json_text."""
         return self._json_text
 
     @json_text.setter
@@ -158,7 +157,7 @@ class MainWindow(QMainWindow):
 
     @property
     def json_file_name(self):
-        """Get or set current json_file_name"""
+        """Get or set current json_file_name."""
         return self._json_file_name
 
     @json_file_name.setter
@@ -166,20 +165,7 @@ class MainWindow(QMainWindow):
         self._json_file_name = json_file_name
 
     def ui_components(self) -> None:
-        """Load all components of MainWindow.
-
-        Args:
-        -----
-            None
-
-        Returns:
-        --------
-            None
-
-        Raises:
-        -------
-            None
-        """
+        """Load all UI components of MainWindow."""
         widget = QWidget(self)
         layout = QVBoxLayout(widget)
 
@@ -211,37 +197,11 @@ class MainWindow(QMainWindow):
 
 
     def closeEvent(self, event):
-        """Close event for QMainWindow.
-
-        Args:
-        -----
-            None
-
-        Returns:
-        --------
-            None
-
-        Raises:
-        -------
-            None
-        """
+        """Close event for QMainWindow."""
         self.check_saved_before_exit()
 
     def create_menu_bar(self) -> None:
-        """Creates menu bar.
-
-        Args:
-        -----
-            None
-
-        Returns:
-        --------
-            None
-
-        Raises:
-        -------
-            None
-        """
+        """Creates menu bar."""
         self.menuFile.setTitle(TRANSLATE_MAINWINDOW.gettext("File"))
         self.setMenuBar(self.menuBar)
 
@@ -276,18 +236,6 @@ class MainWindow(QMainWindow):
         """Creates new an empty JSON-file to QTreeView.
 
         Changes window title to "untilted" and loads to QTreeView model an empty dictionary
-
-        Args:
-        -----
-            None
-
-        Returns:
-        --------
-            None
-
-        Raises:
-        -------
-            None
         """
         self.json_file_name = TRANSLATE_MAINWINDOW.gettext("untilted")
         self.setWindowTitle(self.json_file_name)
@@ -296,20 +244,7 @@ class MainWindow(QMainWindow):
                          TRANSLATE_MAINWINDOW.gettext("[No data]")})
 
     def action_open_file_dialog(self) -> None:
-        """Opens file dialog to for opening new JSON-file.
-
-        Args:
-        -----
-            None
-
-        Returns:
-        --------
-            None
-
-        Raises:
-        -------
-            None
-        """
+        """Opens file dialog to for opening new JSON-file."""
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         file_name, _ = QFileDialog.getOpenFileName(
@@ -325,14 +260,6 @@ class MainWindow(QMainWindow):
 
     def action_save_json_file(self) -> None:
         """Saves JSON to file.
-
-        Args:
-        -----
-            None
-
-        Returns:
-        --------
-            None
 
         Raises:
         -------
@@ -375,14 +302,6 @@ class MainWindow(QMainWindow):
 
     def action_save_json_file_as(self) -> None:
         """Saves JSON to file as new file.
-
-        Args:
-        -----
-            None
-
-        Returns:
-        --------
-            None
 
         Raises:
         -------
@@ -447,14 +366,6 @@ class MainWindow(QMainWindow):
     def action_refresh_json_file(self) -> None:
         """Loads JSON form file to QTreeView.
 
-        Args:
-        -----
-            None
-
-        Returns:
-        --------
-            None
-
         Raises:
         -------
             FileNotFoundError:
@@ -496,20 +407,7 @@ class MainWindow(QMainWindow):
                 type="Critical")
 
     def action_change_flags(self) -> None:
-        """Changes boolean parameter in QJsonTreeModel for editing or not item
-
-        Args:
-        -----
-            None
-
-        Returns:
-        --------
-            None
-
-        Raises:
-        -------
-            None
-        """
+        """Changes boolean parameter in QJsonTreeModel for editing or not item."""
         if self.action_is_editable.isChecked():
             self.model.is_editable = True
         else:
@@ -517,15 +415,6 @@ class MainWindow(QMainWindow):
 
     def open_right_click_menu(self, position) -> None:
         """Opens right cklick menu on QTreeView items.
-
-        Args:
-        -----
-            position: QtCore.QPoint
-                Position of clicking
-
-        Returns:
-        --------
-            None
 
         Raises:
         -------
@@ -693,15 +582,6 @@ class MainWindow(QMainWindow):
         Adding items to QTreeView depends on the input role.
         Qt.EditRole = str(), Qt.DisplayRole = dict(), Qt.ToolTipRole = list()
 
-        Args:
-        -----
-            role:
-                Input role
-
-        Returns:
-        --------
-            None
-
         Raises:
         -------
             Exception:
@@ -771,12 +651,8 @@ class MainWindow(QMainWindow):
 
         Args:
         -----
-            role:
+            role: Qt.ItemDataRole
                 Input role
-
-        Returns:
-        --------
-            None
 
         Raises:
         -------
@@ -833,14 +709,6 @@ class MainWindow(QMainWindow):
     def tree_item_delete(self) -> None:
         """Removes item from model.
 
-        Args:
-        -----
-            None
-
-        Returns:
-        --------
-            None
-
         Raises:
         -------
             Exception:
@@ -868,12 +736,8 @@ class MainWindow(QMainWindow):
 
         Args:
         -----
-            file_name:
+            file_name: str
                 File name
-
-        Returns:
-        --------
-            None
 
         Raises:
         -------
@@ -894,20 +758,7 @@ class MainWindow(QMainWindow):
                 type="Critical")
 
     def center(self):
-        """Centering main window.
-
-        Args:
-        -----
-            None
-
-        Returns:
-        --------
-            None
-
-        Raises:
-        -------
-            None
-        """
+        """Centering main window."""
         frame_geometry = self.frameGeometry()
         screen = QApplication.desktop().screenNumber(QApplication.desktop().cursor().pos())
         center_point = QApplication.desktop().screenGeometry(screen).center()
@@ -923,14 +774,6 @@ class MainWindow(QMainWindow):
                 Message to display in QMessageBox
             type: str
                 Type of icon to display
-
-        Returns:
-        --------
-            None
-
-        Raises:
-        -------
-            None
         """
         windows_title = ""
         message_box = QMessageBox()
@@ -957,18 +800,6 @@ class MainWindow(QMainWindow):
 
         Checks if data from model does not match to json_file data and throws an QMessageBox
         with the offer to save information
-
-        Args:
-        -----
-            None
-
-        Returns:
-        --------
-            None
-
-        Raises:
-        -------
-            None
         """
         if self.model.get_json_from_tree() != JsonParsing(self.json_file_name).get_json_from_file():
             message = QMessageBox()
