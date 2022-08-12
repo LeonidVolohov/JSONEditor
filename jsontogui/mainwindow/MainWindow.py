@@ -122,10 +122,11 @@ class MainWindow(QMainWindow):
         if len(json_file_name) == 0:
             self._json_text = {TRANSLATE_MAINWINDOW.gettext("[No data]"):
                                TRANSLATE_MAINWINDOW.gettext("[No data]")}
+            self.setWindowTitle(TRANSLATE_MAINWINDOW.gettext("untilted"))
         else:
             self._json_text = JsonParsing(json_file_name).get_json_from_file() # dict
+            self.setWindowTitle(Utils().get_abs_file_path(self.json_file_name))
 
-        self.setWindowTitle(Utils().get_abs_file_path(self.json_file_name))
         #self.setGeometry(0, 0, 640, 480)
         self.resize(1024, 720)
         self.center()
