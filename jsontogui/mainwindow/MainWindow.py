@@ -288,6 +288,11 @@ class MainWindow(QMainWindow):
                     type="Critical")
             else:
                 JsonParsing(self.json_file_name).write_json_to_file(self.model.get_json_from_tree())
+
+                # Update config default_json_file_name
+                CONFIG_OBJECT["Other"]["default_json_file_name"] = str(self.json_file_name)
+                with open("utils/config/config.ini", "w") as config_file:
+                    CONFIG_OBJECT.write(config_file)
         except FileNotFoundError as exception:
             message = TRANSLATE_MAINWINDOW.gettext(
                 "FileNotFoundError exception in action_save_json_file() function: %s") % \
@@ -351,6 +356,11 @@ class MainWindow(QMainWindow):
                 self.json_file_name = new_file_name
                 self.model.load(JsonParsing(new_file_name).get_json_from_file())
                 self.setWindowTitle(new_file_name)
+
+                # Update config default_json_file_name
+                CONFIG_OBJECT["Other"]["default_json_file_name"] = str(self.json_file_name)
+                with open("utils/config/config.ini", "w") as config_file:
+                    CONFIG_OBJECT.write(config_file)
         except FileNotFoundError as exception:
             message = TRANSLATE_MAINWINDOW.gettext(
                 "FileNotFoundError exception in action_save_json_file_as() function: %s") % \
