@@ -18,7 +18,7 @@ from configparser import ConfigParser
 
 from PyQt5.QtWidgets import (
     QApplication, QFileDialog, QMainWindow, QMenu,
-    QMessageBox, QTreeView, QVBoxLayout, QWidget, QHeaderView
+    QMessageBox, QTreeView, QVBoxLayout, QWidget
 )
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtCore import Qt
@@ -188,14 +188,6 @@ class MainWindow(QMainWindow):
         self.model.load(self.json_text)
 
         layout.addWidget(self .tree_view)
-
-        # self.tree_view.header().setDefaultAlignment(Qt.AlignRight | Qt.AlignVCenter)
-        # self.tree_view.header().setSectionResizeMode(0, QHeaderView.ResizeToContents)
-        # self.tree_view.header().setStretchLastSection(True)
-        # self.tree_view.header().setSectionResizeMode(1, QHeaderView.ResizeToContents)
-        #self.tree_view.header().setSectionResizeMode(2, QHeaderView.ResizeToContents)
-        # self.tree_view.header().resizeSection(2, 128)
-  
 
         if Utils().string_to_boolean(CONFIG_OBJECT.get("QTreeView", "expand_all")):
             self.tree_view.expandAll()
