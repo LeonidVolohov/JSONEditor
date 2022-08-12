@@ -101,10 +101,12 @@ class QJsonTreeModel(QAbstractItemModel):
         super(QJsonTreeModel, self).__init__(parent)
         self._root_item = QJsonTreeItem(
             [TRANSLATE_QJSONTREEMODEL.gettext("Key"),
-             TRANSLATE_QJSONTREEMODEL.gettext("Value")])
+             TRANSLATE_QJSONTREEMODEL.gettext("Value"),
+             TRANSLATE_QJSONTREEMODEL.gettext("Type")])
         self._headers = (
             TRANSLATE_QJSONTREEMODEL.gettext("Key"),
-            TRANSLATE_QJSONTREEMODEL.gettext("Value"))
+            TRANSLATE_QJSONTREEMODEL.gettext("Value"),
+            TRANSLATE_QJSONTREEMODEL.gettext("Type"))
         self._is_editable = False
 
     @property
@@ -177,9 +179,17 @@ class QJsonTreeModel(QAbstractItemModel):
         if role == Qt.DisplayRole or role == Qt.EditRole:
             if index.column() == 0:
                 return item.data(index.column())
-
             if index.column() == 1:
                 return item.value
+            if index.column() == 2:
+                if str(item.type) == "<class 'str'>":
+                    return "str"
+                elif str(item.type) == "<class 'int'>":
+                    return "int"
+                elif str(item.type) == "<class 'bool'>":
+                    return "bool"
+                else:
+                    return
          
         if role == Qt.CheckStateRole and item.type is bool:
             if index.column() == 1:
@@ -212,6 +222,9 @@ class QJsonTreeModel(QAbstractItemModel):
                 elif index.column() == 1:
                     font.setItalic(True)
                     font.setPointSize(12)
+                elif index.column() == 2:
+                    font.setFamily("Tahoma")
+                    font.setPointSize(10)
             else:
                 if index.column() == 0:
                     if item.type is dict or item.type is list:
@@ -223,6 +236,9 @@ class QJsonTreeModel(QAbstractItemModel):
                     font.setBold(False)
                     font.setItalic(True)
                     font.setPointSize(10)
+                elif index.column() == 2:
+                    font.setFamily("Tahoma")
+                    font.setPointSize(10)
             return font
 
         if role == Qt.DecorationRole:
@@ -231,21 +247,20 @@ class QJsonTreeModel(QAbstractItemModel):
                     return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/object.png"))
                 if item.type is list:
                     return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/array.png"))
-                if item.type is int:
-                    return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/int.png"))
-                if item.type is str and item.key != "file":
-                    return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/str.png"))
-                if item.type is bool:
-                    return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/bool.png"))
+                # if item.type is int:
+                #     return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/int.png"))
+                # if item.type is str and item.key != "file":
+                #     return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/str.png"))
+                # if item.type is bool:
+                #     return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/bool.png"))
                 if item.key == "file":
                     return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/file.png"))
             elif index.column() == 1:
                 pass
 
-        # if role == Qt.TextAlignmentRole:
-        #     if item.type is bool:
-        #         if index.column() == 1:
-        #             return Qt.AlignCenter
+        if role == Qt.TextAlignmentRole:
+            if index.column() == 2:
+                    return Qt.AlignCenter
         return None
 
     def getItem(self, index: QModelIndex) -> QJsonTreeItem:
@@ -464,7 +479,7 @@ class QJsonTreeModel(QAbstractItemModel):
         --------
             Amount of column
         """
-        return 2
+        return 3
 
     def flags(self, index: QModelIndex) -> Qt.ItemFlags:
         """Returns the item flags for the given index.
@@ -481,6 +496,9 @@ class QJsonTreeModel(QAbstractItemModel):
         flags = super(QJsonTreeModel, self).flags(index)
         if self.is_editable:
             if index.column() == 0 or index.column() == 1:
+                if self.getItem(index).type == dict or self.getItem(index).type == list:
+                    if index.column() == 1:
+                        return flags
                 return Qt.ItemIsEditable | flags
             else:
                 return flags

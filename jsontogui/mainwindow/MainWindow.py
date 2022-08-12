@@ -18,7 +18,7 @@ from configparser import ConfigParser
 
 from PyQt5.QtWidgets import (
     QApplication, QFileDialog, QMainWindow, QMenu,
-    QMessageBox, QTreeView, QVBoxLayout, QWidget
+    QMessageBox, QTreeView, QVBoxLayout, QWidget, QHeaderView
 )
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtCore import Qt
@@ -174,6 +174,7 @@ class MainWindow(QMainWindow):
         self.model = QJsonTreeModel()
         self.tree_view.setModel(self.model)
         self.tree_view.setColumnWidth(0, 512)
+        self.tree_view.setColumnWidth(1, 256)
         self.tree_view.setContextMenuPolicy(Qt.CustomContextMenu)
         self.tree_view.customContextMenuRequested.connect(self.open_right_click_menu)
         self.tree_view.setStyleSheet(QTREEVIEW_STYLESHEET)
@@ -186,7 +187,15 @@ class MainWindow(QMainWindow):
         self.model.clear()
         self.model.load(self.json_text)
 
-        layout.addWidget(self.tree_view)
+        layout.addWidget(self .tree_view)
+
+        # self.tree_view.header().setDefaultAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        # self.tree_view.header().setSectionResizeMode(0, QHeaderView.ResizeToContents)
+        # self.tree_view.header().setStretchLastSection(True)
+        # self.tree_view.header().setSectionResizeMode(1, QHeaderView.ResizeToContents)
+        #self.tree_view.header().setSectionResizeMode(2, QHeaderView.ResizeToContents)
+        # self.tree_view.header().resizeSection(2, 128)
+  
 
         if Utils().string_to_boolean(CONFIG_OBJECT.get("QTreeView", "expand_all")):
             self.tree_view.expandAll()
