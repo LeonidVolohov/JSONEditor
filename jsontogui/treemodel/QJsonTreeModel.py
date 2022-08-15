@@ -322,31 +322,46 @@ class QJsonTreeModel(QAbstractItemModel):
             return True
         if role == Qt.DecorationRole:
             item = index.internalPointer()
-            item.setData(0, value)
+            if self.getItem(index).parent().type is list:
+                item.setData(0, None)
+            else:
+                item.setData(0, value)
             item.setData(1, TRANSLATE_QJSONTREEMODEL.gettext("[No string value]"))
             self.dataChanged.emit(index, index, [Qt.EditRole])
             return True
         if role == Qt.ToolTipRole:
             item = index.internalPointer()
-            item.setData(0, value)
+            if self.getItem(index).parent().type is list:
+                item.setData(0, None)
+            else:
+                item.setData(0, value)
             item.setData(1, int(1))
             self.dataChanged.emit(index, index, [Qt.EditRole])
             return True
         if role == Qt.StatusTipRole:
             item = index.internalPointer()
-            item.setData(0, value)
+            if self.getItem(index).parent().type is list:
+                item.setData(0, None)
+            else:
+                item.setData(0, value)
             item.setData(1, False)
             self.dataChanged.emit(index, index, [Qt.EditRole])
             return True
         if role == Qt.WhatsThisRole:
             item = index.internalPointer()
-            item.setData(0, TRANSLATE_QJSONTREEMODEL.gettext("[No dict() name]"))
+            if self.getItem(index).parent().type is list:
+                item.setData(0, None)
+            else:
+                item.setData(0, TRANSLATE_QJSONTREEMODEL.gettext("[No dict() name]"))
             item.setData(1, dict())
             self.dataChanged.emit(index, index, [Qt.EditRole])
             return True
         if role == Qt.SizeHintRole:
             item = index.internalPointer()
-            item.setData(0, TRANSLATE_QJSONTREEMODEL.gettext("[No list() name]"))
+            if self.getItem(index).parent().type is list:
+                item.setData(0, None)
+            else:
+                item.setData(0, TRANSLATE_QJSONTREEMODEL.gettext("[No list() name]"))
             item.setData(1, list())
             self.dataChanged.emit(index, index, [Qt.EditRole])
             return True
@@ -501,6 +516,9 @@ class QJsonTreeModel(QAbstractItemModel):
             if index.column() == 0 or index.column() == 1:
                 if self.getItem(index).type == dict or self.getItem(index).type == list:
                     if index.column() == 1:
+                        return flags
+                if self.getItem(index).parent().type is list:
+                    if index.column() == 0:
                         return flags
                 return Qt.ItemIsEditable | flags
             else:
