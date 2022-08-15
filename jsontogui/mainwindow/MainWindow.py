@@ -12,6 +12,7 @@ MainWindow inherited from QMainWindow.
                 "MainWindow", "showmaximized")))
 """
 import os
+import sys
 import gettext
 from functools import partial
 from configparser import ConfigParser
@@ -190,10 +191,10 @@ class MainWindow(QMainWindow):
 
         layout.addWidget(self .tree_view)
 
-        if Utils().string_to_boolean(CONFIG_OBJECT.get("QTreeView", "expand_all")):
+        if Utils().string_to_boolean(CONFIG_OBJECT.get("QTreeView-expand", "expand_all")):
             self.tree_view.expandAll()
-        if int(CONFIG_OBJECT.get("QTreeView", "expand_to_depth")) >= -1:
-            self.tree_view.expandToDepth(int(CONFIG_OBJECT.get("QTreeView", "expand_to_depth")))
+        if int(CONFIG_OBJECT.get("QTreeView-expand", "expand_to_depth")) >= -1:
+            self.tree_view.expandToDepth(int(CONFIG_OBJECT.get("QTreeView-expand", "expand_to_depth")))
 
         self.setCentralWidget(widget)
 
@@ -204,8 +205,13 @@ class MainWindow(QMainWindow):
 
     def create_menu_bar(self) -> None:
         """Creates menu bar."""
-        self.menuFile.setTitle(TRANSLATE_MAINWINDOW.gettext("File"))
-        self.setMenuBar(self.menuBar)
+        self.setMenuBar(self.menu_bar)
+        self.init_file_menu()
+        self.init_view_menu()
+
+    def init_file_menu(self) -> None:
+        """Creates menu file item."""
+        self.menu_file.setTitle(TRANSLATE_MAINWINDOW.gettext("File"))
 
         self.action_new_json.triggered.connect(self.action_new_json_file)
         self.action_new_json.setText(TRANSLATE_MAINWINDOW.gettext("New"))
@@ -231,8 +237,52 @@ class MainWindow(QMainWindow):
         self.action_close_app.setText(TRANSLATE_MAINWINDOW.gettext("Quit"))
         self.action_close_app.setShortcut("Ctrl+Q")
 
+    def init_view_menu(self) -> None:
+        """Creates menu view item."""
         self.action_is_editable.triggered.connect(self.action_change_flags)
         self.action_is_editable.setText(TRANSLATE_MAINWINDOW.gettext("Editable"))
+
+        self.menu_view.setTitle(TRANSLATE_MAINWINDOW.gettext("View"))
+        self.menu_expand.setTitle(TRANSLATE_MAINWINDOW.gettext("Expand"))
+
+        self.action_none.triggered.connect(partial(self.action_expand_tree, "None"))
+        self.action_none.setText(TRANSLATE_MAINWINDOW.gettext("None"))
+
+        self.action_all.triggered.connect(partial(self.action_expand_tree, "All"))
+        self.action_all.setText(TRANSLATE_MAINWINDOW.gettext("All"))
+
+        self.menu_expand_to_level.setTitle(TRANSLATE_MAINWINDOW.gettext("To Level"))
+
+        self.action_one_child.triggered.connect(partial(self.action_expand_tree, "1"))
+        self.action_one_child.setText(TRANSLATE_MAINWINDOW.gettext("1"))
+        self.action_two_child.triggered.connect(partial(self.action_expand_tree, "2"))
+        self.action_two_child.setText(TRANSLATE_MAINWINDOW.gettext("2"))
+        self.action_three_child.triggered.connect(partial(self.action_expand_tree, "3"))
+        self.action_three_child.setText(TRANSLATE_MAINWINDOW.gettext("3"))
+
+        self.action_none_color.triggered.connect(partial(self.action_tree_color, "None"))
+        self.action_none_color.setText(TRANSLATE_MAINWINDOW.gettext("None"))
+
+        self.action_yellow_color.triggered.connect(partial(self.action_tree_color, "Yellow"))
+        self.action_yellow_color.setText(TRANSLATE_MAINWINDOW.gettext("Yellow"))
+
+        self.action_orange_color.triggered.connect(partial(self.action_tree_color, "Orange"))
+        self.action_orange_color.setText(TRANSLATE_MAINWINDOW.gettext("Orange"))
+
+        self.action_red_color.triggered.connect(partial(self.action_tree_color, "Red"))
+        self.action_red_color.setText(TRANSLATE_MAINWINDOW.gettext("Red"))
+
+        self.action_green_color.triggered.connect(partial(self.action_tree_color, "Green"))
+        self.action_green_color.setText(TRANSLATE_MAINWINDOW.gettext("Green"))
+
+        self.action_blue_color.triggered.connect(partial(self.action_tree_color, "Blue"))
+        self.action_blue_color.setText(TRANSLATE_MAINWINDOW.gettext("Blue"))
+
+        self.action_purple_color.triggered.connect(partial(self.action_tree_color, "Purple"))
+        self.action_purple_color.setText(TRANSLATE_MAINWINDOW.gettext("Purple"))
+
+        self.action_grey_color.triggered.connect(partial(self.action_tree_color, "Grey"))
+        self.action_grey_color.setText(TRANSLATE_MAINWINDOW.gettext("Grey"))
 
     def action_new_json_file(self) -> None:
         """Creates new an empty JSON-file to QTreeView.
@@ -424,6 +474,70 @@ class MainWindow(QMainWindow):
             self.model.is_editable = True
         else:
             self.model.is_editable = False
+
+    def action_expand_tree(self, expand_lvl: str) -> None:
+        """Expands QTreeView depending on input expand_lvl."""
+        if expand_lvl == "None":
+            self.tree_view.collapseAll()
+            CONFIG_OBJECT["QTreeView-expand"]["expand_all"] = "False"
+            CONFIG_OBJECT["QTreeView-expand"]["expand_to_depth"] = "-2"
+        elif expand_lvl == "All":
+            self.tree_view.expandAll()
+            CONFIG_OBJECT["QTreeView-expand"]["expand_all"] = "True"
+            CONFIG_OBJECT["QTreeView-expand"]["expand_to_depth"] = "-1"
+        else:
+            self.tree_view.expandToDepth(int(expand_lvl) - 1)
+            CONFIG_OBJECT["QTreeView-expand"]["expand_all"] = "False"
+            CONFIG_OBJECT["QTreeView-expand"]["expand_to_depth"] = str(int(expand_lvl) - 1)
+        with open("utils/config/config.ini", "w") as config_file:
+            CONFIG_OBJECT.write(config_file)
+
+    def action_tree_color(self, color: str) -> None:
+        """Update QTreeView items color and write them to config.ini."""
+        if color == "None":
+            CONFIG_OBJECT["QTreeView-color"]["color_dict"] = "#FFFFFF"
+            CONFIG_OBJECT["QTreeView-color"]["color_list"] = "#FFFFFF"
+            CONFIG_OBJECT["QTreeView-color"]["color_else"] = "#FFFFFF"
+        elif color == "Yellow":
+            CONFIG_OBJECT["QTreeView-color"]["color_list"] = "#FFEE58"
+            CONFIG_OBJECT["QTreeView-color"]["color_dict"] = "#FFF59D"
+            CONFIG_OBJECT["QTreeView-color"]["color_else"] = "#FFFDE7"
+        elif color == "Orange":
+            CONFIG_OBJECT["QTreeView-color"]["color_list"] = "#FFA726"
+            CONFIG_OBJECT["QTreeView-color"]["color_dict"] = "#FFCC80"
+            CONFIG_OBJECT["QTreeView-color"]["color_else"] = "#FFF3E0"
+        elif color == "Red":
+            CONFIG_OBJECT["QTreeView-color"]["color_list"] = "#EF5350"
+            CONFIG_OBJECT["QTreeView-color"]["color_dict"] = "#EF9A9A"
+            CONFIG_OBJECT["QTreeView-color"]["color_else"] = "#FFEBEE"
+        elif color == "Green":
+            CONFIG_OBJECT["QTreeView-color"]["color_list"] = "#26A69A"
+            CONFIG_OBJECT["QTreeView-color"]["color_dict"] = "#80CBC4"
+            CONFIG_OBJECT["QTreeView-color"]["color_else"] = "#E0F2F1"
+        elif color == "Blue":
+            CONFIG_OBJECT["QTreeView-color"]["color_list"] = "#29B6F6"
+            CONFIG_OBJECT["QTreeView-color"]["color_dict"] = "#81D4FA"
+            CONFIG_OBJECT["QTreeView-color"]["color_else"] = "#E1F5FE"
+        elif color == "Purple":
+            CONFIG_OBJECT["QTreeView-color"]["color_list"] = "#AB47BC"
+            CONFIG_OBJECT["QTreeView-color"]["color_dict"] = "#CE93D8"
+            CONFIG_OBJECT["QTreeView-color"]["color_else"] = "#F3E5F5"
+        elif color == "Grey":
+            CONFIG_OBJECT["QTreeView-color"]["color_list"] = "#757575"
+            CONFIG_OBJECT["QTreeView-color"]["color_dict"] = "#BDBDBD"
+            CONFIG_OBJECT["QTreeView-color"]["color_else"] = "#EEEEEE"
+        else:
+            pass
+        message = QMessageBox()
+        message.setIcon(QMessageBox.Information)
+        message.setText(TRANSLATE_MAINWINDOW.gettext("Application needs to be restarted!"))
+        message.setWindowTitle(TRANSLATE_MAINWINDOW.gettext("Information"))
+        message.setStandardButtons(QMessageBox.Ok | QMessageBox.Ignore)
+        return_value = message.exec()
+        if return_value == QMessageBox.Ok:
+            with open("utils/config/config.ini", "w") as config_file:
+                CONFIG_OBJECT.write(config_file)
+            os.execl(sys.executable, sys.executable, *sys.argv)
 
     def open_right_click_menu(self, position) -> None:
         """Opens right cklick menu on QTreeView items.

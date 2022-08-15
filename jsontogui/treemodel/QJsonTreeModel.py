@@ -190,10 +190,10 @@ class QJsonTreeModel(QAbstractItemModel):
                     return "bool"
                 else:
                     return
-         
+
         if role == Qt.CheckStateRole and item.type is bool:
             if index.column() == 1:
-                return Qt.Checked if item.value == True else Qt.Unchecked
+                return Qt.Checked if item.value is True else Qt.Unchecked
 
         # if role == Qt.ForegroundRole:
         #     if item.type is dict:
@@ -207,11 +207,14 @@ class QJsonTreeModel(QAbstractItemModel):
         if role == Qt.BackgroundRole:
             if item.data(index.parent().column()) is None:
                 if item.type is dict:
-                    return QtGui.QBrush(QtGui.QColor('#90caf9'))
+                    return QtGui.QBrush(QtGui.QColor(
+                        CONFIG_OBJECT.get("QTreeView-color", "color_dict")))
                 if item.type is list:
-                    return QtGui.QBrush(QtGui.QColor('#bbdefb'))
+                    return QtGui.QBrush(QtGui.QColor(
+                        CONFIG_OBJECT.get("QTreeView-color", "color_list")))
                 else:
-                    return QtGui.QBrush(QtGui.QColor('#e3f2fd'))
+                    return QtGui.QBrush(QtGui.QColor(
+                        CONFIG_OBJECT.get("QTreeView-color", "color_else")))
 
         if role == Qt.FontRole:
             font = QtGui.QFont()
@@ -260,7 +263,7 @@ class QJsonTreeModel(QAbstractItemModel):
 
         if role == Qt.TextAlignmentRole:
             if index.column() == 2:
-                    return Qt.AlignCenter
+                return Qt.AlignCenter
         return None
 
     def getItem(self, index: QModelIndex) -> QJsonTreeItem:

@@ -153,10 +153,10 @@ class Utils():
         try:
             if language == "en":
                 return next((key for key, value in translate_dictionary.items()
-                    if value == input_string), input_string)
+                             if value == input_string), input_string)
             elif language == "ru":
                 return translate_dictionary[input_string]
             else:
                 return
-        except KeyError as exception:
+        except KeyError:
             return input_string
