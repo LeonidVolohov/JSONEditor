@@ -66,7 +66,7 @@
       <addaction name="action_two_child"/>
       <addaction name="action_three_child"/>
      </widget>
-     <addaction name="action_none"/>
+     <addaction name="action_collapse"/>
      <addaction name="action_all"/>
      <addaction name="menu_expand_to_level"/>
     </widget>
@@ -132,9 +132,9 @@
     <string>Is editable</string>
    </property>
   </action>
-  <action name="action_none">
+  <action name="action_collapse">
    <property name="text">
-    <string>None</string>
+    <string>Collapse</string>
    </property>
   </action>
   <action name="action_all">

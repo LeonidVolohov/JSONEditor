@@ -13,8 +13,6 @@
 import os
 import re
 
-from utils.translate import translate_dictionary
-
 
 class Utils():
     """Class for for the necessary functions needed during process of preparing data for the GUI.
@@ -27,8 +25,6 @@ class Utils():
         Return True if given file_name match .json file extension
     string_to_boolean(input_string: str) -> bool
         Return True if input_string is "True" False if "False"
-    translate(input_string: str, language: str) -> str:
-        Return translated input_string from translate.py dictionary
     """
 
     def __init__(self) -> None:
@@ -127,36 +123,3 @@ class Utils():
             return False
         else:
             return
-
-    @classmethod
-    def translate(cls, input_string: str, language: str) -> str:
-        """Translates input string to another language.
-
-        Translated from translate.translate_dictionary dictionary from utils/translate file
-
-        Args:
-        -----
-            input_string: str
-                Input string to translae
-            language: str
-                Language to translate
-
-        Raises:
-        -------
-            KeyError:
-                If input_string is not in dictionary
-
-        Returns:
-        --------
-            Return True if input_string is "True" False if "False".
-        """
-        try:
-            if language == "en":
-                return next((key for key, value in translate_dictionary.items()
-                             if value == input_string), input_string)
-            elif language == "ru":
-                return translate_dictionary[input_string]
-            else:
-                return
-        except KeyError:
-            return input_string

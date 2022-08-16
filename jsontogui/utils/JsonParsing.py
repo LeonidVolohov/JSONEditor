@@ -8,6 +8,7 @@
     json_parsing.write_json_to_file("example.json")
     json_parsing.get_name_from_dict({"name": "username"})
 """
+import os
 import json
 import gettext
 from collections import OrderedDict
@@ -28,50 +29,30 @@ TRANSLATE_JSONPARSING.install()
 class JsonParsing():
     """Class parsing JSON-file for further analysis.
 
-    Attributes:
-    -----------
-    file_name: str
-        File name of the file to work with
-
     Methods:
     --------
     get_json_from_file() -> dict:
         Return JSON data from given file_name
-
     write_json_to_file(json_data: str) -> None:
         Write to given file_name given json_data
-
     get_name_from_dict(data: dict) -> str
         Return str with some parameters which was found from given data
+    translate(input_string: str, language: str) -> str:
+        Return translated input_string from translate.py dictionary
     """
 
-    def __init__(self, file_name: str=None) -> None:
-        """Constructs all the necessary attributes for the Utils object.
+    def __init__(self) -> None:
+        """Constructs all the necessary attributes for the Utils object."""
+        pass
 
-        Args:
-        -----
-            _file_name: str
-                File name of the file to work with.
-        """
-        self._file_name = file_name
-
-    @property
-    def file_name(self):
-        """Get or set current file_name."""
-        return self._file_name
-
-    @file_name.setter
-    def file_name(self, file_name):
-        self._file_name = file_name
-
-    def get_json_from_file(self) -> dict:
+    def get_json_from_file(self, file_name: str) -> dict:
         """Get JSON from file.
 
         Return dictionary filled with JSONs data.
 
         Returns:
         --------
-            Return dictionary filled with data from self.file_name
+            Return dictionary filled with data from file_name
 
         Raises:
         -------
@@ -83,7 +64,7 @@ class JsonParsing():
                 Base exception if others could not catch the exception
         """
         try:
-            with open(self.file_name, mode='r', encoding="utf-8") as opened_file:
+            with open(file_name, mode='r', encoding="utf-8") as opened_file:
                 json_data = json.load(opened_file)
 
                 # In Json there is a property for sorting keys (sort_Keys=True (False by default)),
@@ -91,17 +72,17 @@ class JsonParsing():
                 # return OrderedDict(sorted(json_data.items()))
                 return json_data
         except FileNotFoundError:
-            print("Could not found the file: %s" % self.file_name)
+            print("Could not found the file: %s" % file_name)
         except OSError:
-            print("OSError occurred trying open the file: %s" % self.file_name)
+            print("OSError occurred trying open the file: %s" % file_name)
         except BaseException as exception:
-            print("BaseException occurred trying open the file: %s" % self.file_name)
+            print("BaseException occurred trying open the file: %s" % file_name)
             print(exception)
 
-    def write_json_to_file(self, json_data: dict) -> None:
+    def write_json_to_file(self, file_name: str, json_data: dict) -> None:
         """Write JSON to file.
 
-        Write json_data (dictionary) to self.file_name
+        Write json_data (dictionary) to file_name
 
         Args:
         -----
@@ -118,7 +99,7 @@ class JsonParsing():
                 Base exception if others could not the catch exception
         """
         try:
-            with open(self.file_name, mode="w", encoding="utf-8") as opened_file:
+            with open(file_name, mode="w", encoding="utf-8") as opened_file:
                 opened_file.write(
                     json.dumps(
                         json_data,
@@ -126,11 +107,11 @@ class JsonParsing():
                         ensure_ascii=False,
                         sort_keys=True))
         except FileNotFoundError:
-            print("Could not found the file: %s" % self.file_name)
+            print("Could not found the file: %s" % file_name)
         except OSError:
-            print("OSError occurred trying write to the file: %s" % self.file_name)
+            print("OSError occurred trying write to the file: %s" % file_name)
         except BaseException as exception:
-            print("BaseException occurred trying write to the file: %s" % self.file_name)
+            print("BaseException occurred trying write to the file: %s" % file_name)
             print(exception)
 
     @classmethod
@@ -173,3 +154,39 @@ class JsonParsing():
             pass
         if isinstance(data, tuple):
             pass
+
+    def translate(self, input_string: str, language: str) -> str:
+        """Translates input string to another language.
+
+        Translated from utils.translate.json file
+
+        Args:
+        -----
+            input_string: str
+                Input string to translae
+            language: str
+                Language to translate
+
+        Raises:
+        -------
+            KeyError:
+                If input_string is not in dictionary
+
+        Returns:
+        --------
+            Return translated string
+        """
+        try:
+            file_name = os.path.join(
+                os.path.split(
+                    os.path.abspath(__file__))[0], "locale/translate.json")
+            translate_dictionary = self.get_json_from_file(file_name)
+            if language == "en":
+                return next((key for key, value in translate_dictionary.items()
+                             if value == input_string), input_string)
+            elif language == "ru":
+                return translate_dictionary[input_string]
+            else:
+                return
+        except KeyError:
+            return input_string

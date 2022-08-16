@@ -19,6 +19,7 @@ from PyQt5 import QtGui
 
 sys.path.insert(1, "..")
 from utils.Utils import Utils
+from utils.JsonParsing import JsonParsing
 sys.path.insert(1, Utils().get_abs_file_path("treemodel"))
 from QJsonTreeItem import QJsonTreeItem
 
@@ -46,46 +47,32 @@ class QJsonTreeModel(QAbstractItemModel):
     --------
     clear:
         Clear model by loading an empty dict to it
-
     load:
         Loads input document to QTreeView
-
     data:
         Return data for specific input index
-
     getItem:
         Return item for specific input index
-
     setData:
         Sets input value for specific index depends of input role
-
     headerData:
         Return header data
-
     index:
         Return index for specific row and column
-
     parent:
         Return parent for specific index
-
     rowCount:
         Return amount of rows for specific parent
-
     columnCount:
         Return amount of columns
-
     flags:
         Sets flags on displaying or editing specific column
-
     getJsonFromTree:
         Return JSON from tree
-
     generateJsonFromTree:
         Generate JSON from tree
-
     insertRows:
         Inserts rows for specific position
-
     removeRows:
         Removes rows for specific position
     """
@@ -183,11 +170,11 @@ class QJsonTreeModel(QAbstractItemModel):
                 return item.value
             if index.column() == 2:
                 if str(item.type) == "<class 'str'>":
-                    return "str"
+                    return TRANSLATE_QJSONTREEMODEL.gettext("str")
                 elif str(item.type) == "<class 'int'>":
-                    return "int"
+                    return TRANSLATE_QJSONTREEMODEL.gettext("int")
                 elif str(item.type) == "<class 'bool'>":
-                    return "bool"
+                    return TRANSLATE_QJSONTREEMODEL.gettext("bool")
                 else:
                     return
 
@@ -203,7 +190,8 @@ class QJsonTreeModel(QAbstractItemModel):
         #     elif item.type is str or item.type is int or item.type is bool:
         #         pass
 
-        # only one choose: or Qt.ForegroundRole or in MainWindow in self.tree_view.setStyleSheet -> item
+        # only one choose:
+        # or Qt.ForegroundRole or in MainWindow in self.tree_view.setStyleSheet -> item
         if role == Qt.BackgroundRole:
             if item.data(index.parent().column()) is None:
                 if item.type is dict:
@@ -623,7 +611,7 @@ class QJsonTreeModel(QAbstractItemModel):
             for i in range(amount_of_child):
                 child = item.child(i)
                 document[
-                    Utils().translate(
+                    JsonParsing().translate(
                         child.key,
                         CONFIG_OBJECT.get("Language", "write_to_json_language"))] = \
                     self.generate_json_from_free(child)

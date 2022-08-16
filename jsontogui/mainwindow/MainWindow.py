@@ -56,49 +56,34 @@ class MainWindow(QMainWindow):
     --------
     ui_components:
         Creates main components of the window
-
     closeEvent:
         Close event for QMainWindow
-
     create_menu_bar:
         Creates manu bar
-
     action_new_json_file:
         Action to create new an empty JSON file on the main window
-
     action_open_file_dialog:
         Action for opening file dialog
-
     action_save_json_file:
         Action for saving to file
-
     action_save_json_file_as:
         Action for saving file as
-
     action_refresh_json_file:
         Action for loading JSON from file to the main window. "Refreshing"
-
     action_close_application:
         Action for closing application
-
     action_change_flags:
         Changes opportunity for editing item
-
     open_right_click_menu:
         Action for creating on QTreeView right click menu
-
     tree_add_item:
         Action for adding item to QTreeView
-
     tree_add_item_child:
         Action for adding child item to QTreeView
-
     tree_item_delete:
         Action for deleting item from QTreeView
-
     action_tree_item_open_json_file:
         Action for opening JSON file from QTreeView if matched
-
     center:
         Action for centering main window
     """
@@ -125,7 +110,7 @@ class MainWindow(QMainWindow):
                                TRANSLATE_MAINWINDOW.gettext("[No data]")}
             self.setWindowTitle(TRANSLATE_MAINWINDOW.gettext("untilted"))
         else:
-            self._json_text = JsonParsing(json_file_name).get_json_from_file() # dict
+            self._json_text = JsonParsing().get_json_from_file(json_file_name) # dict
             self.setWindowTitle(Utils().get_abs_file_path(self.json_file_name))
 
         #self.setGeometry(0, 0, 640, 480)
@@ -194,7 +179,8 @@ class MainWindow(QMainWindow):
         if Utils().string_to_boolean(CONFIG_OBJECT.get("QTreeView-expand", "expand_all")):
             self.tree_view.expandAll()
         if int(CONFIG_OBJECT.get("QTreeView-expand", "expand_to_depth")) >= -1:
-            self.tree_view.expandToDepth(int(CONFIG_OBJECT.get("QTreeView-expand", "expand_to_depth")))
+            self.tree_view.expandToDepth(
+                int(CONFIG_OBJECT.get("QTreeView-expand", "expand_to_depth")))
 
         self.setCentralWidget(widget)
 
@@ -245,8 +231,8 @@ class MainWindow(QMainWindow):
         self.menu_view.setTitle(TRANSLATE_MAINWINDOW.gettext("View"))
         self.menu_expand.setTitle(TRANSLATE_MAINWINDOW.gettext("Expand"))
 
-        self.action_none.triggered.connect(partial(self.action_expand_tree, "None"))
-        self.action_none.setText(TRANSLATE_MAINWINDOW.gettext("None"))
+        self.action_collapse.triggered.connect(partial(self.action_expand_tree, "Collapse"))
+        self.action_collapse.setText(TRANSLATE_MAINWINDOW.gettext("Collapse"))
 
         self.action_all.triggered.connect(partial(self.action_expand_tree, "All"))
         self.action_all.setText(TRANSLATE_MAINWINDOW.gettext("All"))
@@ -259,6 +245,8 @@ class MainWindow(QMainWindow):
         self.action_two_child.setText(TRANSLATE_MAINWINDOW.gettext("2"))
         self.action_three_child.triggered.connect(partial(self.action_expand_tree, "3"))
         self.action_three_child.setText(TRANSLATE_MAINWINDOW.gettext("3"))
+
+        self.menu_color.setTitle(TRANSLATE_MAINWINDOW.gettext("Color"))
 
         self.action_none_color.triggered.connect(partial(self.action_tree_color, "None"))
         self.action_none_color.setText(TRANSLATE_MAINWINDOW.gettext("None"))
@@ -307,7 +295,7 @@ class MainWindow(QMainWindow):
             options=options)
         if file_name:
             self.json_file_name = file_name
-            self.model.load(JsonParsing(file_name).get_json_from_file())
+            self.model.load(JsonParsing().get_json_from_file(file_name))
             self.setWindowTitle(file_name)
 
     def action_save_json_file(self) -> None:
@@ -330,7 +318,8 @@ class MainWindow(QMainWindow):
                     message=message,
                     type="Critical")
             else:
-                JsonParsing(self.json_file_name).write_json_to_file(self.model.get_json_from_tree())
+                JsonParsing().write_json_to_file(
+                    self.json_file_name, self.model.get_json_from_tree())
 
                 # Update config default_json_file_name
                 CONFIG_OBJECT["Other"]["default_json_file_name"] = str(self.json_file_name)
@@ -393,11 +382,11 @@ class MainWindow(QMainWindow):
                 else:
                     new_file_name = file_name[0]
 
-                JsonParsing(new_file_name).write_json_to_file(self.model.get_json_from_tree())
+                JsonParsing().write_json_to_file(new_file_name, self.model.get_json_from_tree())
 
                 # load just added file to QTreeView
                 self.json_file_name = new_file_name
-                self.model.load(JsonParsing(new_file_name).get_json_from_file())
+                self.model.load(JsonParsing().get_json_from_file(new_file_name))
                 self.setWindowTitle(new_file_name)
 
                 # Update config default_json_file_name
@@ -446,7 +435,7 @@ class MainWindow(QMainWindow):
                     type="Critical")
             else:
                 self.model.load(
-                    JsonParsing(self.json_file_name).get_json_from_file())
+                    JsonParsing().get_json_from_file(self.json_file_name))
         except FileNotFoundError as exception:
             message = TRANSLATE_MAINWINDOW.gettext(
                 "FileNotFoundError exception in action_refresh_json_file() function: %s") % \
@@ -477,7 +466,7 @@ class MainWindow(QMainWindow):
 
     def action_expand_tree(self, expand_lvl: str) -> None:
         """Expands QTreeView depending on input expand_lvl."""
-        if expand_lvl == "None":
+        if expand_lvl == "Collapse":
             self.tree_view.collapseAll()
             CONFIG_OBJECT["QTreeView-expand"]["expand_all"] = "False"
             CONFIG_OBJECT["QTreeView-expand"]["expand_to_depth"] = "-2"
@@ -532,7 +521,7 @@ class MainWindow(QMainWindow):
         message.setIcon(QMessageBox.Information)
         message.setText(TRANSLATE_MAINWINDOW.gettext("Application needs to be restarted!"))
         message.setWindowTitle(TRANSLATE_MAINWINDOW.gettext("Information"))
-        message.setStandardButtons(QMessageBox.Ok | QMessageBox.Ignore)
+        message.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
         return_value = message.exec()
         if return_value == QMessageBox.Ok:
             with open("utils/config/config.ini", "w") as config_file:
@@ -837,7 +826,7 @@ class MainWindow(QMainWindow):
 
         Raises:
         -------
-            Exception:
+            BaseException:
                 Basic exception
         """
         try:
@@ -867,7 +856,7 @@ class MainWindow(QMainWindow):
 
         Raises:
         -------
-            Exception:
+            BaseException:
                 Basic exception
         """
         try:
@@ -927,7 +916,7 @@ class MainWindow(QMainWindow):
         Checks if data from model does not match to json_file data and throws an QMessageBox
         with the offer to save information
         """
-        if self.model.get_json_from_tree() != JsonParsing(self.json_file_name).get_json_from_file():
+        if self.model.get_json_from_tree() != JsonParsing().get_json_from_file(self.json_file_name):
             message = QMessageBox()
             message.setIcon(QMessageBox.Warning)
             message.setText(TRANSLATE_MAINWINDOW.gettext("Save changes to file before closing?"))

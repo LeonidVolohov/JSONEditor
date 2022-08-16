@@ -12,7 +12,6 @@ from configparser import ConfigParser
 
 sys.path.insert(1, "..")
 from utils.JsonParsing import JsonParsing
-from utils.Utils import Utils
 
 
 CONFIG_OBJECT = ConfigParser()
@@ -32,34 +31,24 @@ class QJsonTreeItem(object):
     --------
     appendChild:
         Appends child to the list
-
     child:
         Return child for specific row
-
     parent:
         Return parent
-
     childCount:
         Return length of list
-
     columnCount:
         Return column count
-
     row:
         Return index of tree
-
     data:
         Return data for specific column
-
     setData:
         Sets given data for specific column
-
     insertChildren:
         Insert children for specific row and column
-
     removeChildren:
         Remove children from specicif row
-
     load_json_to_tree:
         Prepare data to load it to tree
     """
@@ -159,10 +148,8 @@ class QJsonTreeItem(object):
         -----
             value: Any
                 Value to load
-
             parent: QJsonTreeItem
                 Parent item
-
             sort: bool
                 Sort or not
 
@@ -181,7 +168,7 @@ class QJsonTreeItem(object):
 
             for key, value in items:
                 child = cls.load_json_to_tree(value, root_item)
-                child.key = Utils().translate(
+                child.key = JsonParsing().translate(
                     key, CONFIG_OBJECT.get("Language", "default_tree_language"))
                 child.type = type(value)
                 root_item.appendChild(child)
