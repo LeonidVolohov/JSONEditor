@@ -33,7 +33,6 @@ from treemodel.QJsonTreeModel import QJsonTreeModel
 
 CONFIG_OBJECT = ConfigParser()
 CONFIG_OBJECT.read(Utils().get_abs_file_path("utils/config/config.ini"))
-# CONFIG_OBJECT.read("utils/config/config.ini")
 
 TRANSLATE_MAINWINDOW = gettext.translation(
     domain="MainWindow",
@@ -324,7 +323,6 @@ class MainWindow(QMainWindow):
 
                 # Update config default_json_file_name
                 CONFIG_OBJECT["Other"]["default_json_file_name"] = str(self.json_file_name)
-                # with open("utils/config/config.ini", "w") as config_file:
                 with open(Utils().get_abs_file_path("utils/config/config.ini"), "w") as config_file:
                     CONFIG_OBJECT.write(config_file)
         except FileNotFoundError as exception:
@@ -393,8 +391,6 @@ class MainWindow(QMainWindow):
 
                 # Update config default_json_file_name
                 CONFIG_OBJECT["Other"]["default_json_file_name"] = str(self.json_file_name)
-                
-                # with open("utils/config/config.ini", "w") as config_file:
                 with open(Utils().get_abs_file_path("utils/config/config.ini"), "w") as config_file:
                     CONFIG_OBJECT.write(config_file)
         except FileNotFoundError as exception:
@@ -482,7 +478,6 @@ class MainWindow(QMainWindow):
             self.tree_view.expandToDepth(int(expand_lvl) - 1)
             CONFIG_OBJECT["QTreeView-expand"]["expand_all"] = "False"
             CONFIG_OBJECT["QTreeView-expand"]["expand_to_depth"] = str(int(expand_lvl) - 1)
-        # with open("utils/config/config.ini", "w") as config_file:
         with open(Utils().get_abs_file_path("utils/config/config.ini"), "w") as config_file:
             CONFIG_OBJECT.write(config_file)
 
@@ -529,7 +524,6 @@ class MainWindow(QMainWindow):
         message.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
         return_value = message.exec()
         if return_value == QMessageBox.Ok:
-            # with open("utils/config/config.ini", "w") as config_file:
             with open(Utils().get_abs_file_path("utils/config/config.ini"), "w") as config_file:
                 CONFIG_OBJECT.write(config_file)
             os.execl(sys.executable, sys.executable, *sys.argv)

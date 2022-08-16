@@ -26,7 +26,6 @@ from QJsonTreeItem import QJsonTreeItem
 
 CONFIG_OBJECT = ConfigParser()
 CONFIG_OBJECT.read(Utils().get_abs_file_path("utils/config/config.ini"))
-# CONFIG_OBJECT.read("utils/config/config.ini")
 
 TRANSLATE_QJSONTREEMODEL = gettext.translation(
     domain="QJsonTreeModel",
@@ -39,10 +38,8 @@ class QJsonTreeModel(QAbstractItemModel):
 
     Attributes:
     -----------
-    root_item:
-        Root item
-    headers:
-        Headers of column=0 and column=1
+    parent:
+        Parent item
 
     Methods:
     --------

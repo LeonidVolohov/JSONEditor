@@ -19,7 +19,6 @@ from utils.Utils import Utils
 
 CONFIG_OBJECT = ConfigParser()
 CONFIG_OBJECT.read(Utils().get_abs_file_path("utils/config/config.ini"))
-# CONFIG_OBJECT.read("utils/config/config.ini")
 
 TRANSLATE_JSONPARSING = gettext.translation(
     domain="JsonParsing",
