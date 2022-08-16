@@ -12,7 +12,8 @@ from mainwindow.MainWindow import MainWindow
 
 if __name__ == '__main__':
     CONFIG_OBJECT = ConfigParser()
-    CONFIG_OBJECT.read("utils/config/config.ini")
+    CONFIG_OBJECT.read(Utils().get_abs_file_path("utils/config/config.ini"))
+    # CONFIG_OBJECT.read("utils/config/config.ini")
 
     parser = ArgumentParser()
     parser.add_argument(
