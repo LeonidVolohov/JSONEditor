@@ -110,13 +110,13 @@ class QJsonTreeItem(object):
     def data(self, column) -> None:
         if column is 0:
             return self.key
-        elif column is 1:
+        elif column is 2:
             return self.value
 
     def setData(self, column, value) -> None:
         if column is 0:
             self.key = value
-        if column is 1:
+        if column is 2:
             self.value = value
 
     def insertChildren(self, position, rows, columns) -> bool:

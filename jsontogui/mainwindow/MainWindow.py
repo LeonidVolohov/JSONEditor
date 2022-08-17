@@ -161,7 +161,7 @@ class MainWindow(QMainWindow):
         self.model = QJsonTreeModel()
         self.tree_view.setModel(self.model)
         self.tree_view.setColumnWidth(0, 512)
-        self.tree_view.setColumnWidth(1, 256)
+        self.tree_view.setColumnWidth(1, 64)
         self.tree_view.setContextMenuPolicy(Qt.CustomContextMenu)
         self.tree_view.customContextMenuRequested.connect(self.open_right_click_menu)
         self.tree_view.setStyleSheet(QTREEVIEW_STYLESHEET)
