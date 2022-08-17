@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-08-12 14:25+0300\n"
-"PO-Revision-Date: 2022-08-16 10:40+0300\n"
+"POT-Creation-Date: 2022-08-17 15:32+0300\n"
+"PO-Revision-Date: 2022-08-17 15:32+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_US\n"
 "Language-Team: en_US <LL@li.org>\n"
@@ -18,32 +18,44 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.3.4\n"
 
-#: QJsonTreeModel.py:103 QJsonTreeModel.py:107
+#: QJsonTreeModel.py:88 QJsonTreeModel.py:92
 msgid "Key"
 msgstr ""
 
-#: QJsonTreeModel.py:104 QJsonTreeModel.py:108
-msgid "Value"
-msgstr ""
-
-#: QJsonTreeModel.py:105 QJsonTreeModel.py:109
+#: QJsonTreeModel.py:89 QJsonTreeModel.py:93
 msgid "Type"
 msgstr ""
 
-#: QJsonTreeModel.py:145
+#: QJsonTreeModel.py:90 QJsonTreeModel.py:94
+msgid "Value"
+msgstr ""
+
+#: QJsonTreeModel.py:130
 #, python-format
 msgid "`document` must be of dict, list or tuple, not %s"
 msgstr ""
 
-#: QJsonTreeModel.py:323
-msgid "[No string value]"
+#: QJsonTreeModel.py:169
+msgid "str"
 msgstr ""
 
-#: QJsonTreeModel.py:340
-msgid "[No dict() name]"
+#: QJsonTreeModel.py:171
+msgid "int"
 msgstr ""
 
-#: QJsonTreeModel.py:346
-msgid "[No list() name]"
+#: QJsonTreeModel.py:173
+msgid "bool"
+msgstr ""
+
+#: QJsonTreeModel.py:316
+msgid "New string"
+msgstr ""
+
+#: QJsonTreeModel.py:342
+msgid "New object()"
+msgstr ""
+
+#: QJsonTreeModel.py:351
+msgid "New list()"
 msgstr ""
 

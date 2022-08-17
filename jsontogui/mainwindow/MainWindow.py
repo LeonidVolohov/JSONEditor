@@ -184,7 +184,6 @@ class MainWindow(QMainWindow):
 
         self.setCentralWidget(widget)
 
-
     def closeEvent(self, event):
         """Close event for QMainWindow."""
         self.check_saved_before_exit()
@@ -299,11 +298,12 @@ class MainWindow(QMainWindow):
             self.setWindowTitle(file_name)
 
             # Expand recently openeded file
-            expand_all = CONFIG_OBJECT.get("QTreeView-expand", "expand_all")
+            expand_all = Utils().string_to_boolean(
+                CONFIG_OBJECT.get("QTreeView-expand", "expand_all"))
             expand_to_depth = int(CONFIG_OBJECT.get("QTreeView-expand", "expand_to_depth"))
-            if expand_all == "True" and expand_to_depth == -1:
+            if expand_all and expand_to_depth == -1:
                 self.tree_view.expandAll()
-            elif expand_all == "False" and expand_to_depth == -2:
+            elif not expand_all and expand_to_depth == -2:
                 self.tree_view.collapseAll()
             elif expand_to_depth > -1:
                 self.tree_view.expandToDepth(expand_to_depth)
@@ -575,7 +575,7 @@ class MainWindow(QMainWindow):
                 partial(self.tree_add_item, Qt.StatusTipRole))
 
             action_add_dictionary = right_click_menu.addAction(
-                self.tr(TRANSLATE_MAINWINDOW.gettext("Add dict()")))
+                self.tr(TRANSLATE_MAINWINDOW.gettext("Add object()")))
             action_add_dictionary.triggered.connect(
                 partial(self.tree_add_item, Qt.WhatsThisRole))
 
@@ -605,12 +605,12 @@ class MainWindow(QMainWindow):
                 partial(self.tree_add_item_child, Qt.StatusTipRole))
 
             action_insert_child_dict = right_click_menu.addAction(
-                self.tr(TRANSLATE_MAINWINDOW.gettext("Insert Child dict()")))
+                self.tr(TRANSLATE_MAINWINDOW.gettext("Insert child object()")))
             action_insert_child_dict.triggered.connect(
                 partial(self.tree_add_item_child, Qt.WhatsThisRole))
 
             action_insert_child_list = right_click_menu.addAction(
-                self.tr(TRANSLATE_MAINWINDOW.gettext("Insert Child list()")))
+                self.tr(TRANSLATE_MAINWINDOW.gettext("Insert child list()")))
             action_insert_child_list.triggered.connect(
                 partial(self.tree_add_item_child, Qt.SizeHintRole))
 
