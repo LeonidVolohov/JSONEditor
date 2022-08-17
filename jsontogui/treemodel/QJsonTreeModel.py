@@ -233,9 +233,11 @@ class QJsonTreeModel(QAbstractItemModel):
         if role == Qt.DecorationRole:
             if index.column() == 0:
                 if item.type is dict:
-                    return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/object.png"))
+                    return QtGui.QIcon(
+                        QtGui.QPixmap(Utils().get_abs_file_path("utils/images/treeview/object.png")))
                 if item.type is list:
-                    return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/array.png"))
+                    return QtGui.QIcon(
+                        QtGui.QPixmap(Utils().get_abs_file_path("utils/images/treeview/array.png")))
                 # if item.type is int:
                 #     return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/int.png"))
                 # if item.type is str and item.key != "file":
@@ -243,7 +245,8 @@ class QJsonTreeModel(QAbstractItemModel):
                 # if item.type is bool:
                 #     return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/bool.png"))
                 if item.key == "file":
-                    return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/file.png"))
+                    return QtGui.QIcon(
+                        QtGui.QPixmap(Utils().get_abs_file_path("utils/images/treeview/file.png")))
             elif index.column() == 1:
                 pass
 
@@ -312,7 +315,7 @@ class QJsonTreeModel(QAbstractItemModel):
                 item.setData(0, None)
             else:
                 item.setData(0, value)
-            item.setData(1, TRANSLATE_QJSONTREEMODEL.gettext("[No string value]"))
+            item.setData(1, TRANSLATE_QJSONTREEMODEL.gettext("New string"))
             self.dataChanged.emit(index, index, [Qt.EditRole])
             return True
         if role == Qt.ToolTipRole:
@@ -338,7 +341,7 @@ class QJsonTreeModel(QAbstractItemModel):
             if self.getItem(index).parent().type is list:
                 item.setData(0, None)
             else:
-                item.setData(0, TRANSLATE_QJSONTREEMODEL.gettext("[No dict() name]"))
+                item.setData(0, TRANSLATE_QJSONTREEMODEL.gettext("New object()"))
             item.setData(1, dict())
             self.dataChanged.emit(index, index, [Qt.EditRole])
             return True
@@ -347,7 +350,7 @@ class QJsonTreeModel(QAbstractItemModel):
             if self.getItem(index).parent().type is list:
                 item.setData(0, None)
             else:
-                item.setData(0, TRANSLATE_QJSONTREEMODEL.gettext("[No list() name]"))
+                item.setData(0, TRANSLATE_QJSONTREEMODEL.gettext("New list()"))
             item.setData(1, list())
             self.dataChanged.emit(index, index, [Qt.EditRole])
             return True

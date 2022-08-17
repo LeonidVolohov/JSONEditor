@@ -106,8 +106,8 @@ class MainWindow(QMainWindow):
         self.new_window = None
 
         if len(json_file_name) == 0:
-            self._json_text = {TRANSLATE_MAINWINDOW.gettext("[No data]"):
-                               TRANSLATE_MAINWINDOW.gettext("[No data]")}
+            self._json_text = {TRANSLATE_MAINWINDOW.gettext("New string"):
+                               TRANSLATE_MAINWINDOW.gettext("New string")}
             self.setWindowTitle(TRANSLATE_MAINWINDOW.gettext("untilted"))
         else:
             self._json_text = JsonParsing().get_json_from_file(json_file_name) # dict
@@ -280,8 +280,8 @@ class MainWindow(QMainWindow):
         self.json_file_name = TRANSLATE_MAINWINDOW.gettext("untilted")
         self.setWindowTitle(self.json_file_name)
         self.model.clear()
-        self.model.load({TRANSLATE_MAINWINDOW.gettext("[No data]"):
-                         TRANSLATE_MAINWINDOW.gettext("[No data]")})
+        self.model.load({TRANSLATE_MAINWINDOW.gettext("New string"):
+                         TRANSLATE_MAINWINDOW.gettext("New string")})
 
     def action_open_file_dialog(self) -> None:
         """Opens file dialog to for opening new JSON-file."""
@@ -297,6 +297,16 @@ class MainWindow(QMainWindow):
             self.json_file_name = file_name
             self.model.load(JsonParsing().get_json_from_file(file_name))
             self.setWindowTitle(file_name)
+
+            # Expand recently openeded file
+            expand_all = CONFIG_OBJECT.get("QTreeView-expand", "expand_all")
+            expand_to_depth = int(CONFIG_OBJECT.get("QTreeView-expand", "expand_to_depth"))
+            if expand_all == "True" and expand_to_depth == -1:
+                self.tree_view.expandAll()
+            elif expand_all == "False" and expand_to_depth == -2:
+                self.tree_view.collapseAll()
+            elif expand_to_depth > -1:
+                self.tree_view.expandToDepth(expand_to_depth)
 
     def action_save_json_file(self) -> None:
         """Saves JSON to file.
@@ -715,21 +725,21 @@ class MainWindow(QMainWindow):
                     if role == Qt.DecorationRole:
                         self.model.setData(
                             index=child,
-                            value=TRANSLATE_MAINWINDOW.gettext("[No string key]"),
+                            value=TRANSLATE_MAINWINDOW.gettext("New string"),
                             role=role)
                         self.model.getItem(child).type = str
                         return
                     elif role == Qt.ToolTipRole:
                         self.model.setData(
                             index=child,
-                            value=TRANSLATE_MAINWINDOW.gettext("[No int data]"),
+                            value=TRANSLATE_MAINWINDOW.gettext("New int"),
                             role=role)
                         self.model.getItem(child).type = int
                         return
                     elif role == Qt.StatusTipRole:
                         self.model.setData(
                             index=child,
-                            value=TRANSLATE_MAINWINDOW.gettext("[No bool data]"),
+                            value=TRANSLATE_MAINWINDOW.gettext("New bool"),
                             role=role)
                         self.model.getItem(child).type = bool
                         return
@@ -786,19 +796,19 @@ class MainWindow(QMainWindow):
                 if role == Qt.DecorationRole:
                     self.model.setData(
                         index=child,
-                        value=TRANSLATE_MAINWINDOW.gettext("[No string key]"),
+                        value=TRANSLATE_MAINWINDOW.gettext("New string"),
                         role=role)
                     self.model.getItem(child).type = str
                 elif role == Qt.ToolTipRole:
                     self.model.setData(
                         index=child,
-                        value=TRANSLATE_MAINWINDOW.gettext("[No int data]"),
+                        value=TRANSLATE_MAINWINDOW.gettext("New int"),
                         role=role)
                     self.model.getItem(child).type = int
                 elif role == Qt.StatusTipRole:
                     self.model.setData(
                         index=child,
-                        value=TRANSLATE_MAINWINDOW.gettext("[No bool data]"),
+                        value=TRANSLATE_MAINWINDOW.gettext("New bool"),
                         role=role)
                     self.model.getItem(child).type = bool
                 elif role == Qt.WhatsThisRole:
