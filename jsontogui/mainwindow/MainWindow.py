@@ -188,6 +188,15 @@ class MainWindow(QMainWindow):
         """Close event for QMainWindow."""
         self.check_saved_before_exit()
 
+        show_maximized = False
+        if int(self.windowState()) == 2:
+            show_maximized = True
+
+        # Update config default_json_file_name
+        CONFIG_OBJECT["MainWindow"]["show_maximized"] = str(show_maximized)
+        with open(Utils().get_abs_file_path("utils/config/config.ini"), "w") as config_file:
+            CONFIG_OBJECT.write(config_file)
+
     def create_menu_bar(self) -> None:
         """Creates menu bar."""
         self.setMenuBar(self.menu_bar)
