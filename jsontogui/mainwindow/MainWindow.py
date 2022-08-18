@@ -19,10 +19,10 @@ from configparser import ConfigParser
 
 from PyQt5.QtWidgets import (
     QApplication, QFileDialog, QMainWindow, QMenu,
-    QMessageBox, QTreeView, QVBoxLayout, QWidget
+    QMessageBox, QTreeView, QVBoxLayout, QWidget, QLineEdit
 )
 from PyQt5.QtGui import QKeySequence
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QSortFilterProxyModel
 from PyQt5 import uic
 
 from utils.JsonParsing import JsonParsing
@@ -157,13 +157,14 @@ class MainWindow(QMainWindow):
         layout = QVBoxLayout(widget)
 
         self.tree_view = QTreeView()
+        self.line_edit = QLineEdit()
 
         self.model = QJsonTreeModel()
-        self.tree_view.setModel(self.model)
+        # self.tree_view.setModel(self.model)
         self.tree_view.setColumnWidth(0, 512)
         self.tree_view.setColumnWidth(1, 64)
-        self.tree_view.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.tree_view.customContextMenuRequested.connect(self.open_right_click_menu)
+        # self.tree_view.setContextMenuPolicy(Qt.CustomContextMenu)
+        # self.tree_view.customContextMenuRequested.connect(self.open_right_click_menu)
         self.tree_view.setStyleSheet(QTREEVIEW_STYLESHEET)
 
         self.tree_view.setAlternatingRowColors(
@@ -174,7 +175,25 @@ class MainWindow(QMainWindow):
         self.model.clear()
         self.model.load(self.json_text)
 
-        layout.addWidget(self .tree_view)
+
+        filter_proxy_model = QSortFilterProxyModel()
+
+        filter_proxy_model.setSourceModel(self.model)
+        filter_proxy_model.setFilterCaseSensitivity(Qt.CaseInsensitive) # Qt.CaseSensitive
+        filter_proxy_model.setRecursiveFilteringEnabled(True)
+        filter_proxy_model.setFilterKeyColumn(-1)
+
+
+        self.tree_view.setModel(filter_proxy_model)
+
+
+        self.line_edit.textChanged.connect(filter_proxy_model.setFilterRegExp)
+
+        self.tree_view.doubleClicked.connect(self.tree_view_doubleClicked)
+
+        layout.addWidget(self.tree_view)
+        layout.addWidget(self.line_edit)
+        
 
         if Utils().string_to_boolean(CONFIG_OBJECT.get("QTreeView-expand", "expand_all")):
             self.tree_view.expandAll()
