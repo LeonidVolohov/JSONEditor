@@ -161,10 +161,10 @@ class MainWindow(QMainWindow):
 
         self.model = QJsonTreeModel()
         # self.tree_view.setModel(self.model)
-        self.tree_view.setColumnWidth(0, 512)
-        self.tree_view.setColumnWidth(1, 64)
-        # self.tree_view.setContextMenuPolicy(Qt.CustomContextMenu)
-        # self.tree_view.customContextMenuRequested.connect(self.open_right_click_menu)
+        # self.tree_view.setColumnWidth(0, 512)
+        # self.tree_view.setColumnWidth(1, 64)
+        self.tree_view.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.tree_view.customContextMenuRequested.connect(self.open_right_click_menu)
         self.tree_view.setStyleSheet(QTREEVIEW_STYLESHEET)
 
         self.tree_view.setAlternatingRowColors(
@@ -175,25 +175,22 @@ class MainWindow(QMainWindow):
         self.model.clear()
         self.model.load(self.json_text)
 
+        self.filter_proxy_model = QSortFilterProxyModel()
 
-        filter_proxy_model = QSortFilterProxyModel()
+        self.filter_proxy_model.setSourceModel(self.model)
+        self.filter_proxy_model.setFilterCaseSensitivity(Qt.CaseInsensitive) # Qt.CaseSensitive
+        self.filter_proxy_model.setRecursiveFilteringEnabled(True)
+        self.filter_proxy_model.setFilterKeyColumn(-1)
 
-        filter_proxy_model.setSourceModel(self.model)
-        filter_proxy_model.setFilterCaseSensitivity(Qt.CaseInsensitive) # Qt.CaseSensitive
-        filter_proxy_model.setRecursiveFilteringEnabled(True)
-        filter_proxy_model.setFilterKeyColumn(-1)
+        self.tree_view.setModel(self.filter_proxy_model)
+        self.tree_view.setColumnWidth(0, 512)
+        self.tree_view.setColumnWidth(1, 64)
 
-
-        self.tree_view.setModel(filter_proxy_model)
-
-
-        self.line_edit.textChanged.connect(filter_proxy_model.setFilterRegExp)
-
-        self.tree_view.doubleClicked.connect(self.tree_view_doubleClicked)
+        self.line_edit.textChanged.connect(self.filter_proxy_model.setFilterRegExp)
 
         layout.addWidget(self.tree_view)
         layout.addWidget(self.line_edit)
-        
+
 
         if Utils().string_to_boolean(CONFIG_OBJECT.get("QTreeView-expand", "expand_all")):
             self.tree_view.expandAll()
@@ -651,13 +648,17 @@ class MainWindow(QMainWindow):
 
             right_click_menu.addSeparator()
 
-            file_name = str(self.model.data(self.tree_view.selectedIndexes()[2], Qt.EditRole))
+            # file_name = str(self.model.data(self.tree_view.selectedIndexes()[2], Qt.EditRole))
+            file_name = str(self.model.data(
+                self.filter_proxy_model.mapToSource(self.tree_view.selectedIndexes()[2]), Qt.EditRole))
             action_tree_item_open_json_file = right_click_menu.addAction(
                 self.tr(TRANSLATE_MAINWINDOW.gettext("Open File")))
             action_tree_item_open_json_file.triggered.connect(
                 partial(self.tree_item_open_json_file, file_name))
 
-            empty_value = self.model.data(self.tree_view.selectedIndexes()[2], Qt.EditRole) == ""
+            # empty_value = self.model.data(self.tree_view.selectedIndexes()[2], Qt.EditRole) == ""
+            empty_value = self.model.data(
+                self.filter_proxy_model.mapToSource(self.tree_view.selectedIndexes()[2]), Qt.EditRole) == ""
 
             if not self.model.is_editable:
                 action_add_item.menuAction().setVisible(False)
@@ -673,10 +674,17 @@ class MainWindow(QMainWindow):
                 else:
                     action_tree_item_open_json_file.setVisible(False)
             else:
-                is_parent_root = self.model.data(parent, Qt.EditRole) is None
+                # is_parent_root = self.model.data(parent, Qt.EditRole) is None
+                is_parent_root = self.model.data(self.filter_proxy_model.mapToSource(parent), Qt.EditRole) is None
+
+                # item_type_dict_or_list = \
+                #     self.model.getItem(self.tree_view.selectedIndexes()[2]).type is dict or \
+                #     self.model.getItem(self.tree_view.selectedIndexes()[2]).type is list
                 item_type_dict_or_list = \
-                    self.model.getItem(self.tree_view.selectedIndexes()[2]).type is dict or \
-                    self.model.getItem(self.tree_view.selectedIndexes()[2]).type is list
+                    self.model.getItem(
+                        self.filter_proxy_model.mapToSource(self.tree_view.selectedIndexes()[2])).type is dict or \
+                    self.model.getItem(
+                        self.filter_proxy_model.mapToSource(self.tree_view.selectedIndexes()[2])).type is list
 
                 action_add_item.menuAction().setVisible(False)
                 action_add_dictionary.setVisible(False)
@@ -813,7 +821,8 @@ class MainWindow(QMainWindow):
                 Basic exception
         """
         try:
-            index = self.tree_view.selectionModel().currentIndex()
+            # index = self.tree_view.selectionModel().currentIndex()
+            index = self.filter_proxy_model.mapToSource(self.tree_view.selectionModel().currentIndex())
             parent = index
 
             if not self.model.insertRow(0, parent):
@@ -868,7 +877,8 @@ class MainWindow(QMainWindow):
                 Basic exception
         """
         try:
-            index = self.tree_view.selectionModel().currentIndex()
+            # index = self.tree_view.selectionModel().currentIndex()
+            index = self.filter_proxy_model.mapToSource(self.tree_view.selectionModel().currentIndex())
             parent = index.parent()
 
             self.model.removeRows(

@@ -167,6 +167,8 @@ class QJsonTreeItem(object):
                 if sort else value.items()
             )
 
+            print(value)
+            root_item.type = type(value)
             for key, value in items:
                 child = cls.load_json_to_tree(value, root_item)
                 child.key = JsonParsing().translate(
@@ -174,6 +176,8 @@ class QJsonTreeItem(object):
                 child.type = type(value)
                 root_item.appendChild(child)
         elif isinstance(value, list):
+            print(value)
+            root_item.type = type(value)
             for index, value in enumerate(value):
                 child = cls.load_json_to_tree(value, root_item)
                 child.key = JsonParsing().get_name_from_dict(value)
