@@ -28,7 +28,28 @@
       <widget class="QTreeView" name="tree_view"/>
      </item>
      <item>
-      <widget class="QLineEdit" name="line_edit"/>
+      <layout class="QHBoxLayout" name="horizontalLayout_bottom">
+       <item>
+        <widget class="QCheckBox" name="check_box_case_sensitive">
+         <property name="text">
+          <string>Case sensitive</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="check_box_column">
+         <property name="text">
+          <string>Column</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="line_edit"/>
+       </item>
+      </layout>
      </item>
     </layout>
    </widget>

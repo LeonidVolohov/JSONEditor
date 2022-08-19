@@ -18,8 +18,8 @@ from functools import partial
 from configparser import ConfigParser
 
 from PyQt5.QtWidgets import (
-    QApplication, QFileDialog, QMainWindow, QMenu,
-    QMessageBox, QTreeView, QVBoxLayout, QWidget, QLineEdit
+    QApplication, QFileDialog, QMainWindow, QMenu, QMessageBox, 
+    QTreeView, QVBoxLayout, QHBoxLayout, QWidget, QLineEdit, QCheckBox
 )
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtCore import Qt, QSortFilterProxyModel
@@ -154,10 +154,13 @@ class MainWindow(QMainWindow):
     def ui_components(self) -> None:
         """Load all UI components of MainWindow."""
         widget = QWidget(self)
-        layout = QVBoxLayout(widget)
+        mainwindow_layout = QVBoxLayout(widget)
+        horizontalLayout_bottom = QHBoxLayout()
 
         self.tree_view = QTreeView()
         self.line_edit = QLineEdit()
+        self.check_box_case_sensitive = QCheckBox()
+        self.check_box_column = QCheckBox()
 
         self.model = QJsonTreeModel()
         # self.tree_view.setModel(self.model)
@@ -167,16 +170,10 @@ class MainWindow(QMainWindow):
         self.tree_view.customContextMenuRequested.connect(self.open_right_click_menu)
         self.tree_view.setStyleSheet(QTREEVIEW_STYLESHEET)
 
-        self.tree_view.setAlternatingRowColors(
-            Utils().string_to_boolean(CONFIG_OBJECT.get("QTreeView", "set_alternating_row_colors")))
-        self.tree_view.setAnimated(
-            Utils().string_to_boolean(CONFIG_OBJECT.get("QTreeView", "set_animated")))
-
         self.model.clear()
         self.model.load(self.json_text)
 
         self.filter_proxy_model = QSortFilterProxyModel()
-
         self.filter_proxy_model.setSourceModel(self.model)
         self.filter_proxy_model.setFilterCaseSensitivity(Qt.CaseInsensitive) # Qt.CaseSensitive
         self.filter_proxy_model.setRecursiveFilteringEnabled(True)
@@ -188,17 +185,19 @@ class MainWindow(QMainWindow):
 
         self.line_edit.textChanged.connect(self.filter_proxy_model.setFilterRegExp)
 
-        layout.addWidget(self.tree_view)
-        layout.addWidget(self.line_edit)
+        horizontalLayout_bottom.addWidget(self.check_box_case_sensitive)
+        horizontalLayout_bottom.addWidget(self.check_box_column)
+        horizontalLayout_bottom.addWidget(self.line_edit)
 
+        self.check_box_case_sensitive.setText(TRANSLATE_MAINWINDOW.gettext("Case sensitive"))
+        self.check_box_column.setText(TRANSLATE_MAINWINDOW.gettext("Column"))
 
-        if Utils().string_to_boolean(CONFIG_OBJECT.get("QTreeView-expand", "expand_all")):
-            self.tree_view.expandAll()
-        if int(CONFIG_OBJECT.get("QTreeView-expand", "expand_to_depth")) >= -1:
-            self.tree_view.expandToDepth(
-                int(CONFIG_OBJECT.get("QTreeView-expand", "expand_to_depth")))
+        mainwindow_layout.addWidget(self.tree_view)
+        mainwindow_layout.addLayout(horizontalLayout_bottom)
 
+        widget.setLayout(mainwindow_layout)
         self.setCentralWidget(widget)
+        self.preload_user_settings()
 
     def closeEvent(self, event):
         """Close event for QMainWindow."""
@@ -212,6 +211,19 @@ class MainWindow(QMainWindow):
         CONFIG_OBJECT["MainWindow"]["show_maximized"] = str(show_maximized)
         with open(Utils().get_abs_file_path("utils/config/config.ini"), "w") as config_file:
             CONFIG_OBJECT.write(config_file)
+
+    def preload_user_settings(self) -> None:
+        """Preload user settings from utils/config/config.ini."""
+        if Utils().string_to_boolean(CONFIG_OBJECT.get("QTreeView-expand", "expand_all")):
+            self.tree_view.expandAll()
+        if int(CONFIG_OBJECT.get("QTreeView-expand", "expand_to_depth")) >= -1:
+            self.tree_view.expandToDepth(
+                int(CONFIG_OBJECT.get("QTreeView-expand", "expand_to_depth")))
+
+        self.tree_view.setAlternatingRowColors(
+            Utils().string_to_boolean(CONFIG_OBJECT.get("QTreeView", "set_alternating_row_colors")))
+        self.tree_view.setAnimated(
+            Utils().string_to_boolean(CONFIG_OBJECT.get("QTreeView", "set_animated")))
 
     def create_menu_bar(self) -> None:
         """Creates menu bar."""
