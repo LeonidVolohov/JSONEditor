@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-08-17 15:02+0300\n"
-"PO-Revision-Date: 2022-08-17 15:02+0300\n"
+"POT-Creation-Date: 2022-08-22 14:53+0300\n"
+"PO-Revision-Date: 2022-08-22 14:53+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_US\n"
 "Language-Team: en_US <LL@li.org>\n"
@@ -18,289 +18,305 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.3.4\n"
 
-#: MainWindow.py:109 MainWindow.py:110 MainWindow.py:282 MainWindow.py:283
-#: MainWindow.py:728 MainWindow.py:799
+#: MainWindow.py:110 MainWindow.py:111 MainWindow.py:361 MainWindow.py:362
+#: MainWindow.py:819 MainWindow.py:891
 msgid "New string"
 msgstr ""
 
-#: MainWindow.py:111 MainWindow.py:279
+#: MainWindow.py:112 MainWindow.py:358
 msgid "untilted"
 msgstr ""
 
-#: MainWindow.py:199
+#: MainWindow.py:244
 msgid "File"
 msgstr ""
 
-#: MainWindow.py:202
+#: MainWindow.py:247
 msgid "New"
 msgstr ""
 
-#: MainWindow.py:206
+#: MainWindow.py:251
 msgid "Open"
 msgstr ""
 
-#: MainWindow.py:210
+#: MainWindow.py:255
 msgid "Save"
 msgstr ""
 
-#: MainWindow.py:214
+#: MainWindow.py:259
 msgid "Save As..."
 msgstr ""
 
-#: MainWindow.py:218
+#: MainWindow.py:263
 msgid "Refresh"
 msgstr ""
 
-#: MainWindow.py:222
+#: MainWindow.py:267
 msgid "Quit"
 msgstr ""
 
-#: MainWindow.py:228
+#: MainWindow.py:273
 msgid "Editable"
 msgstr ""
 
-#: MainWindow.py:230
+#: MainWindow.py:276
+msgid "Case sensitive"
+msgstr ""
+
+#: MainWindow.py:279 MainWindow.py:350
+msgid "Column - Value"
+msgstr ""
+
+#: MainWindow.py:281
 msgid "View"
 msgstr ""
 
-#: MainWindow.py:231
+#: MainWindow.py:284
+msgid "Find"
+msgstr ""
+
+#: MainWindow.py:287
 msgid "Expand"
 msgstr ""
 
-#: MainWindow.py:234
+#: MainWindow.py:290
 msgid "Collapse"
 msgstr ""
 
-#: MainWindow.py:237
+#: MainWindow.py:293
 msgid "All"
 msgstr ""
 
-#: MainWindow.py:239
+#: MainWindow.py:295
 msgid "To Level"
 msgstr ""
 
-#: MainWindow.py:242
+#: MainWindow.py:298
 msgid "1"
 msgstr ""
 
-#: MainWindow.py:244
+#: MainWindow.py:300
 msgid "2"
 msgstr ""
 
-#: MainWindow.py:246
+#: MainWindow.py:302
 msgid "3"
 msgstr ""
 
-#: MainWindow.py:248
+#: MainWindow.py:304
 msgid "Color"
 msgstr ""
 
-#: MainWindow.py:251
+#: MainWindow.py:307
 msgid "None"
 msgstr ""
 
-#: MainWindow.py:254
+#: MainWindow.py:310
 msgid "Yellow"
 msgstr ""
 
-#: MainWindow.py:257
+#: MainWindow.py:313
 msgid "Orange"
 msgstr ""
 
-#: MainWindow.py:260
+#: MainWindow.py:316
 msgid "Red"
 msgstr ""
 
-#: MainWindow.py:263
+#: MainWindow.py:319
 msgid "Green"
 msgstr ""
 
-#: MainWindow.py:266
+#: MainWindow.py:322
 msgid "Blue"
 msgstr ""
 
-#: MainWindow.py:269
+#: MainWindow.py:325
 msgid "Purple"
 msgstr ""
 
-#: MainWindow.py:272
+#: MainWindow.py:328
 msgid "Grey"
 msgstr ""
 
-#: MainWindow.py:291
+#: MainWindow.py:347
+msgid "Column - All"
+msgstr ""
+
+#: MainWindow.py:370
 msgid "Choose JSON File"
 msgstr ""
 
-#: MainWindow.py:325 MainWindow.py:441
+#: MainWindow.py:404 MainWindow.py:520
 msgid "Failed to save file. Choose `Save As...` function."
 msgstr ""
 
-#: MainWindow.py:339
+#: MainWindow.py:418
 #, python-format
 msgid "FileNotFoundError exception in action_save_json_file() function: %s"
 msgstr ""
 
-#: MainWindow.py:346
+#: MainWindow.py:425
 #, python-format
 msgid "OSError exception in action_save_json_file() function: %s"
 msgstr ""
 
-#: MainWindow.py:353
+#: MainWindow.py:432
 #, python-format
 msgid "BaseException in action_save_json_file() function: %s"
 msgstr ""
 
-#: MainWindow.py:374
+#: MainWindow.py:453
 msgid "Save File"
 msgstr ""
 
-#: MainWindow.py:407
+#: MainWindow.py:486
 #, python-format
 msgid "FileNotFoundError exception in action_save_json_file_as() function: %s"
 msgstr ""
 
-#: MainWindow.py:414
+#: MainWindow.py:493
 #, python-format
 msgid "OSError exception in action_save_json_file_as() function: %s"
 msgstr ""
 
-#: MainWindow.py:421
+#: MainWindow.py:500
 #, python-format
 msgid "BaseException in action_save_json_file_as() function: %s"
 msgstr ""
 
-#: MainWindow.py:450
+#: MainWindow.py:529
 #, python-format
 msgid "FileNotFoundError exception in action_refresh_json_file() function: %s"
 msgstr ""
 
-#: MainWindow.py:457
+#: MainWindow.py:536
 #, python-format
 msgid "OSError exception in action_refresh_json_file() function: %s"
 msgstr ""
 
-#: MainWindow.py:464
+#: MainWindow.py:543
 #, python-format
 msgid "BaseException in action_refresh_json_file() function: %s"
 msgstr ""
 
-#: MainWindow.py:532
+#: MainWindow.py:613
 msgid "Application needs to be restarted!"
 msgstr ""
 
-#: MainWindow.py:533 MainWindow.py:909
+#: MainWindow.py:614 MainWindow.py:1002
 msgid "Information"
 msgstr ""
 
-#: MainWindow.py:560
+#: MainWindow.py:641
 msgid "Add Item"
 msgstr ""
 
-#: MainWindow.py:563
+#: MainWindow.py:644
 msgid "Add string"
 msgstr ""
 
-#: MainWindow.py:568
+#: MainWindow.py:649
 msgid "Add integer"
 msgstr ""
 
-#: MainWindow.py:573
+#: MainWindow.py:654
 msgid "Add boolean"
 msgstr ""
 
-#: MainWindow.py:578
+#: MainWindow.py:659
 msgid "Add object()"
 msgstr ""
 
-#: MainWindow.py:583
+#: MainWindow.py:664
 msgid "Add list()"
 msgstr ""
 
-#: MainWindow.py:590
+#: MainWindow.py:671
 msgid "Insert Child"
 msgstr ""
 
-#: MainWindow.py:593
+#: MainWindow.py:674
 msgid "Insert child string"
 msgstr ""
 
-#: MainWindow.py:598
+#: MainWindow.py:679
 msgid "Insert child integer"
 msgstr ""
 
-#: MainWindow.py:603
+#: MainWindow.py:684
 msgid "Insert child boolean"
 msgstr ""
 
-#: MainWindow.py:608
+#: MainWindow.py:689
 msgid "Insert child object()"
 msgstr ""
 
-#: MainWindow.py:613
+#: MainWindow.py:694
 msgid "Insert child list()"
 msgstr ""
 
-#: MainWindow.py:620
+#: MainWindow.py:701
 msgid "Delete Item"
 msgstr ""
 
-#: MainWindow.py:628
+#: MainWindow.py:711
 msgid "Open File"
 msgstr ""
 
-#: MainWindow.py:691
+#: MainWindow.py:782
 #, python-format
 msgid "IndexError exception in open_right_click_menu() function: %s"
 msgstr ""
 
-#: MainWindow.py:698
+#: MainWindow.py:789
 #, python-format
 msgid "BaseException in open_right_click_menu() function: %s"
 msgstr ""
 
-#: MainWindow.py:735 MainWindow.py:805
+#: MainWindow.py:826 MainWindow.py:897
 msgid "New int"
 msgstr ""
 
-#: MainWindow.py:742 MainWindow.py:811
+#: MainWindow.py:833 MainWindow.py:903
 msgid "New bool"
 msgstr ""
 
-#: MainWindow.py:757
+#: MainWindow.py:848
 msgid ""
 "You can only use this function to root QTreeView Node, choose another "
 "actions"
 msgstr ""
 
-#: MainWindow.py:763
+#: MainWindow.py:854
 #, python-format
 msgid "Exception in tree_add_item() function: %s"
 msgstr ""
 
-#: MainWindow.py:828
+#: MainWindow.py:920
 #, python-format
 msgid "Exception in tree_add_item_child() function: %s"
 msgstr ""
 
-#: MainWindow.py:851
+#: MainWindow.py:944
 #, python-format
 msgid "Exception in tree_item_delete() function: %s"
 msgstr ""
 
-#: MainWindow.py:879
+#: MainWindow.py:972
 #, python-format
 msgid "Exception in tree_item_open_json_file() function: %s"
 msgstr ""
 
-#: MainWindow.py:912 MainWindow.py:933
+#: MainWindow.py:1005 MainWindow.py:1026
 msgid "Warning"
 msgstr ""
 
-#: MainWindow.py:915
+#: MainWindow.py:1008
 msgid "Critical"
 msgstr ""
 
-#: MainWindow.py:932
+#: MainWindow.py:1025
 msgid "Save changes to file before closing?"
 msgstr ""
 
