@@ -118,6 +118,9 @@
     <addaction name="menu_color"/>
     <addaction name="separator"/>
     <addaction name="action_is_editable"/>
+    <addaction name="separator"/>
+    <addaction name="action_find"/>
+    <addaction name="separator"/>
    </widget>
    <addaction name="menu_file"/>
    <addaction name="menu_view"/>
@@ -158,7 +161,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Is editable</string>
+    <string>Editable</string>
    </property>
   </action>
   <action name="action_collapse">
@@ -224,6 +227,14 @@
   <action name="action_orange_color">
    <property name="text">
     <string>Orange</string>
+   </property>
+  </action>
+  <action name="action_find">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Find...</string>
    </property>
   </action>
  </widget>
