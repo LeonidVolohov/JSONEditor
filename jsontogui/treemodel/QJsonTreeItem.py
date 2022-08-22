@@ -6,7 +6,6 @@
     rootItem = QJsonTreeItem("Key", "Value")
     document = {"Example": "Example value"}
     rootItem.load_json_to_tree(document)
-
 """
 import sys
 from configparser import ConfigParser
@@ -15,9 +14,9 @@ sys.path.insert(1, "..")
 from utils.JsonParsing import JsonParsing
 from utils.Utils import Utils
 
-
 CONFIG_OBJECT = ConfigParser()
-CONFIG_OBJECT.read("utils/config/config.ini")
+CONFIG_OBJECT.read(Utils().get_abs_file_path("utils/config/config.ini"))
+
 
 class QJsonTreeItem(object):
     """Class to create basic tree item
@@ -33,34 +32,24 @@ class QJsonTreeItem(object):
     --------
     appendChild:
         Appends child to the list
-
     child:
         Return child for specific row
-
     parent:
         Return parent
-
     childCount:
         Return length of list
-
     columnCount:
         Return column count
-
     row:
         Return index of tree
-
     data:
         Return data for specific column
-
     setData:
         Sets given data for specific column
-
     insertChildren:
         Insert children for specific row and column
-
     removeChildren:
         Remove children from specicif row
-
     load_json_to_tree:
         Prepare data to load it to tree
     """
@@ -121,13 +110,13 @@ class QJsonTreeItem(object):
     def data(self, column) -> None:
         if column is 0:
             return self.key
-        elif column is 1:
+        elif column is 2:
             return self.value
 
     def setData(self, column, value) -> None:
         if column is 0:
             self.key = value
-        if column is 1:
+        if column is 2:
             self.value = value
 
     def insertChildren(self, position, rows, columns) -> bool:
@@ -160,19 +149,14 @@ class QJsonTreeItem(object):
         -----
             value: Any
                 Value to load
-
             parent: QJsonTreeItem
-
-            sort:
+                Parent item
+            sort: bool
                 Sort or not
 
         Returns:
         --------
             QJsonTreeItem
-
-        Raises:
-        -------
-            None
         """
         root_item = QJsonTreeItem(parent=parent, data=value)
         root_item.key = "root"
@@ -183,13 +167,15 @@ class QJsonTreeItem(object):
                 if sort else value.items()
             )
 
+            root_item.type = type(value)
             for key, value in items:
                 child = cls.load_json_to_tree(value, root_item)
-                child.key = Utils().translate(
+                child.key = JsonParsing().translate(
                     key, CONFIG_OBJECT.get("Language", "default_tree_language"))
                 child.type = type(value)
                 root_item.appendChild(child)
         elif isinstance(value, list):
+            root_item.type = type(value)
             for index, value in enumerate(value):
                 child = cls.load_json_to_tree(value, root_item)
                 child.key = JsonParsing().get_name_from_dict(value)

@@ -9,22 +9,23 @@ Due to this QJsonTreeModel inherited from QAbstractItemModel with some overriden
     model = QJsonTreeModel()
     model.load({"Example key", "Example value"})
     model.get_json_from_tree()
-
 """
 import sys
 import gettext
 from configparser import ConfigParser
 
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, Qt
+from PyQt5 import QtGui
 
 sys.path.insert(1, "..")
 from utils.Utils import Utils
+from utils.JsonParsing import JsonParsing
 sys.path.insert(1, Utils().get_abs_file_path("treemodel"))
 from QJsonTreeItem import QJsonTreeItem
 
 
 CONFIG_OBJECT = ConfigParser()
-CONFIG_OBJECT.read("utils/config/config.ini")
+CONFIG_OBJECT.read(Utils().get_abs_file_path("utils/config/config.ini"))
 
 TRANSLATE_QJSONTREEMODEL = gettext.translation(
     domain="QJsonTreeModel",
@@ -37,55 +38,39 @@ class QJsonTreeModel(QAbstractItemModel):
 
     Attributes:
     -----------
-    root_item:
-        Root item
-    headers:
-        Headers of column=0 and column=1
+    parent:
+        Parent item
 
     Methods:
     --------
     clear:
         Clear model by loading an empty dict to it
-
     load:
         Loads input document to QTreeView
-
     data:
         Return data for specific input index
-
     getItem:
         Return item for specific input index
-
     setData:
         Sets input value for specific index depends of input role
-
     headerData:
         Return header data
-
     index:
         Return index for specific row and column
-
     parent:
         Return parent for specific index
-
     rowCount:
         Return amount of rows for specific parent
-
     columnCount:
         Return amount of columns
-
     flags:
         Sets flags on displaying or editing specific column
-
     getJsonFromTree:
         Return JSON from tree
-
     generateJsonFromTree:
         Generate JSON from tree
-
     insertRows:
         Inserts rows for specific position
-
     removeRows:
         Removes rows for specific position
     """
@@ -101,15 +86,17 @@ class QJsonTreeModel(QAbstractItemModel):
         super(QJsonTreeModel, self).__init__(parent)
         self._root_item = QJsonTreeItem(
             [TRANSLATE_QJSONTREEMODEL.gettext("Key"),
+             TRANSLATE_QJSONTREEMODEL.gettext("Type"),
              TRANSLATE_QJSONTREEMODEL.gettext("Value")])
         self._headers = (
             TRANSLATE_QJSONTREEMODEL.gettext("Key"),
+            TRANSLATE_QJSONTREEMODEL.gettext("Type"),
             TRANSLATE_QJSONTREEMODEL.gettext("Value"))
         self._is_editable = False
 
     @property
     def is_editable(self):
-        """Get or set current _is_editable property"""
+        """Get or set current _is_editable property."""
         return self._is_editable
 
     @is_editable.setter
@@ -120,18 +107,6 @@ class QJsonTreeModel(QAbstractItemModel):
         """Clear model.
 
         Clear model by loading to it an empty dictionary
-
-        Args:
-        -----
-            None
-
-        Returns:
-        --------
-            None
-
-        Raises:
-        -------
-            None
         """
         self.load({})
 
@@ -149,10 +124,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             True if model was successfully loaded
-
-        Raises:
-        -------
-            None
         """
         assert isinstance(document, (dict, list, tuple)), (
             TRANSLATE_QJSONTREEMODEL.gettext("`document` must be of dict, list or tuple, not %s" %
@@ -184,15 +155,8 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             True data if role is acceptable and index is valid; otherwise None
-
-        Raises:
-        -------
-            None
         """
         if not index.isValid():
-            return None
-
-        if role != Qt.DisplayRole and role != Qt.EditRole:
             return None
 
         item = index.internalPointer()
@@ -200,9 +164,93 @@ class QJsonTreeModel(QAbstractItemModel):
         if role == Qt.DisplayRole or role == Qt.EditRole:
             if index.column() == 0:
                 return item.data(index.column())
-
             if index.column() == 1:
+                if str(item.type) == "<class 'str'>":
+                    return TRANSLATE_QJSONTREEMODEL.gettext("str")
+                elif str(item.type) == "<class 'int'>":
+                    return TRANSLATE_QJSONTREEMODEL.gettext("int")
+                elif str(item.type) == "<class 'bool'>":
+                    return TRANSLATE_QJSONTREEMODEL.gettext("bool")
+                else:
+                    return
+            if index.column() == 2:
                 return item.value
+
+        if role == Qt.CheckStateRole and item.type is bool:
+            if index.column() == 2:
+                return Qt.Checked if item.value is True else Qt.Unchecked
+
+        # if role == Qt.ForegroundRole:
+        #     if item.type is dict:
+        #         return QtGui.QBrush(QtGui.QColor('#FF9900'))
+        #     elif item.type is list:
+        #         return QtGui.QBrush(QtGui.QColor('#ff0080'))
+        #     elif item.type is str or item.type is int or item.type is bool:
+        #         pass
+
+        # only one choose:
+        # or Qt.ForegroundRole or in MainWindow in self.tree_view.setStyleSheet -> item
+        if role == Qt.BackgroundRole:
+            if item.data(index.parent().column()) is None:
+                if item.type is dict:
+                    return QtGui.QBrush(QtGui.QColor(
+                        CONFIG_OBJECT.get("QTreeView-color", "color_dict")))
+                if item.type is list:
+                    return QtGui.QBrush(QtGui.QColor(
+                        CONFIG_OBJECT.get("QTreeView-color", "color_list")))
+                else:
+                    return QtGui.QBrush(QtGui.QColor(
+                        CONFIG_OBJECT.get("QTreeView-color", "color_else")))
+
+        if role == Qt.FontRole:
+            font = QtGui.QFont()
+            font.setFamily("Segoe UI")
+            if item.data(index.parent().column()) is None:
+                if index.column() == 0:
+                    font.setPointSize(14)
+                elif index.column() == 1:
+                    font.setPointSize(10)
+                elif index.column() == 2:
+                    font.setItalic(True)
+                    font.setPointSize(12)
+            else:
+                if index.column() == 0:
+                    if item.type is dict or item.type is list:
+                        font.setBold(True)
+                    else:
+                        font.setBold(False)
+                    font.setPointSize(10)
+                elif index.column() == 1:
+                    font.setPointSize(10)
+                elif index.column() == 2:
+                    font.setBold(False)
+                    font.setItalic(True)
+                    font.setPointSize(10)
+            return font
+
+        if role == Qt.DecorationRole:
+            if index.column() == 0:
+                if item.type is dict:
+                    return QtGui.QIcon(
+                        QtGui.QPixmap(Utils().get_abs_file_path("utils/images/treeview/object.png")))
+                if item.type is list:
+                    return QtGui.QIcon(
+                        QtGui.QPixmap(Utils().get_abs_file_path("utils/images/treeview/array.png")))
+                # if item.type is int:
+                #     return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/int.png"))
+                # if item.type is str and item.key != "file":
+                #     return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/str.png"))
+                # if item.type is bool:
+                #     return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/bool.png"))
+                if item.key == "file":
+                    return QtGui.QIcon(
+                        QtGui.QPixmap(Utils().get_abs_file_path("utils/images/treeview/file.png")))
+            elif index.column() == 1 or index.column() == 2:
+                pass
+
+        if role == Qt.TextAlignmentRole:
+            if index.column() == 1:
+                return Qt.AlignCenter
         return None
 
     def getItem(self, index: QModelIndex) -> QJsonTreeItem:
@@ -218,10 +266,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             QJsonTreeItem
-
-        Raises:
-        -------
-            None
         """
         if index.isValid():
             item = index.internalPointer()
@@ -257,10 +301,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             True if data was successfully seted, False if not
-
-        Raises:
-        -------
-            None
         """
         if role == Qt.EditRole:
             item = index.internalPointer()
@@ -269,32 +309,47 @@ class QJsonTreeModel(QAbstractItemModel):
             return True
         if role == Qt.DecorationRole:
             item = index.internalPointer()
-            item.setData(0, value)
-            item.setData(1, TRANSLATE_QJSONTREEMODEL.gettext("[No string value]"))
+            if self.getItem(index).parent().type is list:
+                item.setData(0, None)
+            else:
+                item.setData(0, value)
+            item.setData(2, TRANSLATE_QJSONTREEMODEL.gettext("New string"))
             self.dataChanged.emit(index, index, [Qt.EditRole])
             return True
         if role == Qt.ToolTipRole:
             item = index.internalPointer()
-            item.setData(0, value)
-            item.setData(1, int(1))
+            if self.getItem(index).parent().type is list:
+                item.setData(0, None)
+            else:
+                item.setData(0, value)
+            item.setData(2, int(1))
             self.dataChanged.emit(index, index, [Qt.EditRole])
             return True
         if role == Qt.StatusTipRole:
             item = index.internalPointer()
-            item.setData(0, value)
-            item.setData(1, False)
+            if self.getItem(index).parent().type is list:
+                item.setData(0, None)
+            else:
+                item.setData(0, value)
+            item.setData(2, False)
             self.dataChanged.emit(index, index, [Qt.EditRole])
             return True
         if role == Qt.WhatsThisRole:
             item = index.internalPointer()
-            item.setData(0, TRANSLATE_QJSONTREEMODEL.gettext("[No dict() name]"))
-            item.setData(1, dict())
+            if self.getItem(index).parent().type is list:
+                item.setData(0, None)
+            else:
+                item.setData(0, TRANSLATE_QJSONTREEMODEL.gettext("New object()"))
+            item.setData(2, dict())
             self.dataChanged.emit(index, index, [Qt.EditRole])
             return True
         if role == Qt.SizeHintRole:
             item = index.internalPointer()
-            item.setData(0, TRANSLATE_QJSONTREEMODEL.gettext("[No list() name]"))
-            item.setData(1, list())
+            if self.getItem(index).parent().type is list:
+                item.setData(0, None)
+            else:
+                item.setData(0, TRANSLATE_QJSONTREEMODEL.gettext("New list()"))
+            item.setData(2, list())
             self.dataChanged.emit(index, index, [Qt.EditRole])
             return True
         return False
@@ -323,10 +378,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             Return header data only for Qt.DisplayRole role, else return None
-
-        Raises:
-        -------
-            None
         """
         if role != Qt.DisplayRole:
             return None
@@ -352,10 +403,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             QModelIndex
-
-        Raises:
-        -------
-            None
         """
         if not self.hasIndex(row, column, parent):
             return QModelIndex()
@@ -385,10 +432,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             QModelIndex
-
-        Raises:
-        -------
-            None
         """
         if not index.isValid():
             return QModelIndex()
@@ -416,10 +459,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             Amount of rows
-
-        Raises:
-        -------
-            None
         """
         if parent.column() > 0:
             return 0
@@ -444,12 +483,8 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             Amount of column
-
-        Raises:
-        -------
-            None
         """
-        return 2
+        return 3
 
     def flags(self, index: QModelIndex) -> Qt.ItemFlags:
         """Returns the item flags for the given index.
@@ -462,14 +497,16 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             Qt.ItemFlags
-
-        Raises:
-        -------
-            None
         """
         flags = super(QJsonTreeModel, self).flags(index)
         if self.is_editable:
-            if index.column() == 0 or index.column() == 1:
+            if index.column() == 0 or index.column() == 2:
+                if self.getItem(index).type == dict or self.getItem(index).type == list:
+                    if index.column() == 1 or index.column() == 2:
+                        return flags
+                if self.getItem(index).parent().type is list:
+                    if index.column() == 0:
+                        return flags
                 return Qt.ItemIsEditable | flags
             else:
                 return flags
@@ -498,10 +535,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             Returns True if the rows were successfully inserted; otherwise returns False.
-
-        Raises:
-        -------
-            None
         """
         parent_item = self.getItem(parent)
 
@@ -530,10 +563,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             Returns True if the rows were successfully removed; otherwise returns False.
-
-        Raises:
-        -------
-            None
         """
         parent_item = self.getItem(parent)
 
@@ -554,10 +583,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             Generated JSON from tree to dictionary
-
-        Raises:
-        -------
-            None
         """
         root = root or self._root_item
         return self.generate_json_from_free(root)
@@ -573,10 +598,6 @@ class QJsonTreeModel(QAbstractItemModel):
         Returns:
         --------
             Generated JSON from tree to dictionary
-
-        Raises:
-        -------
-            None
         """
 
         if item is None:
@@ -589,7 +610,7 @@ class QJsonTreeModel(QAbstractItemModel):
             for i in range(amount_of_child):
                 child = item.child(i)
                 document[
-                    Utils().translate(
+                    JsonParsing().translate(
                         child.key,
                         CONFIG_OBJECT.get("Language", "write_to_json_language"))] = \
                     self.generate_json_from_free(child)

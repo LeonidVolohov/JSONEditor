@@ -13,37 +13,22 @@
 import os
 import re
 
-from utils.translate import translate_dictionary
-
 
 class Utils():
     """Class for for the necessary functions needed during process of preparing data for the GUI.
-
-    Attributes:
-    -----------
-    None
 
     Methods:
     --------
     get_abs_file_path(file_name: str) -> str:
         Return absolute path for given file_name with project path where it started from
-
     file_name_match(file_name: str) -> bool:
         Return True if given file_name match .json file extension
-
     string_to_boolean(input_string: str) -> bool
         Return True if input_string is "True" False if "False"
-    translate(input_string: str, language: str) -> str:
-        Return translated input_string from translate.py dictionary
     """
 
     def __init__(self) -> None:
-        """Constructs all the necessary attributes for the Utils object.
-
-        Args:
-        -----
-            None
-        """
+        """Constructs all the necessary attributes for the Utils object."""
         pass
 
     @classmethod
@@ -106,7 +91,6 @@ class Utils():
                 Exception raised when a string passed to one of the functions
                 here is not a valid regular expression or when some other error
                 occurs during compilation or matching.
-
         """
         try:
             if file_type == "txt":
@@ -120,7 +104,7 @@ class Utils():
 
     @classmethod
     def string_to_boolean(cls, input_string: str) -> bool:
-        """Convert input string to boolean
+        """Convert input string to boolean.
 
         Can`t use eval() due to user can load anything and eval still return False.
 
@@ -139,37 +123,3 @@ class Utils():
             return False
         else:
             return
-
-    @classmethod
-    def translate(cls, input_string: str, language: str) -> str:
-        """Translates input string to another language
-
-        Translated from translate.translate_dictionary dictionary from utils/translate file
-
-        Args:
-        -----
-            input_string: str
-                Input string to translae
-            language:
-                Language to translate
-
-        Raises:
-        -------
-            KeyError:
-                If input_string is not in dictionary
-
-
-        Returns:
-        --------
-            Return True if input_string is "True" False if "False".
-        """
-        try:
-            if language == "en":
-                return next((key for key, value in translate_dictionary.items()
-                    if value == input_string), input_string)
-            elif language == "ru":
-                return translate_dictionary[input_string]
-            else:
-                return
-        except KeyError as exception:
-            return input_string

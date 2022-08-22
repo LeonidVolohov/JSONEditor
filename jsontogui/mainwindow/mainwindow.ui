@@ -14,18 +14,47 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTreeView" name="treeView">
+   <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
-      <width>781</width>
-      <height>531</height>
+      <y>0</y>
+      <width>791</width>
+      <height>551</height>
      </rect>
     </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QTreeView" name="tree_view"/>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_bottom">
+       <item>
+        <widget class="QCheckBox" name="check_box_case_sensitive">
+         <property name="text">
+          <string>Case sensitive</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="check_box_column">
+         <property name="text">
+          <string>Column</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="line_edit"/>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </widget>
   </widget>
-  <widget class="QMenuBar" name="menuBar">
+  <widget class="QMenuBar" name="menu_bar">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -34,7 +63,7 @@
      <height>22</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuFile">
+   <widget class="QMenu" name="menu_file">
     <property name="title">
      <string>File</string>
     </property>
@@ -49,10 +78,52 @@
     <addaction name="separator"/>
     <addaction name="action_close_app"/>
     <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menu_view">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <widget class="QMenu" name="menu_expand">
+     <property name="title">
+      <string>Expand</string>
+     </property>
+     <widget class="QMenu" name="menu_expand_to_level">
+      <property name="title">
+       <string>To Level</string>
+      </property>
+      <addaction name="action_one_child"/>
+      <addaction name="action_two_child"/>
+      <addaction name="action_three_child"/>
+     </widget>
+     <addaction name="action_collapse"/>
+     <addaction name="action_all"/>
+     <addaction name="menu_expand_to_level"/>
+    </widget>
+    <widget class="QMenu" name="menu_color">
+     <property name="title">
+      <string>Color</string>
+     </property>
+     <addaction name="action_none_color"/>
+     <addaction name="action_yellow_color"/>
+     <addaction name="action_orange_color"/>
+     <addaction name="action_red_color"/>
+     <addaction name="action_green_color"/>
+     <addaction name="action_blue_color"/>
+     <addaction name="action_purple_color"/>
+     <addaction name="action_grey_color"/>
+    </widget>
+    <addaction name="separator"/>
+    <addaction name="menu_expand"/>
+    <addaction name="separator"/>
+    <addaction name="menu_color"/>
+    <addaction name="separator"/>
     <addaction name="action_is_editable"/>
     <addaction name="separator"/>
+    <addaction name="action_find"/>
+    <addaction name="separator"/>
    </widget>
-   <addaction name="menuFile"/>
+   <addaction name="menu_file"/>
+   <addaction name="menu_view"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="action_open_file">
@@ -90,7 +161,80 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Is editable</string>
+    <string>Editable</string>
+   </property>
+  </action>
+  <action name="action_collapse">
+   <property name="text">
+    <string>Collapse</string>
+   </property>
+  </action>
+  <action name="action_all">
+   <property name="text">
+    <string>All</string>
+   </property>
+  </action>
+  <action name="action_one_child">
+   <property name="text">
+    <string>1</string>
+   </property>
+  </action>
+  <action name="action_two_child">
+   <property name="text">
+    <string>2</string>
+   </property>
+  </action>
+  <action name="action_three_child">
+   <property name="text">
+    <string>3</string>
+   </property>
+  </action>
+  <action name="action_none_color">
+   <property name="text">
+    <string>None</string>
+   </property>
+  </action>
+  <action name="action_grey_color">
+   <property name="text">
+    <string>Grey</string>
+   </property>
+  </action>
+  <action name="action_yellow_color">
+   <property name="text">
+    <string>Yellow</string>
+   </property>
+  </action>
+  <action name="action_green_color">
+   <property name="text">
+    <string>Green</string>
+   </property>
+  </action>
+  <action name="action_blue_color">
+   <property name="text">
+    <string>Blue</string>
+   </property>
+  </action>
+  <action name="action_purple_color">
+   <property name="text">
+    <string>Purple</string>
+   </property>
+  </action>
+  <action name="action_red_color">
+   <property name="text">
+    <string>Red</string>
+   </property>
+  </action>
+  <action name="action_orange_color">
+   <property name="text">
+    <string>Orange</string>
+   </property>
+  </action>
+  <action name="action_find">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Find...</string>
    </property>
   </action>
  </widget>

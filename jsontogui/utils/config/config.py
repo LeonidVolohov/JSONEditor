@@ -6,12 +6,20 @@ CONFIG_OBJECT = ConfigParser()
 
 CONFIG_OBJECT["QTreeView"] = {
     "set_alternating_row_colors": "False",
-    "set_animated": "False",
+    "set_animated": "False"
+}
 
+CONFIG_OBJECT["QTreeView-expand"] = {
     "expand_all": "False",
 
     # -2: Dont Expand, -1: ExpandAll, 0: Expand to 1 level, ...
-    "expand_to_depth": "-2",
+    "expand_to_depth": "-2"
+}
+
+CONFIG_OBJECT["QTreeView-color"] = {
+    "color_dict": "#90CAF9",
+    "color_list": "#BBDEFB",
+    "color_else": "#E3F2FD"
 }
 
 CONFIG_OBJECT["Other"] = {
