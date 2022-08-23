@@ -15,7 +15,7 @@ import gettext
 from configparser import ConfigParser
 
 from PyQt5.QtCore import QAbstractItemModel, QModelIndex, Qt
-from PyQt5 import QtGui
+from PyQt5.QtGui import QIcon, QBrush, QColor, QFont, QPixmap
 
 sys.path.insert(1, "..")
 from utils.Utils import Utils
@@ -182,9 +182,9 @@ class QJsonTreeModel(QAbstractItemModel):
 
         # if role == Qt.ForegroundRole:
         #     if item.type is dict:
-        #         return QtGui.QBrush(QtGui.QColor('#FF9900'))
+        #         return QBrush(QColor('#FF9900'))
         #     elif item.type is list:
-        #         return QtGui.QBrush(QtGui.QColor('#ff0080'))
+        #         return QBrush(QColor('#ff0080'))
         #     elif item.type is str or item.type is int or item.type is bool:
         #         pass
 
@@ -193,17 +193,17 @@ class QJsonTreeModel(QAbstractItemModel):
         if role == Qt.BackgroundRole:
             if item.data(index.parent().column()) is None:
                 if item.type is dict:
-                    return QtGui.QBrush(QtGui.QColor(
+                    return QBrush(QColor(
                         CONFIG_OBJECT.get("QTreeView-color", "color_dict")))
                 if item.type is list:
-                    return QtGui.QBrush(QtGui.QColor(
+                    return QBrush(QColor(
                         CONFIG_OBJECT.get("QTreeView-color", "color_list")))
                 else:
-                    return QtGui.QBrush(QtGui.QColor(
+                    return QBrush(QColor(
                         CONFIG_OBJECT.get("QTreeView-color", "color_else")))
 
         if role == Qt.FontRole:
-            font = QtGui.QFont()
+            font = QFont()
             font.setFamily("Segoe UI")
             if item.data(index.parent().column()) is None:
                 if index.column() == 0:
@@ -231,20 +231,20 @@ class QJsonTreeModel(QAbstractItemModel):
         if role == Qt.DecorationRole:
             if index.column() == 0:
                 if item.type is dict:
-                    return QtGui.QIcon(
-                        QtGui.QPixmap(Utils().get_abs_file_path("utils/images/treeview/object.png")))
+                    return QIcon(
+                        QPixmap(Utils().get_abs_file_path("utils/images/treeview/object.png")))
                 if item.type is list:
-                    return QtGui.QIcon(
-                        QtGui.QPixmap(Utils().get_abs_file_path("utils/images/treeview/array.png")))
+                    return QIcon(
+                        QPixmap(Utils().get_abs_file_path("utils/images/treeview/array.png")))
                 # if item.type is int:
-                #     return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/int.png"))
+                #     return QIcon(QPixmap("utils/images/treeview/int.png"))
                 # if item.type is str and item.key != "file":
-                #     return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/str.png"))
+                #     return QIcon(QPixmap("utils/images/treeview/str.png"))
                 # if item.type is bool:
-                #     return QtGui.QIcon(QtGui.QPixmap("utils/images/treeview/bool.png"))
+                #     return QIcon(QPixmap("utils/images/treeview/bool.png"))
                 if item.key == "file":
-                    return QtGui.QIcon(
-                        QtGui.QPixmap(Utils().get_abs_file_path("utils/images/treeview/file.png")))
+                    return QIcon(
+                        QPixmap(Utils().get_abs_file_path("utils/images/treeview/file.png")))
             elif index.column() == 1 or index.column() == 2:
                 pass
 
