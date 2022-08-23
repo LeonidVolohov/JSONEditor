@@ -1,9 +1,11 @@
 """Main module."""
+from email.mime import application
 import sys
 from argparse import ArgumentParser
 from configparser import ConfigParser
 
 from PyQt5.QtWidgets import QApplication
+from PyQt5 import QtGui
 
 from utils.Utils import Utils
 from utils.stylesheets import APPLICATION_STYLESHEET
@@ -36,5 +38,6 @@ if __name__ == '__main__':
         show_maximized=Utils().string_to_boolean(CONFIG_OBJECT.get("MainWindow", "show_maximized")))
 
     APPLICATION.setStyleSheet(APPLICATION_STYLESHEET)
+    APPLICATION.setWindowIcon(QtGui.QIcon("utils/images/treeview/main_window.png"))
 
     sys.exit(APPLICATION.exec_())
