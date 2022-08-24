@@ -19,14 +19,22 @@ CONFIG_OBJECT.read(Utils().get_abs_file_path("utils/config/config.ini"))
 
 
 class QJsonTreeItem(object):
-    """Class to create basic tree item
+    """Class to create basic tree item.
 
     Attributes:
     -----------
-    data:
-        Data for the tree item
     parent:
         Parent of the item
+    key:
+        QTreeView key
+    value:
+        QTreeView value
+    type:
+        QTreeView type
+    children:
+        Index items
+    item_data:
+        Data for the tree item
 
     Methods:
     --------
@@ -49,11 +57,10 @@ class QJsonTreeItem(object):
     insertChildren:
         Insert children for specific row and column
     removeChildren:
-        Remove children from specicif row
+        Remove children from specific row
     load_json_to_tree:
-        Prepare data to load it to tree
+        Prepare data for loading it to tree
     """
-
     def __init__(self, data, parent=None) -> None:
         self._parent = parent
         self._key = ""

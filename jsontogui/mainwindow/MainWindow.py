@@ -49,52 +49,85 @@ class MainWindow(QMainWindow):
     Attributes:
     -----------
     json_file_name:
-        File name of JSON
-    show_maximized:
-        Show maximized or minimized window if True or False
+        File name of JSON-file
+    model:
+        QTreeView model
+    new_window:
+        New application window for new JSON-file
+    json_text:
+        Dict to load in QTreeView model
+    frame:
+        Frame with two QCheckBox and QLineEdit
+    tree_view:
+        QTreeView object
+    line_edit:
+        Search QLineEdit to find input data in QTreeView
+    check_box_case_sensitive:
+    check_box_column:
+        Check boxes for searching properties
+    filter_proxy_model:
+        QSortFilterProxyModel for filtering and searching in QTreeView model
 
     Methods:
     --------
-    ui_components:
+    ui_components(self) -> None:
         Creates main components of the window
-    closeEvent:
+    closeEvent(self, event):
         Close event for QMainWindow
-    create_menu_bar:
+    tree_view_double_clicked(self, index):
+        Function for overriding QTreeView double click
+    preload_user_settings(self) -> None:
+        Preload some user settings from config.ini file
+    create_menu_bar(self) -> None:
         Creates manu bar
-    action_new_json_file:
-        Action to create new an empty JSON file on the main window
-    action_open_file_dialog:
-        Action for opening file dialog
-    action_save_json_file:
-        Action for saving to file
-    action_save_json_file_as:
-        Action for saving file as
-    action_refresh_json_file:
-        Action for loading JSON from file to the main window. "Refreshing"
-    action_close_application:
-        Action for closing application
-    action_change_flags:
+    init_file_menu(self) -> None:
+    init_view_menu(self) -> None:
+        Init menus elements
+    action_change_flags(self) -> None:
         Changes opportunity for editing item
-    open_right_click_menu:
+    action_change_case_sensitive(self) -> None:
+    action_change_column_sensitive(self) -> None:
+        Changes search properties
+    action_new_json_file(self) -> None:
+        Action to create new an empty JSON file on the main window
+    action_open_file_dialog(self) -> None:
+        Action for opening file dialog
+    action_save_json_file(self) -> None:
+        Action for saving data to file
+    action_save_json_file_as(self) -> None:
+        Action for saving file as new file or an existing one
+    action_refresh_json_file(self) -> None:
+        Action for loading JSON from file to the main window. "Refreshing"
+    action_find_visible(self) -> None:
+        Changing QLineEdit visible
+    action_expand_tree(self, expand_lvl: str) -> None:
+        Expanding QTreeView
+    action_tree_color(self, color: str) -> None:
+        Changing QTreeView root items color
+    open_right_click_menu(self, position) -> None:
         Action for creating on QTreeView right click menu
-    tree_add_item:
+    tree_add_item(self, role: Qt.ItemDataRole) -> None:
         Action for adding item to QTreeView
-    tree_add_item_child:
+    tree_add_item_child(self, role: Qt.ItemDataRole) -> None:
         Action for adding child item to QTreeView
-    tree_item_delete:
+    tree_item_delete(self) -> None:
         Action for deleting item from QTreeView
-    action_tree_item_open_json_file:
+    action_tree_item_open_json_file(self, file_name: str) -> None:
         Action for opening JSON file from QTreeView if matched
-    center:
+    center(self) -> None:
         Action for centering main window
+    create_message_box(self, message: str, type: str) -> None:
+        Create message box with some predefined settings
+    check_saved_before_exit(self):
+        Check if model was saved before exiting appication
     """
     def __init__(self, json_file_name: str, show_maximized: bool=False) -> None:
-        """Constructs all the necessary attributes for the QJsonTreeModel object.
+        """Constructs all necessary attributes for the QJsonTreeModel object.
 
         Args:
         -----
             json_file_name: str
-                File name of file to open it it QTreeView. Could be "".
+                File name of file to open it in QTreeView. Could be "".
             show_maximized: bool
                 Show maximized or minimized MainWindow
         """
@@ -212,7 +245,7 @@ class MainWindow(QMainWindow):
             CONFIG_OBJECT.write(config_file)
 
     def tree_view_double_clicked(self, index):
-        """Function overriding QTreeView double clicking."""
+        """Function overriding QTreeView double click."""
         if self.line_edit.text() == "":
             return
 
@@ -504,7 +537,7 @@ class MainWindow(QMainWindow):
                 type="Critical")
 
     def action_refresh_json_file(self) -> None:
-        """Loads JSON form file to QTreeView.
+        """Loads JSON from file to QTreeView.
 
         Raises:
         -------
@@ -573,7 +606,7 @@ class MainWindow(QMainWindow):
             CONFIG_OBJECT.write(config_file)
 
     def action_tree_color(self, color: str) -> None:
-        """Update QTreeView items color and write them to config.ini."""
+        """Update QTreeView items color in config.ini. file"""
         if color == "None":
             CONFIG_OBJECT["QTreeView-color"]["color_dict"] = "#FFFFFF"
             CONFIG_OBJECT["QTreeView-color"]["color_list"] = "#FFFFFF"
@@ -620,7 +653,7 @@ class MainWindow(QMainWindow):
             os.execl(sys.executable, sys.executable, *sys.argv)
 
     def open_right_click_menu(self, position) -> None:
-        """Opens right cklick menu on QTreeView items.
+        """Opens right click menu on QTreeView items.
 
         Raises:
         -------
@@ -796,7 +829,8 @@ class MainWindow(QMainWindow):
         """Adds item to the model.
 
         Adding items to QTreeView depends on the input role.
-        Qt.EditRole = str(), Qt.DisplayRole = dict(), Qt.ToolTipRole = list()
+        Qt.DecorationRole = str(), Qt.ToolTipRole = int, Qt.StatusTipRole = bool,
+        Qt.WhatsThisRole = dict(), Qt.SizeHintRole = list()
 
         Raises:
         -------
@@ -861,9 +895,8 @@ class MainWindow(QMainWindow):
         """Adds child item to the model.
 
         Adding child items to QTreeView depends on the input role.
-        Qt.EditRole = str(), Qt.DisplayRole = dict(), Qt.ToolTipRole = list()
-        When adding dict() or list() it is impossible to add them and work with them immediately
-        after. Firstly it is needed to save model and only then to work with it.
+        Qt.DecorationRole = str(), Qt.ToolTipRole = int, Qt.StatusTipRole = bool,
+        Qt.WhatsThisRole = dict(), Qt.SizeHintRole = list()
 
         Args:
         -----
@@ -924,7 +957,7 @@ class MainWindow(QMainWindow):
                 type="Critical")
 
     def tree_item_delete(self) -> None:
-        """Removes item from model.
+        """Removes item from the model.
 
         Raises:
         -------
@@ -950,7 +983,7 @@ class MainWindow(QMainWindow):
     def tree_item_open_json_file(self, file_name: str) -> None:
         """Open new window from QTreeView.
 
-        Opens file name from QTreeView if file matches to .json file extensions.
+        Opens file name from QTreeView if file matches to "*.json" file extensions.
 
         Args:
         -----
@@ -975,7 +1008,7 @@ class MainWindow(QMainWindow):
                 message=message,
                 type="Critical")
 
-    def center(self):
+    def center(self) -> None:
         """Centering main window."""
         frame_geometry = self.frameGeometry()
         screen = QApplication.desktop().screenNumber(QApplication.desktop().cursor().pos())

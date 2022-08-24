@@ -26,9 +26,8 @@ class Utils():
     string_to_boolean(input_string: str) -> bool
         Return True if input_string is "True" False if "False"
     """
-
     def __init__(self) -> None:
-        """Constructs all the necessary attributes for the Utils object."""
+        """Constructs all necessary attributes for the Utils object."""
         pass
 
     @classmethod

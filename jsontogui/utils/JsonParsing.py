@@ -40,9 +40,8 @@ class JsonParsing():
     translate(input_string: str, language: str) -> str:
         Return translated input_string from translate.py dictionary
     """
-
     def __init__(self) -> None:
-        """Constructs all the necessary attributes for the Utils object."""
+        """Constructs all necessary attributes for the Utils object."""
         pass
 
     def get_json_from_file(self, file_name: str) -> dict:
@@ -116,10 +115,9 @@ class JsonParsing():
 
     @classmethod
     def get_name_from_dict(cls, data: dict) -> str:
-        """Gets predefined params from data
+        """Gets predefined params from data.
 
-        Return string with predefined parameters which was found in data. Predefined
-        parameters starts and ends with "__"
+        Return string with predefined parameters which was found in data.
 
         Args:
         -----
@@ -129,9 +127,9 @@ class JsonParsing():
         Returns:
         --------
             Return string with predefined parameters which was found in data.
-            Predefied parameters are: "name", "group" and "description".
+            Predefied parameters are: "Name", "Group".
             If parameters was not found it returns default string
-            which is "__Object__"
+            which is "Object"
         """
         if isinstance(data, dict):
             output_string = TRANSLATE_JSONPARSING.gettext("Object")
@@ -163,7 +161,7 @@ class JsonParsing():
         Args:
         -----
             input_string: str
-                Input string to translae
+                Input string to translate
             language: str
                 Language to translate
 

@@ -38,8 +38,12 @@ class QJsonTreeModel(QAbstractItemModel):
 
     Attributes:
     -----------
-    parent:
-        Parent item
+    root_item:
+        Root item
+    headers:
+        QTreeView headers
+    is_editable:
+        Is QTreeView model editable
 
     Methods:
     --------
@@ -65,18 +69,17 @@ class QJsonTreeModel(QAbstractItemModel):
         Return amount of columns
     flags:
         Sets flags on displaying or editing specific column
-    getJsonFromTree:
-        Return JSON from tree
-    generateJsonFromTree:
-        Generate JSON from tree
     insertRows:
         Inserts rows for specific position
     removeRows:
         Removes rows for specific position
+    get_json_from_tree:
+        Return JSON from tree
+    generate_json_from_free:
+        Generate JSON from tree
     """
-
     def __init__(self, parent=None) -> None:
-        """Constructs all the necessary attributes for the QJsonTreeModel object.
+        """Constructs all necessary attributes for the QJsonTreeModel object.
 
         Args:
         -----
@@ -143,18 +146,17 @@ class QJsonTreeModel(QAbstractItemModel):
         """Return data for specific index.
 
         Returns the data stored under the given role for the item referred to by the index.
-        Return if role is Qt.DisplayRole or Qt.EditRole; otherwise returns None.
 
         Args:
         -----
             index: QModelIndex
                 Index to display data for
             role: Qt.ItemDataRole
-                Role. Only Qt.DisplayRole or Qt.EditRole
+                Input role
 
         Returns:
         --------
-            True data if role is acceptable and index is valid; otherwise None
+            True data if role is acceptable and index is valid, otherwise None
         """
         if not index.isValid():
             return None
@@ -296,11 +298,11 @@ class QJsonTreeModel(QAbstractItemModel):
             value: str
                 Value to set
             role: Qt.ItemDataRole
-                Depending on the role it sets str(), dict() or list()
+                Depending on the role it sets str, int, bool, dict() or list()
 
         Returns:
         --------
-            True if data was successfully seted, False if not
+            True if data was successfully setted, False if not
         """
         if role == Qt.EditRole:
             item = index.internalPointer()
@@ -371,7 +373,7 @@ class QJsonTreeModel(QAbstractItemModel):
             section: int
                 Position of header data. 0 or 1
             orientation: Qt.Orientation
-                Orientation
+                Header orientation
             role: Qt.ItemDataRole
                 Role. Return header data only for Qt.DisplayRole role
 
@@ -473,8 +475,6 @@ class QJsonTreeModel(QAbstractItemModel):
     def columnCount(self, parent: QModelIndex=QModelIndex()) -> int:
         """Return amount of column.
 
-        Returns the number of columns for the children of the given parent.
-
         Args:
         -----
             parent: QModelIndex
@@ -534,7 +534,7 @@ class QJsonTreeModel(QAbstractItemModel):
 
         Returns:
         --------
-            Returns True if the rows were successfully inserted; otherwise returns False.
+            Returns True if the rows were successfully inserted, otherwise returns False.
         """
         parent_item = self.getItem(parent)
 
@@ -562,7 +562,7 @@ class QJsonTreeModel(QAbstractItemModel):
 
         Returns:
         --------
-            Returns True if the rows were successfully removed; otherwise returns False.
+            Returns True if the rows were successfully removed, otherwise returns False.
         """
         parent_item = self.getItem(parent)
 

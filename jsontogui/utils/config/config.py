@@ -11,8 +11,6 @@ CONFIG_OBJECT["QTreeView"] = {
 
 CONFIG_OBJECT["QTreeView-expand"] = {
     "expand_all": "False",
-
-    # -2: Dont Expand, -1: ExpandAll, 0: Expand to 1 level, ...
     "expand_to_depth": "-2"
 }
 
@@ -23,7 +21,7 @@ CONFIG_OBJECT["QTreeView-color"] = {
 }
 
 CONFIG_OBJECT["Other"] = {
-    "default_json_file_name": "config_apak.json" # default: ""
+    "default_json_file_name": "test.json" # default: ""
 }
 
 CONFIG_OBJECT["Language"] = {
