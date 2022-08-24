@@ -948,7 +948,7 @@ class MainWindow(QMainWindow):
                         value=None,
                         role=role)
                     self.model.getItem(child).type = list
-                self.tree_view.expand(index)
+                self.tree_view.expand(self.tree_view.selectionModel().currentIndex())
         except BaseException as exception:
             message = TRANSLATE_MAINWINDOW.gettext(
                 "Exception in tree_add_item_child() function: %s") % str(exception)
