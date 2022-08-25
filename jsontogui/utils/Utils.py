@@ -55,9 +55,9 @@ class Utils():
                 An error occured during os execution.
         """
         try:
-            script_path = os.path.abspath(__file__)             # ../JsonToGUI/utils/JsonParsing.py
-            script_dir = os.path.split(script_path)[0]          # ../JsonToGUI/utils/
-            script_dir = os.path.dirname(script_dir)            # ../JsonToGUI/
+            script_path = os.path.abspath(__file__)             # ../JSONEditor/utils/JsonParsing.py
+            script_dir = os.path.split(script_path)[0]          # ../JSONEditor/utils/
+            script_dir = os.path.dirname(script_dir)            # ../JSONEditor/
             abs_file_path = os.path.join(script_dir, file_name)
 
             return abs_file_path

@@ -1,4 +1,4 @@
-# JsonToGUI
+# JSONEditor
 
 ## Table of Context
 
