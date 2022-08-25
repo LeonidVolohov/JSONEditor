@@ -12,7 +12,7 @@
 ## About the Project
 
 Configurations for various projects are stored in JSON files, each of which can be up to a thousand lines in size. Of course, you can edit small JSON documents using ordinary text editors such as Notepad++ or Sublime Text, but if the file reaches thousands of lines or more, it becomes difficult and almost impossible to understand the file structure.
-Based on the foregoing, it was decided to develop the JsonToGUI program, which solves the problems posed and allows you to conveniently create new and edit existing JSON files. The JsonToGUI program was developed under Astra Linux OS, but it is expected that the program will work under any OS that has Python3+ version installed.
+Based on the foregoing, it was decided to develop the JSONEditor program, which solves the problems posed and allows you to conveniently create new and edit existing JSON files. The JSONEditor program was developed under Astra Linux OS, but it is expected that the program will work under any OS that has Python3+ version installed.
 
 ##  Getting Started
 

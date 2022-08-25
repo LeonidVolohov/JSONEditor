@@ -52,8 +52,8 @@ coverage.xml
 .pytest_cache/
 
 # Translations
-*.mo
-*.pot
+# *.mo
+# *.pot
 
 # Django stuff:
 *.log
@@ -129,11 +129,11 @@ dmypy.json
 .pyre/
 
 # Json 
-jsontogui/signals
-jsontogui/config_apak.json
+jsoneditor/signals
+jsoneditor/config_apak.json
 
 # Temp file
 /temp.txt
 
 # VS Code
-/jsontogui/.vscode
+/jsoneditor/.vscode
