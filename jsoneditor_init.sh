@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Run without sudo
+
 sudo cp JSONEditor /opt/JSONEditor -r
 
 touch /home/$USER/Desktop/JSONEditor.desktop
