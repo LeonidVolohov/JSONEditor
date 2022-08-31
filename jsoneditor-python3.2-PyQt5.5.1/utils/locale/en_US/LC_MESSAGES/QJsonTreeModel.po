@@ -1,0 +1,61 @@
+# English (United States) translations for PROJECT.
+# Copyright (C) 2022 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2022-08-25 12:03+0300\n"
+"PO-Revision-Date: 2022-08-25 12:03+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en_US\n"
+"Language-Team: en_US <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+
+#: QJsonTreeModel.py:91 QJsonTreeModel.py:95
+msgid "Key"
+msgstr ""
+
+#: QJsonTreeModel.py:92 QJsonTreeModel.py:96
+msgid "Type"
+msgstr ""
+
+#: QJsonTreeModel.py:93 QJsonTreeModel.py:97
+msgid "Value"
+msgstr ""
+
+#: QJsonTreeModel.py:133
+#, python-format
+msgid "`document` must be of dict, list or tuple, not %s"
+msgstr ""
+
+#: QJsonTreeModel.py:171
+msgid "str"
+msgstr ""
+
+#: QJsonTreeModel.py:173
+msgid "int"
+msgstr ""
+
+#: QJsonTreeModel.py:175
+msgid "bool"
+msgstr ""
+
+#: QJsonTreeModel.py:318
+msgid "New string"
+msgstr ""
+
+#: QJsonTreeModel.py:344
+msgid "New object()"
+msgstr ""
+
+#: QJsonTreeModel.py:353
+msgid "New list()"
+msgstr ""
+
