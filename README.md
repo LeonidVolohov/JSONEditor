@@ -16,7 +16,7 @@ Based on the foregoing, it was decided to develop the JSONEditor program, which 
 
 ##  Getting Started
 
-The project was written in `Python 3.5` language using `Qt Creator 3.5.1` and `PyQt 5.10.1`. In this regard, for a successful launch, you must use at least these versions. In addition, the following libraries were used in the development process:
+The project was written in `Python 3.5` language using `Qt Creator 3.5.1` and `PyQt 5.10.1`. In this regard, for a successful launch, you must use at least these versions.
 
 ## Feautures
 
