@@ -4,7 +4,6 @@
 
 - [About the Project](#about-the-project)
 - [Getting Started](#getting-started)
-  * [Prerequirements](#prerequirements)
 - [Feautures](#feautures)
 - [Usage](#usage)
 - [Authors](#authors)
@@ -44,35 +43,35 @@ The project was written in `Python 3.5` language using `Qt Creator 3.5.1` and `P
 
 * Example of config.ini file with some predefined settings:
 
-<img src="https://github.com/LeonidVolohov/JSONEditor/blob/master/screenshots/config.ini.png" align="center"
+<img src="https://github.com/LeonidVolohov/JSONEditor/blob/main/screenshots/config.ini.png" align="center"
      title="Config.ini file">
 
 * When you open an empty file the program looks like this:
 
-<img src="https://github.com/LeonidVolohov/JSONEditor/blob/master/screenshots/empty_file.png" align="center"
+<img src="https://github.com/LeonidVolohov/JSONEditor/blob/main/screenshots/empty_file.png" align="center"
      title="Empty file">
 
 * Some menus elements:
 
-<img src="https://github.com/LeonidVolohov/JSONEditor/blob/master/screenshots/menu_file.png" align="left"
+<img src="https://github.com/LeonidVolohov/JSONEditor/blob/main/screenshots/menu_file.png" align="left"
      title="Menu file">
 
-<img src="https://github.com/LeonidVolohov/JSONEditor/blob/master/screenshots/menu_view_color.png" align="center"
-     title="Menu color">
-
-<img src="https://github.com/LeonidVolohov/JSONEditor/blob/master/screenshots/menu_view_expand.png" align="right"
+<img src="https://github.com/LeonidVolohov/JSONEditor/blob/main/screenshots/menu_view_expand.png" align="center"
      title="Menu expand">
+
+<img src="https://github.com/LeonidVolohov/JSONEditor/blob/main/screenshots/menu_view_color.png" align="center"
+     title="Menu color">
 
 * You can edit JSON-file however you want:
 
-<img src="https://github.com/LeonidVolohov/JSONEditor/blob/master/screenshots/editable_example.png" align="center"
+<img src="https://github.com/LeonidVolohov/JSONEditor/blob/main/screenshots/editable_example.png" align="center"
      title="Editable file">
 
 * If you want to find something in JSON-file use the corresponding function:
 
-<img src="https://github.com/LeonidVolohov/JSONEditor/blob/master/screenshots/find_example.png" align="center"
+<img src="https://github.com/LeonidVolohov/JSONEditor/blob/main/screenshots/find_example.png" align="center"
      title="Find exapmle">
 
-## Authors
+## Author
 
 [Volohov Leonid](https://github.com/LeonidVolohov)
